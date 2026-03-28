@@ -10,7 +10,6 @@
     # Ricing Tools
     waybar
     swaynotificationcenter
-    rofi # Renamed as requested
     mpvpaper # Live video wallpaper engine!
     hyprlock
     hypridle

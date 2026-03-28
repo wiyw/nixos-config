@@ -9,6 +9,7 @@
     ./packages.nix
     ./hyprland.nix
     ./waybar.nix
+    ./rofi.nix
   ];
 
   home.pointerCursor = {

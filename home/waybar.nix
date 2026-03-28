@@ -31,8 +31,9 @@
         };
 
         "hyprland/window" = {
-          format = "<b>{class}<b>";
+          format = "<b>{title}</b>";
           max-length = 20;
+          separate-outputs = true;
         };
 
         "custom/apps" = {
@@ -99,9 +100,11 @@
 
       /* Unified flush top bar with rounded bottom */
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.4); /* Highly transparent base */
-        border-bottom: 1px solid rgba(122, 162, 247, 0.3);
-        border-radius: 0px 0px 14px 14px;
+        background-color: rgba(26, 27, 38, 0.8); /* Matches your dark theme */
+        border-bottom: 2px solid #7aa2f7; /* Your Hyprland border color */
+        border-radius: 0px 0px 15px 15px; /* Flat top, rounded bottom */
+        color: #c0caf5;
+        margin: 0px;
       }
 
       /* Remove individual module backgrounds so it looks like one clean bar */
