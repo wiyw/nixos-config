@@ -13,7 +13,7 @@
         height = 34;
         spacing = 4;
         
-        modules-left = [ "hyprland/workspaces" ];
+        modules-left = [ "hyprland/window" "custom/apps" "custom/games" "hyprland/workspaces" ];
         modules-center = [ "clock" ];
         # Added the custom media buttons here
         modules-right = [ "custom/prev" "custom/play" "custom/next" "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
@@ -28,6 +28,21 @@
           persistent-workspaces = {
             "*" = 10;
           };
+        };
+
+        "hyprland/window" = {
+          format = "{class}";
+          max-length = 20;
+        };
+
+        "custom/apps" = {
+          format = "Apps";
+          on-click = "rofi -show drun"; # We will change this to your custom app later
+        };
+
+        "custom/games" = {
+          format = "Games";
+          on-click = "rofi -show run"; # We will change this to your custom app later
         };
 
         "clock" = {
@@ -139,6 +154,17 @@
         color: #a9b1d6;
         padding-right: 12px;
         padding-left: 6px;
+      }
+
+      #window, #custom-apps, #custom-games {
+        color: #c0caf5;
+        padding: 0px 10px;
+        font-weight: bold;
+      }
+
+      #custom-apps:hover, #custom-games:hover {
+        color: #7aa2f7;
+        transition: color 0.2s ease;
       }
     '';
   };
