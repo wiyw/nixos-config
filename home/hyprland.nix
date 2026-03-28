@@ -1,5 +1,22 @@
 { config, pkgs, ... }:
 
+let
+  # This creates our script dynamically and tracks it in Git!
+  smartBgScript = pkgs.writeShellScriptBin "smart-bg" ''
+    #!/usr/bin/env bash
+    while true; do
+      WINDOWS=$(hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
+      
+      if [[ "$WINDOWS" -gt 0 ]]; then
+        pkill -STOP mpvpaper
+      else
+        pkill -CONT mpvpaper
+      fi
+      
+      sleep 0.5
+    done
+  '';
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -18,7 +35,9 @@
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        "mpvpaper -p -o 'loop --panscan=1' '*' /home/greyson/Videos/interstellar.mp4"
+        "mpvpaper -o 'loop --panscan=1' '*' /home/greyson/Videos/interstellar.mp4"
+        # Start the Nix-managed script
+        "${smartBgScript}/bin/smart-bg"
       ];
 
       general = {
