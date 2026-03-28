@@ -95,10 +95,10 @@
         margin: 0px;
       }
 
-      /* This forces the window title to be bold */
       #window {
         font-weight: bold;
-        padding-left: 15px; /* Gives it a little breathing room next to workspaces */
+        margin-left: 20px;  /* Pushes the title right. Increase this if you want it further out! */
+        margin-right: 15px; /* Gives breathing room between the title and workspaces */
       }
 
       /* Remove individual module backgrounds so it looks like one clean bar */

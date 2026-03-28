@@ -122,8 +122,12 @@ in
         ignore_alpha = 0.2
       }
 
-      # Global transparency: 85% opacity for active window, 75% for inactive
-      windowrulev2 = opacity 0.85 0.75,class:.*
+      # The new 0.53+ syntax for global transparency
+      windowrule {
+        name = global-transparency
+        match:class = .*
+        opacity = 0.85 0.75
+      }
     '';
   };
 }
