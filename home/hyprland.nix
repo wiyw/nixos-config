@@ -123,10 +123,11 @@ in
       }
 
       # The new 0.53+ syntax for global transparency
+      # Increased transparency (70% active, 60% inactive)
       windowrule {
         name = global-transparency
         match:class = .*
-        opacity = 0.85 0.75
+        opacity = 0.70 0.60 
       }
     '';
   };

@@ -1,0 +1,2 @@
+# Hardware configs vary with each new computer so ignore that
+./hardware-configuration.nix

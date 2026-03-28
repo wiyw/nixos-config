@@ -82,32 +82,40 @@
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", sans-serif;
-        font-size: 13px; /* Slightly smaller text */
-        font-weight: bold;
+        font-size: 15px; /* 1. Increased base size to make Waybar bigger */
       }
 
-      /* Unified flush top bar with rounded bottom */
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.8);
-        border-radius: 0px 0px 15px 15px; /* Blue border line deleted! */
+        background-color: rgba(26, 27, 38, 0.85);
+        border-radius: 0px 0px 8px 8px; /* 2. Less dramatic curve */
         color: #c0caf5;
         margin: 0px;
+        min-height: 42px; /* 3. Makes the bar itself thicker */
       }
 
       #window {
-        font-weight: bold;
-        margin-left: 20px;
-        margin-right: 15px;
+        font-weight: 900; 
+        color: #ffffff;
+        margin-left: 15px;  /* Pushes title from the left edge when open */
+        margin-right: 15px; /* Keeps the title from crowding the workspaces */
       }
 
-      /* This collapses the gap completely when no apps are open */
+      /* This completely obliterates the module when no apps are open */
       #window.empty {
         margin: 0px;
         padding: 0px;
+        min-width: 0px;
+        border: none;
       }
 
-      /* Remove individual module backgrounds so it looks like one clean bar */
-      #workspaces, #window, #clock, #mpris, #pulseaudio, #network, #battery, #custom-notification {
+      /* Adjusting the workspaces so they hug the left wall when empty */
+      #workspaces {
+        padding-left: 4px; /* Tiny padding so it doesn't hard-clip the screen edge */
+        padding-right: 12px;
+      }
+
+      /* Removed #workspaces and #window from this group */
+      #clock, #mpris, #pulseaudio, #network, #battery, #custom-notification {
         color: #c0caf5;
         padding: 0px 12px;
       }
@@ -116,7 +124,7 @@
         color: #565f89;
         padding: 0 6px;
         border-radius: 8px;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth slidey animation */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       }
 
       #workspaces button.active {
@@ -124,39 +132,17 @@
       }
 
       #workspaces button:hover {
-        background: rgba(122, 162, 247, 0.3); /* The sliding blur effect behind the icon */
+        background: rgba(122, 162, 247, 0.3);
         color: #ffffff;
         box-shadow: 0 0 5px rgba(122, 162, 247, 0.5);
       }
 
-      #clock {
-        color: #bb9af7;
-      }
-
-      #custom-notification {
-        font-size: 16px;
-        padding-right: 16px;
-      }
-
-      #custom-prev, #custom-play, #custom-next {
-        color: #c0caf5;
-        padding: 0px 6px;
-        font-size: 16px;
-      }
-      
-      #custom-play {
-        color: #7aa2f7;
-      }
-
-      #custom-prev:hover, #custom-play:hover, #custom-next:hover {
-        color: #bb9af7;
-      }
-
-      #mpris {
-        color: #a9b1d6;
-        padding-right: 12px;
-        padding-left: 6px;
-      }
+      #clock { color: #bb9af7; }
+      #custom-notification { font-size: 18px; padding-right: 16px; }
+      #custom-prev, #custom-play, #custom-next { color: #c0caf5; padding: 0px 6px; font-size: 18px; }
+      #custom-play { color: #7aa2f7; }
+      #custom-prev:hover, #custom-play:hover, #custom-next:hover { color: #bb9af7; }
+      #mpris { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
     '';
   };
 }
