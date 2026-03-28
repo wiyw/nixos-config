@@ -8,7 +8,8 @@ let
     sleep 2
 
     while true; do
-      WINDOWS=$(hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
+      # Injected the exact path to hyprctl so Nix doesn't lose it!
+      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
       
       if [[ "$WINDOWS" -gt 0 ]]; then
         # Mute audio via the IPC socket
@@ -35,8 +36,7 @@ in
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        # Added --volume=10 right after the socket command!
-        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=10' '*' /home/greyson/Videos/interstellar.mp4"
+        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=40' '*' /home/greyson/Videos/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
       ];
 
