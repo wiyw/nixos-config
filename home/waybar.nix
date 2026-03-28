@@ -7,11 +7,12 @@
       mainBar = {
         layer = "top";
         position = "top";
-        margin-top = 10;
-        margin-left = 20;
-        margin-right = 20;
-        height = 36;
-        spacing = 10;
+        # Removed top margin, added slight side margins
+        margin-top = 0;
+        margin-left = 10;
+        margin-right = 10;
+        height = 34;
+        spacing = 4;
         
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-center = [ "clock" ];
@@ -25,13 +26,12 @@
             urgent = "";
           };
           persistent-workspaces = {
-            "*" = 5;
+            "*" = 10; # Increased to 10
           };
         };
 
         "clock" = {
           format = "{:%I:%M %p}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
 
         "pulseaudio" = {
@@ -40,7 +40,6 @@
           format-icons = {
             default = ["" "" ""];
           };
-          on-click = "pavucontrol";
         };
 
         "network" = {
@@ -50,15 +49,8 @@
         };
 
         "mpris" = {
-          format = "{player_icon} {title} - {artist}";
-          format-paused = "{status_icon} <i>{title} - {artist}</i>";
-          player-icons = {
-            default = "▶";
-            mpv = "🎵";
-          };
-          status-icons = {
-            paused = "⏸";
-          };
+          format = "{player_icon} {title}";
+          player-icons = { default = "▶"; };
         };
 
         "custom/notification" = {
@@ -72,47 +64,47 @@
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", sans-serif;
-        font-size: 14px;
+        font-size: 13px; /* Slightly smaller text */
         font-weight: bold;
-        border-radius: 12px;
       }
 
+      /* Unified flush top bar with rounded bottom */
       window#waybar {
-        background-color: transparent;
+        background-color: rgba(26, 27, 38, 0.4); /* Highly transparent base */
+        border-bottom: 1px solid rgba(122, 162, 247, 0.3);
+        border-radius: 0px 0px 14px 14px;
       }
 
-      /* Frosted glass pill modules */
+      /* Remove individual module backgrounds so it looks like one clean bar */
       #workspaces, #window, #clock, #mpris, #pulseaudio, #network, #battery, #custom-notification {
-        background-color: rgba(26, 27, 38, 0.7); /* Tokyonight dark base, highly transparent */
-        color: #c0caf5; /* Tokyonight text */
-        padding: 0px 16px;
-        margin-top: 2px;
-        margin-bottom: 2px;
-        border: 1px solid rgba(122, 162, 247, 0.3); /* Subtle blue glow border */
+        color: #c0caf5;
+        padding: 0px 12px;
       }
 
       #workspaces button {
         color: #565f89;
-        padding: 0 4px;
+        padding: 0 6px;
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth slidey animation */
       }
 
       #workspaces button.active {
-        color: #7aa2f7; /* Interstellar/Tokyonight Blue */
+        color: #7aa2f7; 
       }
 
       #workspaces button:hover {
-        background: transparent;
-        color: #bb9af7;
+        background: rgba(122, 162, 247, 0.3); /* The sliding blur effect behind the icon */
+        color: #ffffff;
+        box-shadow: 0 0 5px rgba(122, 162, 247, 0.5);
       }
 
       #clock {
-        color: #7aa2f7;
+        color: #bb9af7;
       }
 
       #custom-notification {
-        font-size: 18px;
-        padding-right: 20px;
-        padding-left: 12px;
+        font-size: 16px;
+        padding-right: 16px;
       }
     '';
   };
