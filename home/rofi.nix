@@ -1,14 +1,15 @@
 { config, pkgs, ... }:
 
 {
-  # Let Home Manager install the merged Rofi package
   programs.rofi = {
     enable = true;
     package = pkgs.rofi;
+    # Tell Home Manager to load our custom theme file!
+    theme = "~/.config/rofi/interstellar.rasi";
   };
 
-  # Write the raw Rasi theme directly to your config folder
-  xdg.configFile."rofi/config.rasi".text = ''
+  # Write your exact Rasi theme to that custom file instead
+  xdg.configFile."rofi/interstellar.rasi".text = ''
     configuration {
       modi: "drun,run";
       show-icons: true;
@@ -18,7 +19,7 @@
     }
 
     * {
-      bg: #1a1b2699; /* Transparent dark background */
+      bg: #1a1b2699;
       bg-alt: #24283b;
       fg: #c0caf5;
       border-col: #7aa2f7;

@@ -4,18 +4,16 @@ let
   smartBgScript = pkgs.writeShellScriptBin "smart-bg" ''
     #!/usr/bin/env bash
     
-    # Give mpvpaper a second to start and create the socket
+    # Give mpvpaper a second to start
     sleep 2
 
     while true; do
-      # Injected the exact path to hyprctl so Nix doesn't lose it!
-      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
+      # Use jq to safely grab the exact window count integer
+      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
       
       if [[ "$WINDOWS" -gt 0 ]]; then
-        # Mute audio via the IPC socket
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
       else
-        # Unmute audio via the IPC socket
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
       fi
       
@@ -36,10 +34,10 @@ in
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=40' '*' /home/greyson/Videos/interstellar.mp4"
+        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /home/greyson/Videos/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
       ];
-
+      
       general = {
         gaps_in = 5;
         gaps_out = 15;
