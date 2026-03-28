@@ -21,8 +21,6 @@
     x11.enable = true;
   };
 
-  { config, pkgs, lib, ... }:
-
 let
   secretsFile = ./secrets.nix;
   secrets = if builtins.pathExists secretsFile then import secretsFile else {
