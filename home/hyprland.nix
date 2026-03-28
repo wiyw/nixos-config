@@ -1,16 +1,21 @@
 { config, pkgs, ... }:
 
 let
-  # This creates our script dynamically and tracks it in Git!
   smartBgScript = pkgs.writeShellScriptBin "smart-bg" ''
     #!/usr/bin/env bash
+    
+    # Give mpvpaper a second to start and create the socket
+    sleep 2
+
     while true; do
       WINDOWS=$(hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
       
       if [[ "$WINDOWS" -gt 0 ]]; then
-        pkill -STOP mpvpaper
+        # Mute audio via the IPC socket
+        echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
       else
-        pkill -CONT mpvpaper
+        # Unmute audio via the IPC socket
+        echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
       fi
       
       sleep 0.5
@@ -30,8 +35,8 @@ in
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        "mpvpaper -o 'loop --panscan=1' '*' /home/greyson/Videos/interstellar.mp4"
-        # Start the Nix-managed script
+        # We added the --input-ipc-server flag here!
+        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket' '*' /home/greyson/Videos/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
       ];
 
@@ -111,8 +116,9 @@ in
 
     extraConfig = ''
       layerrule {
+        name = waybar-blur
         match:namespace = waybar
-        blur = true
+        blur = on
         ignore_alpha = 0.2
       }
     '';
