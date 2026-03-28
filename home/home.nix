@@ -2,7 +2,7 @@
 
 let
   # Handle Git secrets safely
-  secretsFile = ./secrets.nix;
+  secretsFile = "/etc/nixos/home/secrets.nix";
   secrets = if builtins.pathExists secretsFile then import secretsFile else {
     gitUsername = "Default User";
     gitEmail = "default@example.com";
@@ -18,7 +18,6 @@ in
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
-    ./secrets.nix
   ];
 
   # Cursor Config
