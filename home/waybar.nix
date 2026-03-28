@@ -7,13 +7,17 @@
       mainBar = {
         layer = "top";
         position = "top";
-        margin-top = 0;
-        margin-left = 10;
-        margin-right = 10;
-        height = 34;
-        spacing = 4;
+        margin = "0"; # Forces the bar to touch the left/right edges
         
-        modules-left = [ "hyprland/window" "custom/apps" "custom/games" "hyprland/workspaces" ];
+        # Removed "custom/apps" and "custom/games"
+        modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
+        
+        "hyprland/window" = {
+          # Removed the <b> tags, we will do this in CSS!
+          format = "{title}"; 
+          max-length = 50;
+          separate-outputs = true;
+        };
         modules-center = [ "clock" ];
         # Added the custom media buttons here
         modules-right = [ "custom/prev" "custom/play" "custom/next" "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
@@ -28,22 +32,6 @@
           persistent-workspaces = {
             "*" = 10;
           };
-        };
-
-        "hyprland/window" = {
-          format = "<b>{title}</b>";
-          max-length = 20;
-          separate-outputs = true;
-        };
-
-        "custom/apps" = {
-          format = "Apps";
-          on-click = "rofi -show drun"; # We will change this to your custom app later
-        };
-
-        "custom/games" = {
-          format = "Games";
-          on-click = "rofi -show run"; # We will change this to your custom app later
         };
 
         "clock" = {
@@ -100,11 +88,17 @@
 
       /* Unified flush top bar with rounded bottom */
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.8); /* Matches your dark theme */
-        border-bottom: 2px solid #7aa2f7; /* Your Hyprland border color */
-        border-radius: 0px 0px 15px 15px; /* Flat top, rounded bottom */
+        background-color: rgba(26, 27, 38, 0.8);
+        border-bottom: 2px solid #7aa2f7;
+        border-radius: 0px 0px 15px 15px;
         color: #c0caf5;
         margin: 0px;
+      }
+
+      /* This forces the window title to be bold */
+      #window {
+        font-weight: bold;
+        padding-left: 15px; /* Gives it a little breathing room next to workspaces */
       }
 
       /* Remove individual module backgrounds so it looks like one clean bar */
@@ -157,17 +151,6 @@
         color: #a9b1d6;
         padding-right: 12px;
         padding-left: 6px;
-      }
-
-      #window, #custom-apps, #custom-games {
-        color: #c0caf5;
-        padding: 0px 10px;
-        font-weight: bold;
-      }
-
-      #custom-apps:hover, #custom-games:hover {
-        color: #7aa2f7;
-        transition: color 0.2s ease;
       }
     '';
   };

@@ -121,6 +121,9 @@ in
         blur = on
         ignore_alpha = 0.2
       }
+
+      # Global transparency: 85% opacity for active window, 75% for inactive
+      windowrulev2 = opacity 0.85 0.75,class:.*
     '';
   };
 }
