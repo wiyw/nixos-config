@@ -4,27 +4,31 @@ let
   smartBgScript = pkgs.writeShellScriptBin "smart-bg" ''
     #!/usr/bin/env bash
     
-    # Give mpvpaper a second to start
+    LOG="/tmp/smart-bg.log"
+    echo "--- Script Started ---" > $LOG
+    
     sleep 2
-
     CURRENT_STATE="unmuted"
 
     while true; do
-      # INJECTING the exact Nix paths for grep and awk so the script can actually run them!
-      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace | ${pkgs.gnugrep}/bin/grep "windows:" | ${pkgs.gawk}/bin/awk '{print $2}')
+      # Using jq to cleanly grab the window integer from Hyprland's JSON output
+      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
       
-      # Safety net
-      if [[ -z "$WINDOWS" ]]; then
+      # Log exactly what the script sees so we aren't blind!
+      echo "Windows: $WINDOWS | State: $CURRENT_STATE" >> $LOG
+      
+      # Safety net for null/empty values
+      if [[ -z "$WINDOWS" || "$WINDOWS" == "null" ]]; then
         WINDOWS=0
       fi
       
-      # Mute if windows are open
       if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
+        echo "--> Muting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket > /dev/null 2>&1
         CURRENT_STATE="muted"
         
-      # Unmute if workspace is empty
       elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
+        echo "--> Unmuting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket > /dev/null 2>&1
         CURRENT_STATE="unmuted"
       fi
