@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
 
+let
+  secretsFile = ./secrets.nix;
+  secrets = if builtins.pathExists secretsFile then import secretsFile else {
+    gitUsername = "Default User";
+    gitEmail = "default@example.com";
+  };
+in
+
 {
   home.username = "greyson";
   home.homeDirectory = "/home/greyson";
@@ -21,13 +29,8 @@
     x11.enable = true;
   };
 
-let
-  secretsFile = ./secrets.nix;
-  secrets = if builtins.pathExists secretsFile then import secretsFile else {
-    gitUsername = "Default User";
-    gitEmail = "default@example.com";
-  };
-in
+  { config, pkgs, lib, ... }:
+
 {
   programs.git = {
     enable = true;
