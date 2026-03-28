@@ -13,7 +13,7 @@
         modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
         modules-center = [ "clock" ];
         # Added the custom media buttons here
-        modules-right = [ "custom/prev" "custom/play" "custom/next" "custom/media" "pulseaudio" "network" "battery" "custom/notification" ];
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "pulseaudio" "network" "battery" "custom/notification" ];
 
         
         "hyprland/window" = {
