@@ -10,6 +10,7 @@
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
+    ./secrets.nix
   ];
 
   home.pointerCursor = {
@@ -20,16 +21,27 @@
     x11.enable = true;
   };
 
+  { config, pkgs, lib, ... }:
+
+let
+  secretsFile = ./secrets.nix;
+  secrets = if builtins.pathExists secretsFile then import secretsFile else {
+    gitUsername = "Default User";
+    gitEmail = "default@example.com";
+  };
+in
+{
   programs.git = {
     enable = true;
-    settings = {
-      user = {
-        name = "wiyw";
-        email = "quantumdragon8@gmail.com";
-      };
+    userName = secrets.gitUsername;
+    userEmail = secrets.gitEmail;
+    signing.format = null;
+    extraConfig = {
+      init.defaultBranch = "main";
+      safe.directory = "/etc/nixos";
     };
-    signing.format = null; # Silences the legacy format warning
   };
+}
 
   programs.home-manager.enable = true;
   home.stateVersion = "23.11";

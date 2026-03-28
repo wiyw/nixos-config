@@ -1,2 +1,18 @@
 # Hardware configs vary with each new computer so ignore that
-./hardware-configuration.nix
+hardware-configuration.nix
+
+# Ignore the secrets file
+home/secrets.nix
+
+# Ignore large media files (we'll move these later)
+*.mp4
+*.mkv
+*.iso
+
+# Ignore result symlinks from nix builds
+result
+result-*
+
+# OS generated files
+.DS_Store
+.swp
