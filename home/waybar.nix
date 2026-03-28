@@ -7,26 +7,22 @@
       mainBar = {
         layer = "top";
         position = "top";
-        margin = "0"; # Forces the bar to touch the left/right edges
+        margin = "0"; 
         
-        # Removed "custom/apps" and "custom/games"
         modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
         modules-center = [ "clock" ];
-        # Added the custom media buttons here
-        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "pulseaudio" "network" "battery" "custom/notification" ];
-
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "pulseaudio" "network" "battery" "custom/swaync" ];
         
         "hyprland/window" = {
           format = "{class}"; 
           max-length = 50;
           separate-outputs = true;
-          # This makes the raw class names look nice and polished
           rewrite = {
             "kitty" = "Kitty";
             "zen" = "Zen Browser";
             "zen-beta" = "Zen Browser";
             "org.gnome.Nautilus" = "Files";
-            "" = ""; # Keeps it completely blank when nothing is open
+            "" = ""; 
           };
         };
 
@@ -34,12 +30,10 @@
           format = "{}";
           max-length = 40;
           escape = true;
-          # This safely asks for the media title every 2 seconds without crashing
           exec = "playerctl metadata --format '{{title}} - {{artist}}' 2>/dev/null";
           interval = 2;
           on-click = "playerctl play-pause";
         };
-
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -63,6 +57,7 @@
           format-icons = {
             default = ["" "" ""];
           };
+          on-click = "pavucontrol";
         };
 
         "network" = {
@@ -71,24 +66,47 @@
           format-disconnected = "⚠";
         };
 
-        # New Media Setup
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-charging = "󰂄  {capacity}%";
+          format-plugged = "  {capacity}%";
+          format-icons = ["" "" "" "" ""];
+        };
+
         "custom/prev" = {
           format = "󰒮";
           on-click = "playerctl previous";
         };
+        
         "custom/play" = {
           format = "󰐊/󰏤";
           on-click = "playerctl play-pause";
         };
+        
         "custom/next" = {
           format = "󰒭";
           on-click = "playerctl next";
         };
 
-        "custom/notification" = {
+        "custom/swaync" = {
           tooltip = false;
-          format = "";
+          format = "{icon}";
+          format-icons = {
+            notification = " <span foreground='red'><sup></sup></span>";
+            none = " ";
+            dnd-notification = " <span foreground='red'><sup></sup></span>";
+            dnd-none = " ";
+          };
+          return-type = "json";
+          exec-if = "which swaync-client";
+          exec = "swaync-client -swb";
           on-click = "swaync-client -t -sw";
+          on-click-right = "swaync-client -d -sw";
+          escape = true;
         };
       };
     };
@@ -96,25 +114,24 @@
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", sans-serif;
-        font-size: 15px; /* 1. Increased base size to make Waybar bigger */
+        font-size: 15px; 
       }
 
       window#waybar {
         background-color: rgba(26, 27, 38, 0.85);
-        border-radius: 0px 0px 8px 8px; /* 2. Less dramatic curve */
+        border-radius: 0px 0px 8px 8px; 
         color: #c0caf5;
         margin: 0px;
-        min-height: 42px; /* 3. Makes the bar itself thicker */
+        min-height: 42px; 
       }
 
       #window {
         font-weight: 900; 
         color: #ffffff;
-        margin-left: 15px;  /* Pushes title from the left edge when open */
-        margin-right: 15px; /* Keeps the title from crowding the workspaces */
+        margin-left: 15px;  
+        margin-right: 15px; 
       }
 
-      /* This completely obliterates the module when no apps are open */
       #window.empty {
         margin: 0px;
         padding: 0px;
@@ -122,16 +139,9 @@
         border: none;
       }
 
-      /* Adjusting the workspaces so they hug the left wall when empty */
       #workspaces {
-        padding-left: 4px; /* Tiny padding so it doesn't hard-clip the screen edge */
+        padding-left: 4px; 
         padding-right: 12px;
-      }
-
-      /* Removed #workspaces and #window from this group */
-      #clock, #mpris, #pulseaudio, #network, #battery, #custom-notification {
-        color: #c0caf5;
-        padding: 0px 12px;
       }
 
       #workspaces button {
@@ -152,11 +162,47 @@
       }
 
       #clock { color: #bb9af7; }
-      #custom-notification { font-size: 18px; padding-right: 16px; }
+      
       #custom-prev, #custom-play, #custom-next { color: #c0caf5; padding: 0px 6px; font-size: 18px; }
       #custom-play { color: #7aa2f7; }
       #custom-prev:hover, #custom-play:hover, #custom-next:hover { color: #bb9af7; }
-      #mpris { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
+      #custom-media { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
+
+      /* ======================================= */
+      /* macOS Pill Styling for the right side   */
+      /* ======================================= */
+      
+      #pulseaudio,
+      #network,
+      #battery,
+      #custom-swaync {
+          background-color: rgba(36, 40, 59, 0.8);
+          color: #c0caf5;
+          padding: 0px 12px;
+          margin: 6px 0px 6px 0px;
+      }
+
+      /* Left edge of the pill */
+      #pulseaudio {
+          border-radius: 16px 0px 0px 16px;
+          margin-left: 10px;
+      }
+
+      /* Right edge of the pill */
+      #custom-swaync {
+          border-radius: 0px 16px 16px 0px;
+          margin-right: 15px;
+          font-size: 16px;
+      }
+
+      /* Hover effects */
+      #pulseaudio:hover,
+      #network:hover,
+      #battery:hover,
+      #custom-swaync:hover {
+          background-color: rgba(61, 89, 161, 0.8);
+          transition: all 0.2s ease;
+      }
     '';
   };
 }
