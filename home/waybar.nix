@@ -7,16 +7,16 @@
       mainBar = {
         layer = "top";
         position = "top";
-        # Removed top margin, added slight side margins
         margin-top = 0;
         margin-left = 10;
         margin-right = 10;
         height = 34;
         spacing = 4;
         
-        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
+        modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
-        modules-right = [ "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
+        # Added the custom media buttons here
+        modules-right = [ "custom/prev" "custom/play" "custom/next" "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -26,7 +26,7 @@
             urgent = "";
           };
           persistent-workspaces = {
-            "*" = 10; # Increased to 10
+            "*" = 10;
           };
         };
 
@@ -43,14 +43,28 @@
         };
 
         "network" = {
-          format-wifi = "  {essid}";
-          format-ethernet = "  Wired";
-          format-disconnected = "⚠ Disconnected";
+          format-wifi = " ";
+          format-ethernet = " ";
+          format-disconnected = "⚠";
         };
 
+        # New Media Setup
+        "custom/prev" = {
+          format = "󰒮";
+          on-click = "playerctl previous";
+        };
+        "custom/play" = {
+          format = "󰐊/󰏤";
+          on-click = "playerctl play-pause";
+        };
+        "custom/next" = {
+          format = "󰒭";
+          on-click = "playerctl next";
+        };
         "mpris" = {
-          format = "{player_icon} {title}";
-          player-icons = { default = "▶"; };
+          format = "{title} - {artist}";
+          format-paused = "<i>{title} - {artist}</i>";
+          max-length = 35;
         };
 
         "custom/notification" = {
@@ -105,6 +119,26 @@
       #custom-notification {
         font-size: 16px;
         padding-right: 16px;
+      }
+
+      #custom-prev, #custom-play, #custom-next {
+        color: #c0caf5;
+        padding: 0px 6px;
+        font-size: 16px;
+      }
+      
+      #custom-play {
+        color: #7aa2f7;
+      }
+
+      #custom-prev:hover, #custom-play:hover, #custom-next:hover {
+        color: #bb9af7;
+      }
+
+      #mpris {
+        color: #a9b1d6;
+        padding-right: 12px;
+        padding-left: 6px;
       }
     '';
   };
