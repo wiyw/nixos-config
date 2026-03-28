@@ -7,18 +7,23 @@ let
     # Give mpvpaper a second to start
     sleep 2
 
-    # Keep track of the current state so we don't spam the socket
     CURRENT_STATE="unmuted"
 
     while true; do
-      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
+      # Safely grab the window count
+      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace | grep "windows:" | awk '{print $2}')
       
-      # Only send the mute command IF windows are open AND it isn't already muted
+      # SAFETY NET: If WINDOWS is empty (script glitch), force it to 0 so bash doesn't crash
+      if [[ -z "$WINDOWS" ]]; then
+        WINDOWS=0
+      fi
+      
+      # Only mute if windows are open and it's currently unmuted
       if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
         CURRENT_STATE="muted"
         
-      # Only send the unmute command IF the workspace is empty AND it is currently muted
+      # Only unmute if workspace is empty and it's currently muted
       elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
         CURRENT_STATE="unmuted"
