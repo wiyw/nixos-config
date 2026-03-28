@@ -11,8 +11,8 @@
 
       # Tell Hyprland to apply the blur effect to Waybar
       layerrule = [
-        "blur,waybar"
-        "ignorezero,waybar"
+        "blur, waybar"
+        "ignorealpha 0.2, waybar"
       ];
 
       # Autostart your ricing tools
