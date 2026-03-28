@@ -19,6 +19,7 @@
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
     nerd-fonts.jetbrains-mono # Needed for the icons to render
+    ffmpeg # You know what this is
 
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''

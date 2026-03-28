@@ -12,7 +12,8 @@
         "swaync"
         "hypridle"
         # MPVPaper command: -vs (video, silent) -o (loop) '*' (all monitors) /path/to/video
-        "mpvpaper -vs -o 'loop no-audio' '*' /home/greyson/Videos/interstellar.mp4"
+        # -p = auto-pause when obscured, -o = pass options to mpv
+        "mpvpaper -p -o 'loop' '*' /home/greyson/Videos/interstellar.mp4"
       ];
 
       # Clean gaps and rounded corners for that MacOS/Interstellar feel

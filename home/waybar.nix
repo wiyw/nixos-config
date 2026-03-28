@@ -86,8 +86,8 @@
         background-color: rgba(26, 27, 38, 0.7); /* Tokyonight dark base, highly transparent */
         color: #c0caf5; /* Tokyonight text */
         padding: 0px 16px;
-        margin-top = 2px;
-        margin-bottom = 2px;
+        margin-top: 2px;
+        margin-bottom: 2px;
         border: 1px solid rgba(122, 162, 247, 0.3); /* Subtle blue glow border */
       }
 
