@@ -5,16 +5,20 @@
     # Core Apps
     inputs.zen-browser.packages.${pkgs.system}.default
     kitty
-    nautilus # A clean file manager
+    nautilus 
     
-    # MacOS/Over-the-top Ricing Tools
+    # Ricing Tools
     waybar
-    swaynotificationcenter # MacOS style control center
-    rofi # App launcher
-    hyprpaper # Wallpaper daemon
-    hyprlock # Lock screen
-    hypridle # Idle daemon (triggers lock screen when away)
-    wl-clipboard # Required for copy/paste in Wayland
+    swaynotificationcenter
+    rofi # Renamed as requested
+    mpvpaper # Live video wallpaper engine!
+    hyprlock
+    hypridle
+    wl-clipboard 
+
+    # Waybar Dependencies (Fixes the crash)
+    playerctl # Needed for the media player module
+    nerd-fonts.jetbrains-mono # Needed for the icons to render
 
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
