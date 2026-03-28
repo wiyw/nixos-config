@@ -9,10 +9,17 @@
         position = "top";
         margin = "0"; 
         
-        modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
-        modules-center = [ "clock" ];
-        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "pulseaudio" "network" "battery" "custom/swaync" ];
+        # Swapped hyprland/window and hyprland/workspaces
+        modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
+        modules-center = [ ];
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/swaync" "clock" ];
         
+        "custom/os_button" = {
+          format = ""; 
+          tooltip = false;
+          on-click = "rofi -show drun"; 
+        };
+
         "hyprland/window" = {
           format = "{class}"; 
           max-length = 50;
@@ -48,7 +55,7 @@
         };
 
         "clock" = {
-          format = "{:%I:%M %p}";
+          format = "{:%a %b %e  %I:%M %p}";
         };
 
         "pulseaudio" = {
@@ -77,36 +84,15 @@
           format-icons = ["" "" "" "" ""];
         };
 
-        "custom/prev" = {
-          format = "󰒮";
-          on-click = "playerctl previous";
-        };
-        
-        "custom/play" = {
-          format = "󰐊/󰏤";
-          on-click = "playerctl play-pause";
-        };
-        
-        "custom/next" = {
-          format = "󰒭";
-          on-click = "playerctl next";
-        };
+        "custom/prev" = { format = "󰒮"; on-click = "playerctl previous"; };
+        "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
+        "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
 
+        # We will keep the button here for now, but rename its execution later to trigger AGS
         "custom/swaync" = {
           tooltip = false;
-          format = "{icon}";
-          format-icons = {
-            notification = " <span foreground='red'><sup></sup></span>";
-            none = " ";
-            dnd-notification = " <span foreground='red'><sup></sup></span>";
-            dnd-none = " ";
-          };
-          return-type = "json";
-          exec-if = "which swaync-client";
-          exec = "swaync-client -swb";
-          on-click = "swaync-client -t -sw";
-          on-click-right = "swaync-client -d -sw";
-          escape = true;
+          format = " ";
+          on-click = "ags -t control-center"; # Preview of what we'll change this to!
         };
       };
     };
@@ -114,95 +100,39 @@
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", sans-serif;
-        font-size: 15px; 
+        font-size: 15px;
+        font-weight: bold;
       }
 
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.85);
-        border-radius: 0px 0px 8px 8px; 
-        color: #c0caf5;
-        margin: 0px;
-        min-height: 42px; 
-      }
-
-      #window {
-        font-weight: 900; 
+        background-color: rgba(26, 27, 38, 0.65); 
         color: #ffffff;
-        margin-left: 15px;  
-        margin-right: 15px; 
-      }
-
-      #window.empty {
         margin: 0px;
-        padding: 0px;
-        min-width: 0px;
-        border: none;
+        min-height: 38px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      #workspaces {
-        padding-left: 4px; 
-        padding-right: 12px;
-      }
+      #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
 
+      #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
+      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
+
+      #workspaces { padding-left: 4px; padding-right: 12px; }
       #workspaces button {
         color: #565f89;
         padding: 0 6px;
         border-radius: 8px;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transition: all 0.3s ease;
       }
+      #workspaces button.active { color: #ffffff; }
 
-      #workspaces button.active {
-        color: #7aa2f7; 
+      #clock, #pulseaudio, #network, #battery, #custom-swaync {
+          color: #ffffff;
+          padding: 0px 10px;
       }
-
-      #workspaces button:hover {
-        background: rgba(122, 162, 247, 0.3);
-        color: #ffffff;
-        box-shadow: 0 0 5px rgba(122, 162, 247, 0.5);
-      }
-
-      #clock { color: #bb9af7; }
-      
-      #custom-prev, #custom-play, #custom-next { color: #c0caf5; padding: 0px 6px; font-size: 18px; }
-      #custom-play { color: #7aa2f7; }
-      #custom-prev:hover, #custom-play:hover, #custom-next:hover { color: #bb9af7; }
+      #clock { padding-right: 16px; padding-left: 10px; }
+      #custom-prev, #custom-play, #custom-next { color: #ffffff; padding: 0px 6px; font-size: 18px; }
       #custom-media { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
-
-      /* ======================================= */
-      /* macOS Pill Styling for the right side   */
-      /* ======================================= */
-      
-      #pulseaudio,
-      #network,
-      #battery,
-      #custom-swaync {
-          background-color: rgba(36, 40, 59, 0.8);
-          color: #c0caf5;
-          padding: 0px 12px;
-          margin: 6px 0px 6px 0px;
-      }
-
-      /* Left edge of the pill */
-      #pulseaudio {
-          border-radius: 16px 0px 0px 16px;
-          margin-left: 10px;
-      }
-
-      /* Right edge of the pill */
-      #custom-swaync {
-          border-radius: 0px 16px 16px 0px;
-          margin-right: 15px;
-          font-size: 16px;
-      }
-
-      /* Hover effects */
-      #pulseaudio:hover,
-      #network:hover,
-      #battery:hover,
-      #custom-swaync:hover {
-          background-color: rgba(61, 89, 161, 0.8);
-          transition: all 0.2s ease;
-      }
     '';
   };
 }
