@@ -11,25 +11,22 @@ let
     CURRENT_STATE="unmuted"
 
     while true; do
-      # Using jq to cleanly grab the window integer from Hyprland's JSON output
       WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
       
-      # Log exactly what the script sees so we aren't blind!
-      echo "Windows: $WINDOWS | State: $CURRENT_STATE" >> $LOG
-      
-      # Safety net for null/empty values
       if [[ -z "$WINDOWS" || "$WINDOWS" == "null" ]]; then
         WINDOWS=0
       fi
       
       if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
         echo "--> Muting audio!" >> $LOG
-        echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket > /dev/null 2>&1
+        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+        echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="muted"
         
       elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
         echo "--> Unmuting audio!" >> $LOG
-        echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket > /dev/null 2>&1
+        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+        echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="unmuted"
       fi
       
