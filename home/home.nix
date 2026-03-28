@@ -32,10 +32,10 @@ in
   # Git Configuration (Merged here for simplicity)
   programs.git = {
     enable = true;
-    userName = secrets.gitUsername;
-    userEmail = secrets.gitEmail;
+    settings.user.userName = secrets.gitUsername;
+    settings.user.userEmail = secrets.gitEmail;
     signing.format = null;
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";
     };
