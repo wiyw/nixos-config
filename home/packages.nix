@@ -10,7 +10,7 @@
     # MacOS/Over-the-top Ricing Tools
     waybar
     swaynotificationcenter # MacOS style control center
-    rofi-wayland # App launcher
+    rofi # App launcher
     hyprpaper # Wallpaper daemon
     hyprlock # Lock screen
     hypridle # Idle daemon (triggers lock screen when away)
