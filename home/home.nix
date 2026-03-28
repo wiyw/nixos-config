@@ -29,8 +29,6 @@ in
     x11.enable = true;
   };
 
-  { config, pkgs, lib, ... }:
-
 {
   programs.git = {
     enable = true;
