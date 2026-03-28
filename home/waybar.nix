@@ -13,11 +13,29 @@
         modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
         
         "hyprland/window" = {
-          # Removed the <b> tags, we will do this in CSS!
-          format = "{title}"; 
+          format = "{class}"; 
           max-length = 50;
           separate-outputs = true;
+          # This makes the raw class names look nice and polished
+          rewrite = {
+            "kitty" = "Kitty";
+            "zen" = "Zen Browser";
+            "zen-alpha" = "Zen Browser";
+            "org.gnome.Nautilus" = "Files";
+            "" = ""; # Keeps it completely blank when nothing is open
+          };
         };
+
+        # ... (keep your other modules exactly the same) ...
+
+        "mpris" = {
+          format = "{title} - {artist}";
+          format-paused = "<i>{title} - {artist}</i>";
+          max-length = 35;
+          # This stops the browser from crashing Waybar!
+          ignored-players = [ "zen" "zen-alpha" "firefox" "chromium" ]; 
+        };
+
         modules-center = [ "clock" ];
         # Added the custom media buttons here
         modules-right = [ "custom/prev" "custom/play" "custom/next" "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
@@ -64,11 +82,6 @@
         "custom/next" = {
           format = "󰒭";
           on-click = "playerctl next";
-        };
-        "mpris" = {
-          format = "{title} - {artist}";
-          format-paused = "<i>{title} - {artist}</i>";
-          max-length = 35;
         };
 
         "custom/notification" = {
