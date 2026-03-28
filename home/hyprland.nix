@@ -7,14 +7,21 @@ let
     # Give mpvpaper a second to start
     sleep 2
 
+    # Keep track of the current state so we don't spam the socket
+    CURRENT_STATE="unmuted"
+
     while true; do
-      # Use jq to safely grab the exact window count integer
       WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
       
-      if [[ "$WINDOWS" -gt 0 ]]; then
+      # Only send the mute command IF windows are open AND it isn't already muted
+      if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
-      else
+        CURRENT_STATE="muted"
+        
+      # Only send the unmute command IF the workspace is empty AND it is currently muted
+      elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - /tmp/mpv-socket > /dev/null 2>&1
+        CURRENT_STATE="unmuted"
       fi
       
       sleep 0.5
@@ -37,7 +44,7 @@ in
         "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /home/greyson/Videos/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
       ];
-      
+
       general = {
         gaps_in = 5;
         gaps_out = 15;
