@@ -7,9 +7,8 @@
   home.packages = with pkgs; [
     kitty
     firefox
-    opencode
 
-    # Custom Rebuild Command
+    # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
       echo "🛠️ Starting system rebuild..."
       cd /etc/nixos
@@ -25,11 +24,15 @@
         echo "🤷 No new changes to commit."
       fi
       
+      # Push to GitHub (Save to cloud for safety reasons [please dont blow up my drive again])
+      echo "☁️ Pushing to GitHub..."
+      git push
+      
       # Run the rebuild
       echo "🚀 Building flake..."
       sudo nixos-rebuild switch --flake .#iusenixbtw
       
-      echo "✅ Done!"
+      echo "✅ All done! System rebuilt and backed up."
     '')
 
   ];
