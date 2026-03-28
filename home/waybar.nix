@@ -89,16 +89,21 @@
       /* Unified flush top bar with rounded bottom */
       window#waybar {
         background-color: rgba(26, 27, 38, 0.8);
-        border-bottom: 2px solid #7aa2f7;
-        border-radius: 0px 0px 15px 15px;
+        border-radius: 0px 0px 15px 15px; /* Blue border line deleted! */
         color: #c0caf5;
         margin: 0px;
       }
 
       #window {
         font-weight: bold;
-        margin-left: 20px;  /* Pushes the title right. Increase this if you want it further out! */
-        margin-right: 15px; /* Gives breathing room between the title and workspaces */
+        margin-left: 20px;
+        margin-right: 15px;
+      }
+
+      /* This collapses the gap completely when no apps are open */
+      #window.empty {
+        margin: 0px;
+        padding: 0px;
       }
 
       /* Remove individual module backgrounds so it looks like one clean bar */

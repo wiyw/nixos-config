@@ -35,8 +35,8 @@ in
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        # We added the --input-ipc-server flag here!
-        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket' '*' /home/greyson/Videos/interstellar.mp4"
+        # Added --volume=10 right after the socket command!
+        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=10' '*' /home/greyson/Videos/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
       ];
 
