@@ -19,11 +19,12 @@
       control-center-width = 380;
       fit-to-screen = false;
       
-      # Here are the macOS-style modules!
+      # Added buttons-grid right at the top!
       widgets = [
-        "dnd"
-        "mpris"
+        "buttons-grid"
         "volume"
+        "mpris"
+        "dnd"
         "title"
         "notifications"
       ];
@@ -40,6 +41,28 @@
         mpris = {
           image-size = 96;
           image-radius = 12;
+        };
+        
+        # The new macOS style Quick Settings buttons
+        buttons-grid = {
+          actions = [
+            {
+              label = " ";
+              command = "nm-connection-editor";
+            }
+            {
+              label = " ";
+              command = "blueman-manager";
+            }
+            {
+              label = " ";
+              command = "pavucontrol";
+            }
+            {
+              label = " ";
+              command = "hyprlock"; # Or whatever lock screen you use
+            }
+          ];
         };
       };
     };
@@ -66,15 +89,35 @@
         padding: 0;
       }
 
-      /* Widget Pods (Volume, Media, DND) */
+      /* Widget Pods (Volume, Media, DND, and the new Grid) */
       .widget-dnd,
       .widget-mpris,
       .widget-volume,
-      .widget-title {
+      .widget-title,
+      .widget-buttons-grid {
         background: rgba(36, 40, 59, 0.8);
         border-radius: 12px;
         margin: 8px 12px;
         padding: 10px;
+      }
+
+      /* Styling the grid buttons specifically to look like macOS toggles */
+      .widget-buttons-grid > flowbox > flowboxchild > button {
+        background: rgba(26, 27, 38, 0.8);
+        border-radius: 12px;
+        min-width: 70px;
+        min-height: 70px;
+        font-size: 28px;
+        color: #c0caf5;
+        margin: 4px;
+        box-shadow: none;
+        border: none;
+      }
+
+      .widget-buttons-grid > flowbox > flowboxchild > button:hover {
+        background: rgba(122, 162, 247, 0.4);
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(192, 202, 245, 0.5);
       }
 
       /* Sliders (Volume) */

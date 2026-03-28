@@ -23,7 +23,7 @@
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
       echo "🛠️ Starting system rebuild..."
-      cd /etc/nixos
+      cd /home/greyson/nixos-config/
       git add .
       if ! git diff --cached --quiet; then
         echo "📦 Committing changes..."
