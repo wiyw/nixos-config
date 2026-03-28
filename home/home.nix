@@ -13,8 +13,13 @@
 
   programs.git = {
     enable = true;
-    userName = "wiyw"; 
-    userEmail = "quantumdragon8@gmail.com"; 
+    settings = {
+      user = {
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
+      };
+    };
+    signing.format = null; # Silences the legacy format warning
   };
 
   programs.home-manager.enable = true;
