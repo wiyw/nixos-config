@@ -11,6 +11,10 @@
         
         # Removed "custom/apps" and "custom/games"
         modules-left = [ "hyprland/window" "hyprland/workspaces" ]; 
+        modules-center = [ "clock" ];
+        # Added the custom media buttons here
+        modules-right = [ "custom/prev" "custom/play" "custom/next" "custom/media" "pulseaudio" "network" "battery" "custom/notification" ];
+
         
         "hyprland/window" = {
           format = "{class}"; 
@@ -20,25 +24,22 @@
           rewrite = {
             "kitty" = "Kitty";
             "zen" = "Zen Browser";
-            "zen-alpha" = "Zen Browser";
+            "zen-beta" = "Zen Browser";
             "org.gnome.Nautilus" = "Files";
             "" = ""; # Keeps it completely blank when nothing is open
           };
         };
 
-        # ... (keep your other modules exactly the same) ...
-
-        "mpris" = {
-          format = "{title} - {artist}";
-          format-paused = "<i>{title} - {artist}</i>";
-          max-length = 35;
-          # This stops the browser from crashing Waybar!
-          ignored-players = [ "zen" "zen-alpha" "firefox" "chromium" ]; 
+        "custom/media" = {
+          format = "{}";
+          max-length = 40;
+          escape = true;
+          # This safely asks for the media title every 2 seconds without crashing
+          exec = "playerctl metadata --format '{{title}} - {{artist}}' 2>/dev/null";
+          interval = 2;
+          on-click = "playerctl play-pause";
         };
 
-        modules-center = [ "clock" ];
-        # Added the custom media buttons here
-        modules-right = [ "custom/prev" "custom/play" "custom/next" "mpris" "pulseaudio" "network" "battery" "custom/notification" ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
