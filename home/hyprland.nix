@@ -25,11 +25,6 @@ in
 
       monitor = ",preferred,auto,1";
 
-      layerrule = [
-        "blur,waybar"
-        "ignorealpha 0.2,waybar"
-      ];
-
       exec-once = [
         "waybar"
         "swaync"
@@ -113,5 +108,13 @@ in
         "$mod, mouse:273, resizewindow" 
       ];
     };
+
+    extraConfig = ''
+      layerrule {
+        match:namespace = waybar
+        blur = true
+        ignore_alpha = 0.2
+      }
+    '';
   };
 }
