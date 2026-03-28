@@ -8,19 +8,16 @@
 
       monitor = ",preferred,auto,1";
 
-      # Removed the spaces after the commas to fix the error!
       layerrule = [
         "blur,waybar"
         "ignorealpha 0.2,waybar"
       ];
 
-      # Autostart
       exec-once = [
         "waybar"
         "swaync"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        # Added --panscan=1 to force the video to fill the screen
         "mpvpaper -p -o 'loop --panscan=1' '*' /home/greyson/Videos/interstellar.mp4"
       ];
 
@@ -41,19 +38,29 @@
         };
       };
 
+      # REPEATABLE BINDS (Hold down to change volume)
+      binde = [
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ];
+
+      # STANDARD BINDS
       bind = [
+        # Media Keys
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioNext, exec, playerctl next"
+
+        # Window Controls
         "$mod, T, exec, kitty"
         "$mod, B, exec, zen"
         "$mod, Q, killactive,"
         "$mod, F, togglefloating,"
-        
-        # New Exit Bind
         "$mod SHIFT, M, exit,"
-        
-        # Reload Waybar
         "$mod, W, exec, killall waybar; waybar"
 
-        # Workspaces 1-0
+        # Workspaces
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -65,7 +72,7 @@
         "$mod, 9, workspace, 9"
         "$mod, 0, workspace, 10"
 
-        # Move to Workspaces 1-0
+        # Move to Workspaces
         "$mod SHIFT, 1, movetoworkspace, 1"
         "$mod SHIFT, 2, movetoworkspace, 2"
         "$mod SHIFT, 3, movetoworkspace, 3"
@@ -78,7 +85,6 @@
         "$mod SHIFT, 0, movetoworkspace, 10"
       ];
 
-      # Bind on Release (Lets you just press the Windows key to open Rofi)
       bindr = [
         "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
       ];

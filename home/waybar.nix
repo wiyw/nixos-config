@@ -31,7 +31,7 @@
         };
 
         "hyprland/window" = {
-          format = "{class}";
+          format = "<b>{class}<b>";
           max-length = 20;
         };
 
