@@ -1,4 +1,7 @@
-services.swaync = {
+{ config, pkgs, ... }:
+
+{
+  services.swaync = {
     enable = true;
     settings = {
       positionX = "right";
@@ -108,3 +111,4 @@ services.swaync = {
       }
     '';
   };
+}
