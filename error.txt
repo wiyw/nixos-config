@@ -1,6 +1,17 @@
+greyson@iusenixbtw:~/nixos-config/ > echo "greyson@iusenixbtw:~/nixos-config/ > ags run
+
+(gjs:64128): Gjs-CRITICAL **: 12:59:13.684: JS ERROR: Error: unknown intrinsic element "scrollable"
+jsx@file:///run/user/1001/ags.js:708:13 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/jsx.ts:253:19
+main@file:///run/user/1001/ags.js:2162:29 -> ../../../nix/store/7ccz3dvsrfsng4xc58ddzn2fy0aqi2dx-hm_agsconfig.js:183:25
+vfunc_command_line/<@file:///run/user/1001/ags.js:1803:66 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:292:17
+createRoot/<@file:///run/user/1001/ags.js:359:28 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:28
+run@file:///run/user/1001/ags.js:387:18 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:32:20
+createRoot@file:///run/user/1001/ags.js:359:16 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:18
+vfunc_command_line@file:///run/user/1001/ags.js:1800:17 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:290:13
+_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34" > error.txt
 greyson@iusenixbtw:~/nixos-config/ > ags run
 
-(gjs:64128): Gjs-CRITICAL **: 12:59:13.684: JS ERROR: Error: unknown intrinsic element scrollable
+(gjs:69027): Gjs-CRITICAL **: 13:03:14.250: JS ERROR: Error: unknown intrinsic element "scrollable"
 jsx@file:///run/user/1001/ags.js:708:13 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/jsx.ts:253:19
 main@file:///run/user/1001/ags.js:2162:29 -> ../../../nix/store/7ccz3dvsrfsng4xc58ddzn2fy0aqi2dx-hm_agsconfig.js:183:25
 vfunc_command_line/<@file:///run/user/1001/ags.js:1803:66 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:292:17

@@ -1,12 +1,12 @@
-{ config, pkgs, lib, secrets, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs.git = {
     enable = true;
     settings = {
       user = {
-        name = secrets.gitUsername;
-        email = secrets.gitEmail;
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
       };
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";

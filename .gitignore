@@ -3,7 +3,6 @@ hardware-configuration.nix
 
 # Ignore the secrets file
 home/secrets.nix
-home/secrets.json
 
 # Ignore large media files (we'll move these later)
 *.mp4
