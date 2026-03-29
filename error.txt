@@ -1,14 +1,37 @@
+
+greyson@iusenixbtw:~/ > ags run -g 3 ~/.config/ags/
 ✘ [ERROR] Could not resolve astal/gtk3
 
-    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:1:20:
-      1 │ import { App } from astal/gtk3
+    ../../nix/store/9c46s35c4pjcdkbp74619h6zn9x27fkp-hm_ags/app.ts:1:20:
+      1 │ import { App } from astal/gtk3;
         ╵                     ~~~~~~~~~~~~
 
   You can mark the path astal/gtk3 as external to exclude it from the bundle, which will remove
   this error and leave the unresolved path in the bundle.
 
-✘ [ERROR] Could not resolve ./control-center
+✘ [ERROR] Could not resolve astal/gtk3
 
-    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:2:26:
-      2 │ import ControlCenter from ./control-center
-        ╵                           ~~~~~~~~~~~~~~~~~~
+    ../../nix/store/9c46s35c4pjcdkbp74619h6zn9x27fkp-hm_ags/control-center.tsx:1:32:
+      1 │ import { App, Astal, Gtk } from astal/gtk3
+        ╵                                 ~~~~~~~~~~~~
+
+  You can mark the path astal/gtk3 as external to exclude it from the bundle, which will remove
+  this error and leave the unresolved path in the bundle.
+
+✘ [ERROR] Could not resolve astal/gtk3/widget
+
+    ../../nix/store/9c46s35c4pjcdkbp74619h6zn9x27fkp-hm_ags/control-center.tsx:2:43:
+      2 │ import { Window, Box, Button, Label } from astal/gtk3/widget
+        ╵                                            ~~~~~~~~~~~~~~~~~~~
+
+  You can mark the path astal/gtk3/widget as external to exclude it from the bundle, which will
+  remove this error and leave the unresolved path in the bundle.
+
+✘ [ERROR] Could not resolve astal/process
+
+    ../../nix/store/9c46s35c4pjcdkbp74619h6zn9x27fkp-hm_ags/control-center.tsx:3:26:
+      3 │ import { execAsync } from astal/process
+        ╵                           ~~~~~~~~~~~~~~~
+
+  You can mark the path astal/process as external to exclude it from the bundle, which will remove
+  this error and leave the unresolved path in the bundle.
