@@ -16,6 +16,7 @@ in
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
+    /etc/nixos/home/secrets.nix
   ];
 
   home.pointerCursor = {
@@ -28,10 +29,11 @@ in
 
   programs.git = {
     enable = true;
-    userName = secrets.gitUsername;
-    userEmail = secrets.gitEmail;
-    signing.format = null;
-    extraConfig = {
+    settings = {
+      user = {
+        name = secrets.gitUsername;
+        email = secrets.gitEmail;
+      };
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";
     };

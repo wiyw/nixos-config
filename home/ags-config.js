@@ -1,7 +1,10 @@
-import { Widget, Astal, App, Gdk, GLib } from 'ags';
+import app from "ags/gtk4/app"
+import { Gtk, Gdk, Astal } from "ags/gtk4"
 
-App({
-    style: `
+const { exec, spawn } = (await import("ags/process"))
+
+app.start({
+    css: `
         * {
             font-family: "JetBrainsMono Nerd Font", sans-serif;
             font-size: 13px;
@@ -129,214 +132,88 @@ App({
             padding: 10px;
         }
     `,
-    windows: [
-        Widget.Window({
-            name: 'control-center',
-            anchor: 'top right',
-            margin: '10 45 10 0',
-            width: 380,
-            height: 600,
-            layer: 'top',
-            exclusivity: 'auto',
-            visible: false,
-            child: Widget.Box({
-                class: 'control-center',
-                vertical: true,
-                spacing: 12,
-                children: [
-                    // Quick Settings Row
-                    Widget.Box({
-                        class: 'quick-settings-pod',
-                        children: [
-                            // Toggle Grid
-                            Widget.Box({
-                                class: 'toggle-grid',
-                                vertical: true,
-                                spacing: 8,
-                                hexpand: true,
-                                vpack: 'center',
-                                children: [
-                                    Widget.Box({
-                                        spacing: 8,
-                                        children: [
-                                            Widget.Button({
-                                                class: 'toggle-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('nmcli radio wifi toggle');
-                                                },
-                                                child: Widget.Label({ label: '󰤯' }),
-                                            }),
-                                            Widget.Button({
-                                                class: 'toggle-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('rfkill toggle bluetooth');
-                                                },
-                                                child: Widget.Label({ label: '󰂯' }),
-                                            }),
-                                        ],
-                                    }),
-                                    Widget.Box({
-                                        spacing: 8,
-                                        children: [
-                                            Widget.Button({
-                                                class: 'toggle-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle');
-                                                },
-                                                child: Widget.Label({ label: '󰝟' }),
-                                            }),
-                                            Widget.Button({
-                                                class: 'toggle-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('hyprlock');
-                                                },
-                                                child: Widget.Label({ label: '󰌾' }),
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-                            // Media Pod
-                            Widget.Box({
-                                class: 'media-pod',
-                                vertical: true,
-                                spacing: 8,
-                                hexpand: true,
-                                vpack: 'center',
-                                children: [
-                                    Widget.Box({
-                                        vpack: 'center',
-                                        hpack: 'center',
-                                        hexpand: true,
-                                        vexpand: true,
-                                        child: Widget.Box({
-                                            class: 'media-album',
-                                            child: Widget.Icon({
-                                                class: 'media-cover',
-                                                icon: 'audio-x-generic',
-                                                size: 80,
-                                            }),
-                                        }),
-                                    }),
-                                    Widget.Label({
-                                        class: 'media-title',
-                                        label: 'No Media',
-                                        maxWidthChars: 20,
-                                        truncate: 'end',
-                                        ellipsize: 'middle',
-                                        halign: 'center',
-                                    }),
-                                    Widget.Label({
-                                        class: 'media-artist',
-                                        label: '—',
-                                        maxWidthChars: 20,
-                                        truncate: 'end',
-                                        ellipsize: 'middle',
-                                        halign: 'center',
-                                    }),
-                                    Widget.Box({
-                                        class: 'media-controls',
-                                        spacing: 8,
-                                        halign: 'center',
-                                        homogeneous: true,
-                                        children: [
-                                            Widget.Button({
-                                                class: 'media-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('playerctl previous');
-                                                },
-                                                child: Widget.Label({ label: '󰒮' }),
-                                            }),
-                                            Widget.Button({
-                                                class: 'media-btn play-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('playerctl play-pause');
-                                                },
-                                                child: Widget.Label({ label: '󰐊' }),
-                                            }),
-                                            Widget.Button({
-                                                class: 'media-btn',
-                                                onClicked: () => {
-                                                    GLib.spawn_command_line_async('playerctl next');
-                                                },
-                                                child: Widget.Label({ label: '󰒭' }),
-                                            }),
-                                        ],
-                                    }),
-                                ],
-                            }),
-                        ],
-                    }),
-                    // Sliders
-                    Widget.Box({
-                        class: 'sliders-pod',
-                        vertical: true,
-                        spacing: 12,
-                        children: [
-                            Widget.Box({
-                                class: 'slider-row volume',
-                                spacing: 12,
-                                valign: 'center',
-                                children: [
-                                    Widget.Label({ label: '󰕿' }),
-                                    Widget.Scale({
-                                        min: 0,
-                                        max: 100,
-                                        value: 50,
-                                        halign: 'fill',
-                                        hexpand: true,
-                                        onChanged: (scale) => {
-                                            GLib.spawn_command_line_async(`wpctl set-volume @DEFAULT_AUDIO_SINK@ ${scale.value}%`);
-                                        },
-                                    }),
-                                ],
-                            }),
-                            Widget.Box({
-                                class: 'slider-row brightness',
-                                spacing: 12,
-                                valign: 'center',
-                                children: [
-                                    Widget.Label({ label: '󰛨' }),
-                                    Widget.Scale({
-                                        min: 0,
-                                        max: 100,
-                                        value: 100,
-                                        halign: 'fill',
-                                        hexpand: true,
-                                        onChanged: (scale) => {
-                                            GLib.spawn_command_line_async(`brightnessctl set ${scale.value}%`);
-                                        },
-                                    }),
-                                ],
-                            }),
-                        ],
-                    }),
-                    // Notifications
-                    Widget.Box({
-                        class: 'notifications-pod',
-                        vertical: true,
-                        spacing: 8,
-                        vexpand: true,
-                        children: [
-                            Widget.Label({
-                                class: 'notif-header',
-                                label: 'Notifications',
-                                halign: 'start',
-                            }),
-                            Widget.Scrollable({
-                                valign: 'start',
-                                hexpand: true,
-                                vexpand: true,
-                                child: Widget.Box({
-                                    class: 'notifications',
-                                    vertical: true,
-                                    spacing: 8,
-                                }),
-                            }),
-                        ],
-                    }),
-                ],
-            }),
-        }),
-    ],
-});
+
+    main() {
+        const ControlCenter = (
+            <window
+                name="control-center"
+                anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
+                margin="10 45 10 0"
+                width={380}
+                height={600}
+                layer={Astal.Layer.TOP}
+                exclusivity={Astal.Exclusivity.AUTO}
+                visible={false}
+                application={app}
+            >
+                <box class="control-center" vertical spacing={12}>
+                    {/* Quick Settings Row */}
+                    <box class="quick-settings-pod" homogeneous>
+                        {/* Toggle Grid */}
+                        <box vertical spacing={8} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                            <box spacing={8}>
+                                <button class="toggle-btn" onClicked={() => exec("nmcli radio wifi toggle")}>
+                                    <label label="󰤯" />
+                                </button>
+                                <button class="toggle-btn" onClicked={() => exec("rfkill toggle bluetooth")}>
+                                    <label label="󰂯" />
+                                </button>
+                            </box>
+                            <box spacing={8}>
+                                <button class="toggle-btn" onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
+                                    <label label="󰝟" />
+                                </button>
+                                <button class="toggle-btn" onClicked={() => exec("hyprlock")}>
+                                    <label label="󰌾" />
+                                </button>
+                            </box>
+                        </box>
+                        {/* Media Pod */}
+                        <box class="media-pod" vertical spacing={8} hexpand valign={Gtk.Align.CENTER}>
+                            <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER} hexpand vexpand>
+                                <box class="media-album">
+                                    <image class="media-cover" icon="audio-x-generic" pixelSize={80} />
+                                </box>
+                            </box>
+                            <label class="media-title" label="No Media" maxWidthChars={20} halign={Gtk.Align.CENTER} />
+                            <label class="media-artist" label="—" maxWidthChars={20} halign={Gtk.Align.CENTER} />
+                            <box class="media-controls" spacing={8} halign={Gtk.Align.CENTER} homogeneous>
+                                <button class="media-btn" onClicked={() => exec("playerctl previous")}>
+                                    <label label="󰒮" />
+                                </button>
+                                <button class="media-btn play-btn" onClicked={() => exec("playerctl play-pause")}>
+                                    <label label="󰐊" />
+                                </button>
+                                <button class="media-btn" onClicked={() => exec("playerctl next")}>
+                                    <label label="󰒭" />
+                                </button>
+                            </box>
+                        </box>
+                    </box>
+                    {/* Sliders */}
+                    <box class="sliders-pod" vertical spacing={12}>
+                        <box class="slider-row volume" spacing={12} valign={Gtk.Align.CENTER}>
+                            <label label="󰕿" />
+                            <scale min={0} max={100} value={50} halign={Gtk.Align.FILL} hexpand
+                                onChange={self => spawn(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", `${self.value}%`])} />
+                        </box>
+                        <box class="slider-row brightness" spacing={12} valign={Gtk.Align.CENTER}>
+                            <label label="󰛨" />
+                            <scale min={0} max={100} value={100} halign={Gtk.Align.FILL} hexpand
+                                onChange={self => spawn(["brightnessctl", "set", `${self.value}%`])} />
+                        </box>
+                    </box>
+                    {/* Notifications */}
+                    <box class="notifications-pod" vertical spacing={8} vexpand>
+                        <label class="notif-header" label="Notifications" halign={Gtk.Align.START} />
+                        <scrollable valign={Gtk.Align.START} hexpand vexpand>
+                            <box class="notifications" vertical spacing={8} />
+                        </scrollable>
+                    </box>
+                </box>
+            </window>
+        )
+
+        app.add_window(ControlCenter)
+    },
+})
