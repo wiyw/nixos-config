@@ -1,4 +1,4 @@
-# 🌌 iusenixbtw | NixOS + Hyprland Config
+# iusenixbtw | NixOS + Hyprland Config
 
 > "We're not meant to save the world. We're meant to leave it."
 

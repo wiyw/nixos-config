@@ -115,16 +115,21 @@
       #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
 
       #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
-      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
+      #window.empty { margin: 0px; padding: 0px 0px 0px 0px; min-width: 0px; border: none; opacity: 0; }
 
-      #workspaces { padding-left: 4px; padding-right: 12px; }
+      #workspaces { padding-left: 4px; }
       #workspaces button {
         color: #565f89;
         padding: 0 6px;
-        border-radius: 8px;
+        border-radius: 50px;
+        border: 2px solid transparent;
         transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       #workspaces button.active { color: #ffffff; }
+      #workspaces button:hover { border-color: rgba(255, 255, 255, 0.3); }
 
       #clock, #pulseaudio, #network, #battery, #custom-swaync {
           color: #ffffff;
