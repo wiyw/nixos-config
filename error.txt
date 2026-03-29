@@ -34,3 +34,12 @@ greyson@iusenixbtw:~/ > ags run --gtk 3
 
   You can mark the path astal/process as external to exclude it from the bundle, which will remove
   this error and leave the unresolved path in the bundle.
+
+✘ [ERROR] Could not resolve astal/gtk3/jsx-runtime
+
+    control-center.tsx:12:12:
+      12 │             <Label label={icon} />
+         ╵             ^
+
+  You can mark the path astal/gtk3/jsx-runtime as external to exclude it from the bundle, which
+  will remove this error and leave the unresolved path in the bundle.
