@@ -1,9 +1,10 @@
 greyson@iusenixbtw:~/ > ags run
 
-(gjs:1559249): Gjs-CRITICAL **: 16:53:14.168: JS ERROR: TypeError: win.set_anchor is not a function
-@file:///run/user/1001/ags.js:1277:5 -> ../../../nix/store/xk95mnvn7swfyklw7xcl8s0jfv53nvj0-hm_ags/app.ts:6:5
+(gjs:1580287): Gjs-CRITICAL **: 16:54:48.974: JS ERROR: Error: No property anchor on GtkWindow
+_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
+@file:///run/user/1001/ags.js:1275:11 -> ../../../nix/store/k7c2r81808qlik0c8jwwgxw6rpfj0wfa-hm_ags/app.ts:4:13
 
 
 
-(gjs:1559249): Gjs-CRITICAL **: 16:53:14.168: Module file:///run/user/1001/ags.js threw an exception
+(gjs:1580287): Gjs-CRITICAL **: 16:54:48.975: Module file:///run/user/1001/ags.js threw an exception
 error: exit status 1
