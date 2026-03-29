@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "jsx": "react",
-    "jsxFactory": "JSX"
+    "target": "ES2022",
+    "moduleResolution": "Bundler",
+    "strict": true
   }
 }
