@@ -1,0 +1,11 @@
+greyson@iusenixbtw:~/nixos-config/ > ags run                                                                                      
+
+(gjs:58280): Gjs-CRITICAL **: 12:55:46.576: JS ERROR: Error: unknown intrinsic element scale
+jsx@file:///run/user/1001/ags.js:708:13 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/jsx.ts:253:19
+main@file:///run/user/1001/ags.js:2172:31 -> ../../../nix/store/gzhfpi2flrkv1zccp7w85amff6s8h0nc-hm_agsconfig.js:193:29
+vfunc_command_line/<@file:///run/user/1001/ags.js:1803:66 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:292:17
+createRoot/<@file:///run/user/1001/ags.js:359:28 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:28
+run@file:///run/user/1001/ags.js:387:18 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:32:20
+createRoot@file:///run/user/1001/ags.js:359:16 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:18
+vfunc_command_line@file:///run/user/1001/ags.js:1800:17 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:290:13
+_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34

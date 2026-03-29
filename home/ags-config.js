@@ -94,25 +94,6 @@ app.start({
             min-width: 24px;
         }
 
-        scale {
-            min-height: 24px;
-            min-width: 200px;
-        }
-
-        scale slider {
-            min-width: 20px;
-            min-height: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            border: none;
-        }
-
-        scale trough {
-            min-height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
         .notifications-pod {
             background-color: rgba(30, 32, 48, 0.6);
             border-radius: 20px;
@@ -190,13 +171,11 @@ app.start({
                     <box class="sliders-pod" orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                         <box class="slider-row volume" spacing={12} valign={Gtk.Align.CENTER}>
                             <label label="󰕿" />
-                            <scale min={0} max={100} value={50} halign={Gtk.Align.FILL} hexpand
-                                onChange={self => spawn(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", `${self.value}%`])} />
+                            <label label="Use volume keys" />
                         </box>
                         <box class="slider-row brightness" spacing={12} valign={Gtk.Align.CENTER}>
                             <label label="󰛨" />
-                            <scale min={0} max={100} value={100} halign={Gtk.Align.FILL} hexpand
-                                onChange={self => spawn(["brightnessctl", "set", `${self.value}%`])} />
+                            <label label="Use brightness keys" />
                         </box>
                     </box>
                     <box class="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>

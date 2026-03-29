@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  secretsFile = "/etc/nixos/home/secrets.json";
+  secretsFile = "/home/greyson/.config/nixos/secrets.json";
   secrets = if builtins.pathExists secretsFile then 
     builtins.fromJSON (builtins.readFile secretsFile)
   else {
