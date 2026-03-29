@@ -1,9 +1,10 @@
 greyson@iusenixbtw:~/ > ags run
 
-(gjs:1456956): Gjs-CRITICAL **: 16:45:04.845: JS ERROR: Error: Constructor called as normal method. Use 'new SomeObject()' not 'SomeObject()'
-@file:///run/user/1001/ags.js:1531:24 -> ../../../nix/store/8f8y957wlhqvy7lqnxz5gk3rb8w15ii2-hm_ags/app.ts:33:41
+(gjs:1508818): Gjs-CRITICAL **: 16:49:21.778: JS ERROR: Error: No property css on GtkButton
+_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
+@file:///run/user/1001/ags.js:1531:19 -> ../../../nix/store/dndan598qpsxmy6f30wmjrhznp68rq7h-hm_ags/app.ts:33:37
 
 
 
-(gjs:1456956): Gjs-CRITICAL **: 16:45:04.845: Module file:///run/user/1001/ags.js threw an exception
+(gjs:1508818): Gjs-CRITICAL **: 16:49:21.778: Module file:///run/user/1001/ags.js threw an exception
 error: exit status 1
