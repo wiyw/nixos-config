@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "ES2022",
     "moduleResolution": "Bundler",
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "astal/gtk3"
   }
 }
