@@ -56,7 +56,7 @@
     settings = {
       PasswordAuthentication = true;
       PermitRootLogin = "no";
-      AllowTcpFowarding = true;
+      AllowTcpForwarding = true;
     };
   };
 
