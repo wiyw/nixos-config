@@ -1,12 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
-let
-  secretsFile = "/etc/nixos/home/secrets.nix";
-  secrets = if builtins.pathExists secretsFile then import secretsFile else {
-    gitUsername = "Default User";
-    gitEmail = "default@example.com";
-  };
-in
 {
   home.username = "greyson";
   home.homeDirectory = "/home/greyson";
@@ -16,7 +9,14 @@ in
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
+    ./auth.nix
+    inputs.ags.homeManagerModules.default
   ];
+
+  programs.ags = {
+    enable = true;
+    configDir = ./ags-config.js;
+  };
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
@@ -26,20 +26,6 @@ in
     x11.enable = true;
   };
 
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = secrets.gitUsername;
-        email = secrets.gitEmail;
-      };
-      init.defaultBranch = "main";
-      safe.directory = "/etc/nixos";
-    };
-  };
-
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
-
-  home.file.".config/ags/app.js".source = ./ags-config.js;
 }
