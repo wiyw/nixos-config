@@ -115,7 +115,7 @@
       #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
 
       #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
-      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
+      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; visibility: hidden; }
 
       #workspaces { 
         padding-left: 4px;
