@@ -18,6 +18,7 @@ in
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
+    ./ags.nix
   ];
 
   # Cursor Config

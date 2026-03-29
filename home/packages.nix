@@ -9,7 +9,6 @@
     
     # Ricing Tools
     waybar
-    swaynotificationcenter
     mpvpaper # Live video wallpaper engine!
     hyprlock
     hypridle
