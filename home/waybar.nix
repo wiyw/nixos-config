@@ -124,9 +124,6 @@
         border-radius: 50px;
         border: 2px solid transparent;
         transition: all 0.3s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
       #workspaces button.active { color: #ffffff; }
       #workspaces button:hover { border-color: rgba(255, 255, 255, 0.3); }
