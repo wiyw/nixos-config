@@ -60,6 +60,9 @@
     };
   };
 
+  # Please dont blow up
+  services.thermald.enable = true;
+
   # DO NOT CHANGE THIS
   system.stateVersion = "25.11"; 
 }

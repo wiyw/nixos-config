@@ -5,12 +5,22 @@
   home.homeDirectory = "/home/greyson";
 
   imports = [
+    inputs.ags.homeManagerModules.default # <-- 1. IMPORT THE AGS MODULE
     ./packages.nix
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
   ];
+
+  # <-- 2. CONFIGURE AGS WITH GTK3 -->
+  programs.ags = {
+    enable = true;
+    # This explicitly injects GTK3 into the AGS runtime environment
+    extraPackages = with pkgs; [
+      gtk3
+    ];
+  };
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
