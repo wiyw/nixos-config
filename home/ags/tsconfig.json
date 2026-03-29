@@ -4,6 +4,6 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "astal/gtk3"
+    "jsxImportSource": "ags"
   }
 }
