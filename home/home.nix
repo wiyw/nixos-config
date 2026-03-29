@@ -38,4 +38,13 @@
   home.file.".config/ags/control-center.tsx".source = ./ags/control-center.tsx;
   home.file.".config/ags/style.css".source = ./ags/style.css;
   home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
+
+  programs.ags = {
+    enable = true;
+    extraPackages = with pkgs; [
+      gtk3
+      gtk-layer-shell # <-- Add this! Required for Wayland desktop widgets
+      gobject-introspection # <-- Helps GJS discover the C libraries
+    ];
+  };
 }

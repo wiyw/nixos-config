@@ -1,5 +1,6 @@
 import { App } from "astal/gtk3"
 import ControlCenter from "./control-center"
+import Gtk from "gi://Gtk?version=3.0";
 
 App.start({
     style: "./style.css",
