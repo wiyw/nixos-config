@@ -16,7 +16,6 @@ in
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
-    /etc/nixos/home/secrets.nix
   ];
 
   home.pointerCursor = {
