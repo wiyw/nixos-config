@@ -1,38 +1,19 @@
 { pkgs, inputs, ... }:
 
 {
-  # 1. Import the official AGS Home Manager module
-  imports = [ inputs.ags.homeManagerModules.default ];
-
-  # 2. Configure AGS and inject the Astal libraries into its runtime
-  programs.ags = {
-    enable = true;
-    extraPackages = with inputs.ags.packages.${pkgs.system}; [
-      astal3
-      apps
-      hyprland
-      network
-      tray
-      wireplumber
-      # Add any others you use here!
-    ];
-  };
-
-  # 3. Tell Home Manager to symlink your config safely
-  xdg.configFile."ags".source = ./ags; 
-
   home.packages = with pkgs; [
     # Core Apps
     inputs.zen-browser.packages.${pkgs.system}.default
     kitty
     nautilus 
-    
+
     # Ricing Tools
     waybar
     mpvpaper # Live video wallpaper engine!
     hyprlock
     hypridle
     wl-clipboard
+    inputs.ags.packages.${pkgs.system}.default
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
