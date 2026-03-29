@@ -168,9 +168,11 @@
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 
-  # Notice the .tsx extensions!
-  home.file.".config/ags/app.tsx".source = ./ags/ags-config.tsx;
-  home.file.".config/ags/style.css".source = ./ags/ags-style.css;
+  # AGS v2 Configuration Files
+  home.file.".config/ags/app.ts".source = ./ags/app.ts;
+  home.file.".config/ags/control-center.tsx".source = ./ags/control-center.tsx;
+  home.file.".config/ags/style.css".source = ./ags/style.css;
+  home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
 }
 
 
@@ -261,114 +263,7 @@
 }
 
 
---- FILE: ./home/ags/ags-config.tsx ---
-import { App, Astal, Gtk } from "astal/gtk3"
-import { execAsync } from "astal/process"
-
-// A helper component for our 2x2 grid buttons
-function QuickButton({ icon, command }: { icon: string, command: string }) {
-    return (
-        <button 
-            className="toggle-btn" 
-            onClicked={() => execAsync(["bash", "-c", command]).catch(print)}
-        >
-            <label label={icon} />
-        </button>
-    )
-}
-
-function ControlCenter() {
-    return (
-        <window
-            name="control-center"
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginRight={15}
-            marginTop={10}
-            layer={Astal.Layer.TOP}
-            application={App}
-            visible={false} // Hidden by default, triggered by Waybar
-        >
-            <box className="control-center" vertical spacing={14}>
-                
-                {/* TOP ROW: Quick Settings + Media */}
-                <box spacing={14}>
-                    {/* Quick Settings 2x2 Grid */}
-                    <box className="quick-settings-pod" vertical spacing={8}>
-                        <box spacing={8}>
-                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
-                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
-                        </box>
-                        <box spacing={8}>
-                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
-                            <QuickButton icon="󰌾" command="hyprlock" />
-                        </box>
-                    </box>
-
-                    {/* Media Player Pod */}
-                    <box className="media-pod" vertical spacing={6}>
-                        <box className="media-cover" halign={Gtk.Align.CENTER}>
-                            <label label="♪" css="font-size: 32px;" />
-                        </box>
-                        <label className="media-title" label="No Media Playing" truncate />
-                        <label className="media-artist" label="—" truncate />
-                        
-                        <box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
-                            <button className="media-btn" onClicked={() => execAsync("playerctl previous")}>
-                                <label label="󰒮" />
-                            </button>
-                            <button className="media-btn play-btn" onClicked={() => execAsync("playerctl play-pause")}>
-                                <label label="▶" />
-                            </button>
-                            <button className="media-btn" onClicked={() => execAsync("playerctl next")}>
-                                <label label="󰒭" />
-                            </button>
-                        </box>
-                    </box>
-                </box>
-
-                {/* SLIDERS POD */}
-                <box className="sliders-pod" vertical spacing={8}>
-                    <box spacing={12}>
-                        <label label="🔊" />
-                        <label label="Volume" />
-                    </box>
-                    <box spacing={12}>
-                        <label label="☀" />
-                        <label label="Brightness" />
-                    </box>
-                </box>
-
-                {/* NOTIFICATIONS POD */}
-                <box className="notifications-pod" vertical spacing={8} vexpand>
-                    <label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
-                    <label label="No new notifications" halign={Gtk.Align.CENTER} />
-                </box>
-            </box>
-        </window>
-    )
-}
-
-App.start({
-    style: "./style.css", // Load your CSS
-    requestHandler(request, res) {
-        // This listens for the `ags request toggle-control-center` command from Waybar
-        if (request === "toggle-control-center") {
-            const win = App.get_window("control-center")
-            if (win) {
-                win.visible = !win.visible
-                res("Toggled window")
-            } else {
-                res("Window not found")
-            }
-        }
-    },
-    main() {
-        ControlCenter()
-    }
-})
-
-
---- FILE: ./home/ags/ags-style.css ---
+--- FILE: ./home/ags/style.css ---
 * {
     font-family: "JetBrainsMono Nerd Font", -apple-system, sans-serif;
     font-size: 13px;
@@ -438,6 +333,129 @@ window.control-center-window {
 }
 
 .notif-header { font-weight: bold; font-size: 11px; color: #a9b1d6; }
+
+
+--- FILE: ./home/ags/control-center.tsx ---
+import { App, Astal, Gtk } from "astal/gtk3"
+import { Window, Box, Button, Label } from "astal/gtk3/widget"
+import { execAsync } from "astal/process"
+
+// A helper component for our 2x2 grid buttons
+function QuickButton({ icon, command }: { icon: string, command: string }) {
+    return (
+        <Button 
+            className="toggle-btn" 
+            onClicked={() => execAsync(["bash", "-c", command]).catch(print)}
+        >
+            <Label label={icon} />
+        </Button>
+    )
+}
+
+export default function ControlCenter() {
+    return (
+        <Window
+            name="control-center"
+            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
+            marginRight={15}
+            marginTop={10}
+            layer={Astal.Layer.TOP}
+            application={App}
+            visible={false} // Hidden by default, triggered by Waybar
+        >
+            <Box className="control-center" vertical spacing={14}>
+                {/* TOP ROW: Quick Settings + Media */}
+                <Box spacing={14}>
+                    <Box className="quick-settings-pod" vertical spacing={8}>
+                        <Box spacing={8}>
+                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
+                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
+                        </Box>
+                        <Box spacing={8}>
+                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+                            <QuickButton icon="󰌾" command="hyprlock" />
+                        </Box>
+                    </Box>
+
+                    {/* Media Player Pod */}
+                    <Box className="media-pod" vertical spacing={6}>
+                        <Box className="media-cover" halign={Gtk.Align.CENTER}>
+                            <Label label="♪" css="font-size: 32px;" />
+                        </Box>
+                        <Label className="media-title" label="No Media Playing" truncate />
+                        <Label className="media-artist" label="—" truncate />
+                        
+                        <Box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
+                            <Button className="media-btn" onClicked={() => execAsync("playerctl previous")}>
+                                <Label label="󰒮" />
+                            </Button>
+                            <Button className="media-btn play-btn" onClicked={() => execAsync("playerctl play-pause")}>
+                                <Label label="▶" />
+                            </Button>
+                            <Button className="media-btn" onClicked={() => execAsync("playerctl next")}>
+                                <Label label="󰒭" />
+                            </Button>
+                        </Box>
+                    </Box>
+                </Box>
+
+                {/* SLIDERS POD */}
+                <Box className="sliders-pod" vertical spacing={8}>
+                    <Box spacing={12}>
+                        <Label label="🔊" />
+                        <Label label="Volume" />
+                    </Box>
+                    <Box spacing={12}>
+                        <Label label="☀" />
+                        <Label label="Brightness" />
+                    </Box>
+                </Box>
+
+                {/* NOTIFICATIONS POD */}
+                <Box className="notifications-pod" vertical spacing={8} vexpand>
+                    <Label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
+                    <Label label="No new notifications" halign={Gtk.Align.CENTER} />
+                </Box>
+            </Box>
+        </Window>
+    )
+}
+
+
+--- FILE: ./home/ags/app.ts ---
+import { App } from "astal/gtk3"
+import ControlCenter from "./control-center"
+
+App.start({
+    style: "./style.css",
+    requestHandler(request, res) {
+        if (request === "toggle-control-center") {
+            const win = App.get_window("control-center")
+            if (win) {
+                win.visible = !win.visible
+                res("Toggled window")
+            } else {
+                res("Window not found")
+            }
+        }
+    },
+    main() {
+        ControlCenter()
+    }
+})
+
+
+--- FILE: ./home/ags/tsconfig.json ---
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "jsx": "react",
+    "jsxFactory": "JSX"
+  }
+}
 
 
 --- FILE: ./home/waybar.nix ---
@@ -574,7 +592,7 @@ window.control-center-window {
       }
       #workspaces button.active { color: #ffffff; }
 
-      #clock, #pulseaudio, #network, #battery, #custom/control-center {
+      #clock, #pulseaudio, #network, #battery, #custom-control-center {
           color: #ffffff;
           padding: 0px 10px;
       }
@@ -680,7 +698,7 @@ in
 
       exec-once = [
         "waybar"
-        "ags run"
+        "ags run ~/.config/ags"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
         "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /etc/nixos/home/wallpapers/interstellar.mp4"
