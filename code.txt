@@ -1,0 +1,691 @@
+home/auth.nix
+{ config, pkgs, lib, ... }:
+
+{
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
+      };
+      init.defaultBranch = "main";
+      safe.directory = "/etc/nixos";
+    };
+  };
+}
+
+
+home/home.nix
+{ inputs, config, pkgs, lib, ... }:
+
+{
+  home.username = "greyson";
+  home.homeDirectory = "/home/greyson";
+
+  imports = [
+    ./packages.nix
+    ./hyprland.nix
+    ./waybar.nix
+    ./rofi.nix
+    ./auth.nix
+  ];
+
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
+  programs.home-manager.enable = true;
+  home.stateVersion = "25.11";
+
+  home.file.".config/ags/app.js".source = ./ags-config.js;
+}
+
+
+home/hyprland.nix
+{ config, pkgs, ... }:
+
+let
+  smartBgScript = pkgs.writeShellScriptBin "smart-bg" ''
+    #!/usr/bin/env bash
+    
+    LOG="/tmp/smart-bg.log"
+    echo "--- Script Started ---" > $LOG
+    
+    sleep 2
+    CURRENT_STATE="unmuted"
+
+    while true; do
+      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
+      
+      if [[ -z "$WINDOWS" || "$WINDOWS" == "null" ]]; then
+        WINDOWS=0
+      fi
+      
+      if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
+        echo "--> Muting audio!" >> $LOG
+        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+        echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
+        CURRENT_STATE="muted"
+        
+      elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
+        echo "--> Unmuting audio!" >> $LOG
+        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+        echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
+        CURRENT_STATE="unmuted"
+      fi
+      
+      sleep 0.5
+    done
+  '';
+in
+{
+  wayland.windowManager.hyprland = {
+    enable = true;
+    settings = {
+      "$mod" = "SUPER";
+
+      monitor = ",preferred,auto,1";
+
+      exec-once = [
+        "waybar"
+        "ags run"
+        "hypridle"
+        "hyprctl setcursor Bibata-Modern-Classic 24"
+        "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /etc/nixos/home/wallpapers/interstellar.mp4"
+        "${smartBgScript}/bin/smart-bg"
+      ];
+
+      general = {
+        gaps_in = 5;
+        gaps_out = 15;
+        border_size = 2;
+        "col.active_border" = "rgba(7aa2f7aa) rgba(bb9af7aa) 45deg"; 
+        "col.inactive_border" = "rgba(414868aa)";
+      };
+
+      decoration = {
+        rounding = 12;
+        blur = {
+          enabled = true;
+          size = 8;
+          passes = 3;
+        };
+      };
+
+      # REPEATABLE BINDS (Hold down to change volume)
+      binde = [
+        # Unmutes first, then raises volume
+        ", XF86AudioRaiseVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+'"
+        # Unmutes first, then lowers volume
+        ", XF86AudioLowerVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'"
+      ];
+
+      # STANDARD BINDS
+      bind = [
+        # Media Keys
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioNext, exec, playerctl next"
+
+        # Window Controls
+        "$mod, T, exec, kitty"
+        "$mod, B, exec, zen"
+        "$mod, Q, killactive,"
+        "$mod, F, togglefloating,"
+        "$mod SHIFT, M, exit,"
+        "$mod, W, exec, killall waybar; waybar"
+
+        # Workspaces
+        "$mod, 1, workspace, 1"
+        "$mod, 2, workspace, 2"
+        "$mod, 3, workspace, 3"
+        "$mod, 4, workspace, 4"
+        "$mod, 5, workspace, 5"
+        "$mod, 6, workspace, 6"
+        "$mod, 7, workspace, 7"
+        "$mod, 8, workspace, 8"
+        "$mod, 9, workspace, 9"
+        "$mod, 0, workspace, 10"
+
+        # Move to Workspaces
+        "$mod SHIFT, 1, movetoworkspace, 1"
+        "$mod SHIFT, 2, movetoworkspace, 2"
+        "$mod SHIFT, 3, movetoworkspace, 3"
+        "$mod SHIFT, 4, movetoworkspace, 4"
+        "$mod SHIFT, 5, movetoworkspace, 5"
+        "$mod SHIFT, 6, movetoworkspace, 6"
+        "$mod SHIFT, 7, movetoworkspace, 7"
+        "$mod SHIFT, 8, movetoworkspace, 8"
+        "$mod SHIFT, 9, movetoworkspace, 9"
+        "$mod SHIFT, 0, movetoworkspace, 10"
+      ];
+
+      bindr = [
+        "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
+      ];
+
+      bindm = [
+        "$mod, mouse:272, movewindow"   
+        "$mod, mouse:273, resizewindow" 
+      ];
+    };
+
+    extraConfig = ''
+      layerrule {
+        name = waybar-blur
+        match:namespace = waybar
+        blur = on
+        ignore_alpha = 0.2
+      }
+
+      # The new 0.53+ syntax for global transparency
+      # Increased transparency (70% active, 60% inactive)
+      windowrule {
+        name = global-transparency
+        match:class = .*
+        opacity = 0.70 0.60 
+      }
+    '';
+  };
+}
+
+home/packages.nix
+{ pkgs, inputs, ... }:
+
+{
+  home.packages = with pkgs; [
+    # Core Apps
+    inputs.zen-browser.packages.${pkgs.system}.default
+    kitty
+    nautilus 
+    
+    # Ricing Tools
+    waybar
+    mpvpaper # Live video wallpaper engine!
+    hyprlock
+    hypridle
+    wl-clipboard
+    inputs.ags.packages.${pkgs.system}.default
+
+    # Waybar Dependencies (Fixes the crash)
+    playerctl # Needed for the media player module
+    nerd-fonts.jetbrains-mono # Needed for the icons to render
+    ffmpeg # You know what this is
+
+    # AI stuff
+    opencode
+
+    # Custom Rebuild & Backup Command
+    (writeShellScriptBin "sysbuild" ''
+      echo "🛠️ Starting system rebuild..."
+      cd /home/greyson/nixos-config/
+      git add .
+      if ! git diff --cached --quiet; then
+        echo "📦 Committing changes..."
+        git commit -m "Auto-rebuild: $(date +'%Y-%m-%d %H:%M:%S')"
+      else
+        echo "🤷 No new changes to commit."
+      fi
+      echo "☁️ Pushing to GitHub..."
+      git push
+      echo "🚀 Building flake..."
+      sudo nixos-rebuild switch --flake .#iusenixbtw
+      echo "✅ All done!"
+    '')
+  ];
+}
+
+home/rofi.nix
+{ config, pkgs, ... }:
+
+{
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi;
+    # Tell Home Manager to load our custom theme file!
+    theme = "~/.config/rofi/interstellar.rasi";
+  };
+
+  # Write your exact Rasi theme to that custom file instead
+  xdg.configFile."rofi/interstellar.rasi".text = ''
+    configuration {
+      modi: "drun,run";
+      show-icons: true;
+      display-drun: "Apps";
+      display-run: "Run";
+      font: "JetBrainsMono Nerd Font 12";
+    }
+
+    * {
+      bg: #1a1b2699;
+      bg-alt: #24283b;
+      fg: #c0caf5;
+      border-col: #7aa2f7;
+      selected: #3d59a1;
+      
+      background-color: transparent;
+      text-color: @fg;
+      margin: 0;
+      padding: 0;
+    }
+
+    window {
+      width: 600px;
+      background-color: @bg;
+      border: 2px solid;
+      border-color: @border-col;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    inputbar {
+      background-color: @bg-alt;
+      padding: 15px;
+      border-radius: 10px;
+      children: [prompt, entry];
+    }
+
+    prompt {
+      text-color: @border-col;
+      padding: 0px 15px 0px 0px;
+      font: "JetBrainsMono Nerd Font Bold 12";
+    }
+
+    entry {
+      placeholder: "Search...";
+      placeholder-color: #565f89;
+    }
+
+    listview {
+      margin: 20px 0px 0px 0px;
+      columns: 1;
+      lines: 7;
+      spacing: 10px;
+    }
+
+    element {
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    element selected {
+      background-color: @selected;
+      text-color: #ffffff;
+    }
+
+    element-icon {
+      size: 24px;
+      padding: 0px 10px 0px 0px;
+    }
+  '';
+}
+
+home/waybar.nix
+{ config, pkgs, ... }:
+
+{
+  programs.waybar = {
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        margin = "0"; 
+        
+        # Swapped hyprland/window and hyprland/workspaces
+        modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
+        modules-center = [ ];
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/swaync" "clock" ];
+        
+        "custom/os_button" = {
+          format = ""; 
+          tooltip = false;
+          on-click = "rofi -show drun"; 
+        };
+
+        "hyprland/window" = {
+          format = "{class}"; 
+          max-length = 50;
+          separate-outputs = true;
+          rewrite = {
+            "kitty" = "Kitty";
+            "zen" = "Zen Browser";
+            "zen-beta" = "Zen Browser";
+            "org.gnome.Nautilus" = "Files";
+            "" = ""; 
+          };
+        };
+
+        "custom/media" = {
+          format = "{}";
+          max-length = 40;
+          escape = true;
+          exec = "playerctl metadata --format '{{title}} - {{artist}}' 2>/dev/null";
+          interval = 2;
+          on-click = "playerctl play-pause";
+        };
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+            urgent = "";
+          };
+          persistent-workspaces = {
+            "*" = 10;
+          };
+        };
+
+        "clock" = {
+          format = "{:%a %b %e  %I:%M %p}";
+        };
+
+        "pulseaudio" = {
+          format = "{icon}  {volume}%";
+          format-muted = " Muted";
+          format-icons = {
+            default = ["" "" ""];
+          };
+          on-click = "pavucontrol";
+        };
+
+        "network" = {
+          format-wifi = " ";
+          format-ethernet = " ";
+          format-disconnected = "⚠";
+        };
+
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-charging = "󰂄  {capacity}%";
+          format-plugged = "  {capacity}%";
+          format-icons = ["" "" "" "" ""];
+        };
+
+        "custom/prev" = { format = "󰒮"; on-click = "playerctl previous"; };
+        "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
+        "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
+
+        # We will keep the button here for now, but rename its execution later to trigger AGS
+        "custom/swaync" = {
+          tooltip = false;
+          format = " ";
+          on-click = "ags toggle control-center || ags run";
+        };
+      };
+    };
+
+    style = ''
+      * {
+        font-family: "JetBrainsMono Nerd Font", sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      window#waybar {
+        background-color: rgba(26, 27, 38, 0.65); 
+        color: #ffffff;
+        margin: 0px;
+        min-height: 38px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
+
+      #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
+      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
+
+      #workspaces { 
+        padding-left: 4px;
+        padding-right: 8px;
+        border-radius: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        margin-right: 8px;
+      }
+      #workspaces button {
+        color: #565f89;
+        padding: 0 4px;
+        transition: all 0.3s ease;
+      }
+      #workspaces button.active { color: #ffffff; }
+
+      #clock, #pulseaudio, #network, #battery, #custom-swaync {
+          color: #ffffff;
+          padding: 0px 10px;
+      }
+      #clock { padding-right: 16px; padding-left: 10px; }
+      #custom-prev, #custom-play, #custom-next { color: #ffffff; padding: 0px 6px; font-size: 18px; }
+      #custom-media { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
+    '';
+  };
+}
+
+home/ags-config.js
+import app from "ags/gtk4/app"
+import { Gtk, Gdk, Astal } from "ags/gtk4"
+
+const { exec, spawn } = (await import("ags/process"))
+
+app.start({
+    requestHandler(request) {
+        const win = app.get_window("control-center")
+        if (win) {
+            win.visible = !win.visible
+        }
+    },
+    css: `
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        window#control-center {
+            background-color: rgba(30, 30, 30, 0.85);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-center {
+            padding: 14px;
+        }
+
+        .quick-settings-pod {
+            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(180deg, rgba(80, 80, 80, 0.8), rgba(60, 60, 60, 0.8));
+            border-radius: 12px;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            padding: 8px;
+        }
+
+        .toggle-btn:hover {
+            background: linear-gradient(180deg, rgba(100, 100, 100, 0.9), rgba(80, 80, 80, 0.9));
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(180deg, #007AFF, #0056CC);
+        }
+
+        .media-pod {
+            background: linear-gradient(180deg, rgba(70, 70, 70, 0.9), rgba(50, 50, 50, 0.9));
+            border-radius: 14px;
+            padding: 12px;
+            min-width: 130px;
+        }
+
+        .media-cover {
+            border-radius: 10px;
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            min-width: 80px;
+            min-height: 80px;
+        }
+
+        .media-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .media-artist {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .media-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .media-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .play-btn {
+            font-size: 22px;
+            background: #007AFF;
+            border-radius: 50%;
+            margin: 0 4px;
+        }
+
+        .play-btn:hover {
+            background: #0056CC;
+        }
+
+        .sliders-pod {
+            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px;
+        }
+
+        .slider-row {
+            padding: 6px 0;
+        }
+
+        .slider-row label {
+            font-size: 18px;
+            color: #ffffff;
+            min-width: 28px;
+        }
+
+        .notifications-pod {
+            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+        }
+
+        .notif-header {
+            font-weight: 600;
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .notification {
+            background: rgba(50, 50, 50, 0.6);
+            border-radius: 10px;
+            padding: 10px;
+        }
+    `,
+
+    main() {
+        const ControlCenter = (
+            <window
+                name="control-center"
+                anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
+                margin="10 45 10 0"
+                defaultWidth={360}
+                defaultHeight={520}
+                layer={Astal.Layer.TOP}
+                exclusivity={Astal.Exclusivity.AUTO}
+                visible={true}
+                application={app}
+            >
+                <box class="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={14}>
+                    <box class="quick-settings-pod" homogeneous>
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={8} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                            <box spacing={8}>
+                                <button class="toggle-btn" onClicked={() => exec("nmcli radio wifi toggle")}>
+                                    <label label="󰤮" />
+                                </button>
+                                <button class="toggle-btn" onClicked={() => exec("rfkill toggle bluetooth")}>
+                                    <label label="󰥭" />
+                                </button>
+                            </box>
+                            <box spacing={8}>
+                                <button class="toggle-btn" onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
+                                    <label label="󰝟" />
+                                </button>
+                                <button class="toggle-btn" onClicked={() => exec("hyprlock")}>
+                                    <label label="󰌾" />
+                                </button>
+                            </box>
+                        </box>
+                        <box class="media-pod" orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand valign={Gtk.Align.CENTER}>
+                            <box class="media-cover" halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                                <label label="♪" font_size={32} />
+                            </box>
+                            <label class="media-title" label="No Media Playing" maxWidthChars={18} truncate ellipsize="middle" halign={Gtk.Align.CENTER} />
+                            <label class="media-artist" label="— " maxWidthChars={18} truncate ellipsize="middle" halign={Gtk.Align.CENTER} />
+                            <box class="media-controls" spacing={4} halign={Gtk.Align.CENTER} homogeneous>
+                                <button class="media-btn" onClicked={() => exec("playerctl previous")}>
+                                    <label label="󰒮" />
+                                </button>
+                                <button class="media-btn play-btn" onClicked={() => exec("playerctl play-pause")}>
+                                    <label label="▶" />
+                                </button>
+                                <button class="media-btn" onClicked={() => exec("playerctl next")}>
+                                    <label label="󰒭" />
+                                </button>
+                            </box>
+                        </box>
+                    </box>
+                    <box class="sliders-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={12} valign={Gtk.Align.CENTER}>
+                            <label label="🔊" />
+                            <label label="Volume" hexpand halign={Gtk.Align.START} />
+                        </box>
+                        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={12} valign={Gtk.Align.CENTER}>
+                            <label label="☀" />
+                            <label label="Brightness" hexpand halign={Gtk.Align.START} />
+                        </box>
+                    </box>
+                    <box class="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>
+                        <label class="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
+                            <label label="No new notifications" color="rgba(160,160,160,0.8)" halign={Gtk.Align.CENTER} />
+                        </box>
+                    </box>
+                </box>
+            </window>
+        )
+
+        app.add_window(ControlCenter)
+    },
+})
+
+
