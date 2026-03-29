@@ -1,10 +1,14 @@
-[2026-03-29 14:22:47.514] [info] Using configuration file /home/greyson/.config/waybar/config
-[2026-03-29 14:22:47.515] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
-[2026-03-29 14:22:47.515] [info] Using CSS file /home/greyson/.config/waybar/style.css
-[2026-03-29 14:22:47.521] [info] Hyprland IPC starting
-[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Waybar config
-[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Hyprland workspace rules
-Full
-[2026-03-29 14:22:47.565] [info] Bar configured (width: 1920, height: 30) for output: eDP-1
-[2026-03-29 14:23:05.025] [info] Quitting.
-[2026-03-29 14:23:05.037] [info] Hyprland IPC stopping...
+✘ [ERROR] Could not resolve astal/gtk3
+
+    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:1:20:
+      1 │ import { App } from astal/gtk3
+        ╵                     ~~~~~~~~~~~~
+
+  You can mark the path astal/gtk3 as external to exclude it from the bundle, which will remove
+  this error and leave the unresolved path in the bundle.
+
+✘ [ERROR] Could not resolve ./control-center
+
+    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:2:26:
+      2 │ import ControlCenter from ./control-center
+        ╵                           ~~~~~~~~~~~~~~~~~~

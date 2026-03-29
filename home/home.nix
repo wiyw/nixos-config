@@ -13,13 +13,13 @@
     ./auth.nix
   ];
 
-  # <-- 2. CONFIGURE AGS WITH GTK3 -->
+  # <-- 2. CONFIGURE AGS WITH ASTAL3 -->
   programs.ags = {
     enable = true;
-    extraPackages = with pkgs; [
-      gtk3
-      gtk-layer-shell
-      gobject-introspection
+    # We are swapping standard pkgs for your AGS flake inputs
+    extraPackages = [
+      inputs.ags.packages.${pkgs.system}.astal3
+      inputs.ags.packages.${pkgs.system}.io
     ];
   };
 
