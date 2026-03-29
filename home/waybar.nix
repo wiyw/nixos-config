@@ -131,7 +131,7 @@
       }
       #workspaces button.active { color: #ffffff; }
 
-      #clock, #pulseaudio, #network, #battery, #custom/control-center {
+      #clock, #pulseaudio, #network, #battery, #custom-control-center {
           color: #ffffff;
           padding: 0px 10px;
       }
