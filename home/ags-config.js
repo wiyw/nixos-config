@@ -19,7 +19,6 @@ app.start({
 
         .control-center {
             padding: 14px;
-            spacing: 14px;
         }
 
         .quick-settings-pod {
