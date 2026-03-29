@@ -13,7 +13,7 @@
     hyprlock
     hypridle
     wl-clipboard
-    # REMOVED: inputs.ags.packages.${pkgs.system}.default <--- Take this out!
+    my-ags
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
@@ -42,3 +42,24 @@
     '')
   ];
 }
+
+let
+  my-ags = inputs.ags.lib.bundle {
+    inherit pkgs;
+    src = ./ags; # <--- IMPORTANT: Point this to your actual AGS source directory!
+    name = "my-ags";
+    entry = "app.ts"; # The main entry point of your config
+    gtk4 = false;     # Tells the bundler to strictly use gtk3
+
+    # Explicitly list the Astal modules your TypeScript code imports
+    extraPackages = [
+      inputs.ags.packages.${pkgs.system}.astal3
+      inputs.ags.packages.${pkgs.system}.apps
+      inputs.ags.packages.${pkgs.system}.hyprland
+      inputs.ags.packages.${pkgs.system}.network
+      inputs.ags.packages.${pkgs.system}.tray
+      inputs.ags.packages.${pkgs.system}.wireplumber
+      # Add any others you use (like battery, mpris, etc.)
+    ];
+  };
+in

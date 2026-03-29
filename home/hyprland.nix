@@ -44,7 +44,7 @@ in
 
       exec-once = [
         "waybar"
-        "ags run --gtk3 ~/.config/ags"
+        "my-ags"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
         "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /etc/nixos/home/wallpapers/interstellar.mp4"

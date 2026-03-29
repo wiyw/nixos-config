@@ -12,22 +12,7 @@
     ./rofi.nix
     ./auth.nix
   ];
-
-  # <-- 2. CONFIGURE AGS WITH ASTAL3 -->
-  programs.ags = {
-    enable = true;
-    configDir = ./ags; # <--- This tells AGS to automatically bundle your entire folder!
-    
-    extraPackages = with inputs.ags.packages.${pkgs.system}; [
-      astal3
-      io
-      battery
-      mpris
-      network
-      wireplumber 
-    ];
-  };
-
+  
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
     package = pkgs.bibata-cursors;
