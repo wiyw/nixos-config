@@ -117,16 +117,19 @@
       #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
       #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
 
-      #workspaces { padding-left: 4px; }
+      #workspaces { 
+        padding-left: 4px;
+        padding-right: 8px;
+        border-radius: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        margin-right: 8px;
+      }
       #workspaces button {
         color: #565f89;
-        padding: 0 6px;
-        border-radius: 50px;
-        border: 2px solid transparent;
+        padding: 0 4px;
         transition: all 0.3s ease;
       }
       #workspaces button.active { color: #ffffff; }
-      #workspaces button:hover { border-color: rgba(255, 255, 255, 0.3); }
 
       #clock, #pulseaudio, #network, #battery, #custom-swaync {
           color: #ffffff;
