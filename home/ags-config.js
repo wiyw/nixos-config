@@ -169,7 +169,7 @@ app.start({
                         <box class="media-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} hexpand valign={Gtk.Align.CENTER}>
                             <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER} hexpand vexpand>
                                 <box class="media-album">
-                                    <image class="media-cover" icon="audio-x-generic" pixelSize={80} />
+                                    <image class="media-cover" iconName="audio-x-generic" pixelSize={80} />
                                 </box>
                             </box>
                             <label class="media-title" label="No Media" maxWidthChars={20} halign={Gtk.Align.CENTER} />
