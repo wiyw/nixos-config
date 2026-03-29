@@ -4,7 +4,7 @@ import { exec } from "ags/process"
 
 function ControlCenter() {
     return (
-        <window visible name="control-center" anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} defaultWidth={360} defaultHeight={520}>
+        <window name="control-center" visible={true} anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} defaultWidth={360} defaultHeight={520}>
             <box orientation={Gtk.Orientation.VERTICAL} spacing={14} margin={14}>
                 <box homogeneous spacing={14}>
                     <box orientation={Gtk.Orientation.VERTICAL} spacing={8} css="background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px;">
