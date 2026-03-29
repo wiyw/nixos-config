@@ -146,11 +146,9 @@ app.start({
                 visible={false}
                 application={app}
             >
-                <box class="control-center" vertical spacing={12}>
-                    {/* Quick Settings Row */}
+                <box class="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                     <box class="quick-settings-pod" homogeneous>
-                        {/* Toggle Grid */}
-                        <box vertical spacing={8} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={8} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
                             <box spacing={8}>
                                 <button class="toggle-btn" onClicked={() => exec("nmcli radio wifi toggle")}>
                                     <label label="󰤯" />
@@ -168,8 +166,7 @@ app.start({
                                 </button>
                             </box>
                         </box>
-                        {/* Media Pod */}
-                        <box class="media-pod" vertical spacing={8} hexpand valign={Gtk.Align.CENTER}>
+                        <box class="media-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} hexpand valign={Gtk.Align.CENTER}>
                             <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER} hexpand vexpand>
                                 <box class="media-album">
                                     <image class="media-cover" icon="audio-x-generic" pixelSize={80} />
@@ -190,8 +187,7 @@ app.start({
                             </box>
                         </box>
                     </box>
-                    {/* Sliders */}
-                    <box class="sliders-pod" vertical spacing={12}>
+                    <box class="sliders-pod" orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                         <box class="slider-row volume" spacing={12} valign={Gtk.Align.CENTER}>
                             <label label="󰕿" />
                             <scale min={0} max={100} value={50} halign={Gtk.Align.FILL} hexpand
@@ -203,11 +199,10 @@ app.start({
                                 onChange={self => spawn(["brightnessctl", "set", `${self.value}%`])} />
                         </box>
                     </box>
-                    {/* Notifications */}
-                    <box class="notifications-pod" vertical spacing={8} vexpand>
+                    <box class="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>
                         <label class="notif-header" label="Notifications" halign={Gtk.Align.START} />
                         <scrollable valign={Gtk.Align.START} hexpand vexpand>
-                            <box class="notifications" vertical spacing={8} />
+                            <box class="notifications" orientation={Gtk.Orientation.VERTICAL} spacing={8} />
                         </scrollable>
                     </box>
                 </box>
