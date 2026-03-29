@@ -150,12 +150,23 @@
   home.homeDirectory = "/home/greyson";
 
   imports = [
+    inputs.ags.homeManagerModules.default # <-- 1. IMPORT THE AGS MODULE
     ./packages.nix
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
   ];
+
+  # <-- 2. CONFIGURE AGS WITH ASTAL3 -->
+  programs.ags = {
+    enable = true;
+    # We are swapping standard pkgs for your AGS flake inputs
+    extraPackages = [
+      inputs.ags.packages.${pkgs.system}.astal3
+      inputs.ags.packages.${pkgs.system}.io
+    ];
+  };
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
@@ -174,7 +185,6 @@
   home.file.".config/ags/style.css".source = ./ags/style.css;
   home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
 }
-
 
 
 --- FILE: ./home/rofi.nix ---
@@ -423,8 +433,8 @@ export default function ControlCenter() {
 
 
 --- FILE: ./home/ags/app.ts ---
-import { App } from "astal/gtk3"
-import ControlCenter from "./control-center"
+import { App } from "astal/gtk3";
+import ControlCenter from "./control-center";
 
 App.start({
     style: "./style.css",
@@ -620,7 +630,7 @@ App.start({
     hyprlock
     hypridle
     wl-clipboard
-    inputs.ags.packages.${pkgs.system}.default
+    # REMOVED: inputs.ags.packages.${pkgs.system}.default <--- Take this out!
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
@@ -882,16 +892,20 @@ SOFTWARE.
 
 
 --- FILE: ./error.txt ---
-[2026-03-29 14:22:47.514] [info] Using configuration file /home/greyson/.config/waybar/config
-[2026-03-29 14:22:47.515] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
-[2026-03-29 14:22:47.515] [info] Using CSS file /home/greyson/.config/waybar/style.css
-[2026-03-29 14:22:47.521] [info] Hyprland IPC starting
-[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Waybar config
-[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Hyprland workspace rules
-Full
-[2026-03-29 14:22:47.565] [info] Bar configured (width: 1920, height: 30) for output: eDP-1
-[2026-03-29 14:23:05.025] [info] Quitting.
-[2026-03-29 14:23:05.037] [info] Hyprland IPC stopping...
+✘ [ERROR] Could not resolve astal/gtk3
+
+    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:1:20:
+      1 │ import { App } from astal/gtk3
+        ╵                     ~~~~~~~~~~~~
+
+  You can mark the path astal/gtk3 as external to exclude it from the bundle, which will remove
+  this error and leave the unresolved path in the bundle.
+
+✘ [ERROR] Could not resolve ./control-center
+
+    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:2:26:
+      2 │ import ControlCenter from ./control-center
+        ╵                           ~~~~~~~~~~~~~~~~~~
 
 
 
@@ -1030,6 +1044,9 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
       AllowTcpForwarding = true;
     };
   };
+
+  # Please dont blow up
+  services.thermald.enable = true;
 
   # DO NOT CHANGE THIS
   system.stateVersion = "25.11"; 
