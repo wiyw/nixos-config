@@ -92,7 +92,7 @@
         "custom/swaync" = {
           tooltip = false;
           format = " ";
-          on-click = "ags -t control-center"; # Preview of what we'll change this to!
+          on-click = "ags toggle control-center";
         };
       };
     };

@@ -40,5 +40,5 @@ in
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 
-  home.file.".config/ags/config.js".source = ./ags-config.js;
+  home.file.".config/ags/app.js".source = ./ags-config.js;
 }
