@@ -2,7 +2,7 @@ import app from "ags/gtk4/app"
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
 
-const ControlCenter = Gtk.Window({
+const ControlCenter = new Gtk.Window({
     name: "control-center",
     anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT,
     marginEnd: 15,
@@ -12,45 +12,45 @@ const ControlCenter = Gtk.Window({
     visible: true,
     defaultWidth: 360,
     defaultHeight: 520,
-    child: Gtk.Box({
+    child: new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
         spacing: 14,
         margin: 14,
         children: [
             // Quick Settings Pod
-            Gtk.Box({
+            new Gtk.Box({
                 homogeneous: true,
                 spacing: 14,
                 children: [
-                    Gtk.Box({
+                    new Gtk.Box({
                         orientation: Gtk.Orientation.VERTICAL,
                         spacing: 8,
                         css: "background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px;",
                         children: [
-                            Gtk.Box({
+                            new Gtk.Box({
                                 spacing: 8,
                                 children: [
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰤮",
                                         css: "background: rgba(60,60,70,0.8); border-radius: 12px; min-width: 50px; min-height: 50px;",
                                         onClicked: () => exec("nmcli radio wifi toggle")
                                     }),
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰥭",
                                         css: "background: rgba(60,60,70,0.8); border-radius: 12px; min-width: 50px; min-height: 50px;",
                                         onClicked: () => exec("rfkill toggle bluetooth")
                                     }),
                                 ]
                             }),
-                            Gtk.Box({
+                            new Gtk.Box({
                                 spacing: 8,
                                 children: [
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰝟",
                                         css: "background: rgba(60,60,70,0.8); border-radius: 12px; min-width: 50px; min-height: 50px;",
                                         onClicked: () => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
                                     }),
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰌾",
                                         css: "background: rgba(60,60,70,0.8); border-radius: 12px; min-width: 50px; min-height: 50px;",
                                         onClicked: () => exec("hyprlock")
@@ -60,45 +60,45 @@ const ControlCenter = Gtk.Window({
                         ]
                     }),
                     // Media Pod
-                    Gtk.Box({
+                    new Gtk.Box({
                         orientation: Gtk.Orientation.VERTICAL,
                         spacing: 6,
                         hexpand: true,
                         css: "background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px; min-width: 140px;",
                         children: [
-                            Gtk.Box({
+                            new Gtk.Box({
                                 halign: Gtk.Align.CENTER,
                                 hexpand: true,
-                                child: Gtk.Label({
+                                child: new Gtk.Label({
                                     label: "♪",
                                     css: "font-size: 32px;"
                                 })
                             }),
-                            Gtk.Label({
+                            new Gtk.Label({
                                 label: "No Media Playing",
                                 halign: Gtk.Align.CENTER,
                                 css: "font-weight: bold;"
                             }),
-                            Gtk.Label({
+                            new Gtk.Label({
                                 label: "—",
                                 halign: Gtk.Align.CENTER,
                                 css: "color: #a0a0a0;"
                             }),
-                            Gtk.Box({
+                            new Gtk.Box({
                                 spacing: 8,
                                 halign: Gtk.Align.CENTER,
                                 homogeneous: true,
                                 children: [
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰒮",
                                         onClicked: () => exec("playerctl previous")
                                     }),
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "▶",
                                         css: "background: #007AFF; border-radius: 50%;",
                                         onClicked: () => exec("playerctl play-pause")
                                     }),
-                                    Gtk.Button({
+                                    new Gtk.Button({
                                         label: "󰒭",
                                         onClicked: () => exec("playerctl next")
                                     }),
@@ -109,40 +109,40 @@ const ControlCenter = Gtk.Window({
                 ]
             }),
             // Sliders Pod
-            Gtk.Box({
+            new Gtk.Box({
                 orientation: Gtk.Orientation.VERTICAL,
                 spacing: 8,
                 css: "background: rgba(40,40,50,0.8); border-radius: 16px; padding: 14px;",
                 children: [
-                    Gtk.Box({
+                    new Gtk.Box({
                         spacing: 12,
                         children: [
-                            Gtk.Label({ label: "🔊" }),
-                            Gtk.Label({ label: "Volume" })
+                            new Gtk.Label({ label: "🔊" }),
+                            new Gtk.Label({ label: "Volume" })
                         ]
                     }),
-                    Gtk.Box({
+                    new Gtk.Box({
                         spacing: 12,
                         children: [
-                            Gtk.Label({ label: "☀" }),
-                            Gtk.Label({ label: "Brightness" })
+                            new Gtk.Label({ label: "☀" }),
+                            new Gtk.Label({ label: "Brightness" })
                         ]
                     }),
                 ]
             }),
             // Notifications Pod
-            Gtk.Box({
+            new Gtk.Box({
                 orientation: Gtk.Orientation.VERTICAL,
                 spacing: 8,
                 vexpand: true,
                 css: "background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px;",
                 children: [
-                    Gtk.Label({
+                    new Gtk.Label({
                         label: "NOTIFICATIONS",
                         halign: Gtk.Align.START,
                         css: "color: #a0a0a0; font-weight: bold; font-size: 11px;"
                     }),
-                    Gtk.Label({
+                    new Gtk.Label({
                         label: "No new notifications",
                         halign: Gtk.Align.CENTER,
                         css: "color: #808080;"
