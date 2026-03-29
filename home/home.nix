@@ -5,14 +5,13 @@
   home.homeDirectory = "/home/greyson";
 
   imports = [
-    inputs.ags.homeManagerModules.default # <-- 1. IMPORT THE AGS MODULE
     ./packages.nix
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
   ];
-  
+
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
     package = pkgs.bibata-cursors;
