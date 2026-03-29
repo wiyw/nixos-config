@@ -13,24 +13,26 @@
     ags.url = "github:aylur/ags";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
-    nixosConfigurations = {
-      iusenixbtw = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hardware-configuration.nix
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            # This line passes your inputs (like Zen, ags) into home-manager
-            home-manager.extraSpecialArgs = { inherit inputs; }; 
-            # Point this to your new modular folder
-            home-manager.users.greyson = import ./home/home.nix;
-          }
-        ];
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
+    let
+      secrets = import ./home/secrets.nix;
+    in
+    {
+      nixosConfigurations = {
+        iusenixbtw = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hardware-configuration.nix
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; secrets = secrets; };
+              home-manager.users.greyson = import ./home/home.nix;
+            }
+          ];
+        };
       };
     };
-  };
 }

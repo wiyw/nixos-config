@@ -1,8 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, secrets, ... }:
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   programs.git = {
     enable = true;
