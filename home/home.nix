@@ -10,13 +10,7 @@
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
-    inputs.ags.homeManagerModules.default
   ];
-
-  programs.ags = {
-    enable = true;
-    configDir = ./ags-config.js;
-  };
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
@@ -28,4 +22,6 @@
 
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
+
+  home.file.".config/ags/app.js".source = ./ags-config.js;
 }

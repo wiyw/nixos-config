@@ -13,6 +13,7 @@
     hyprlock
     hypridle
     wl-clipboard
+    inputs.ags.packages.${pkgs.system}.default
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
