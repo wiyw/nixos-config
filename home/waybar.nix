@@ -12,7 +12,7 @@
         # Swapped hyprland/window and hyprland/workspaces
         modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
         modules-center = [ ];
-        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/swaync" "clock" ];
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/control-center" "clock" ];
         
         "custom/os_button" = {
           format = ""; 
@@ -89,10 +89,10 @@
         "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
 
         # We will keep the button here for now, but rename its execution later to trigger AGS
-        "custom/swaync" = {
+        "custom/control-center" = {
           tooltip = false;
           format = " ";
-          on-click = "ags toggle control-center || ags run";
+          on-click = "ags request toggle-control-center"; # AGS v2 syntax!
         };
       };
     };
@@ -131,7 +131,7 @@
       }
       #workspaces button.active { color: #ffffff; }
 
-      #clock, #pulseaudio, #network, #battery, #custom-swaync {
+      #clock, #pulseaudio, #network, #battery, #custom/control-center {
           color: #ffffff;
           padding: 0px 10px;
       }

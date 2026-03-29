@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
-# Generate code.txt with all config files
-
 OUTPUT="code.txt"
+
+# Clear the output file first
 > "$OUTPUT"
 
-for file in home/*.nix home/*.js; do
-    echo "$file" >> "$OUTPUT"
-    cat "$file" >> "$OUTPUT"
-    echo "" >> "$OUTPUT"
-    echo "" >> "$OUTPUT"
+# -type f: find only files
+# ! -name "$OUTPUT": exclude the output file itself
+# ! -name "*.mp4": exclude MP4 video files
+# ! -path '*/.*': skip hidden files and directories (like .git)
+find . -type f ! -name "$OUTPUT" ! -name "*.mp4" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
+    {
+        echo "--- FILE: $file ---"
+        cat "$file"
+        echo -e "\n\n"
+    } >> "$OUTPUT"
 done
 
-echo "Generated $OUTPUT with $(ls home/*.nix home/*.js 2>/dev/null | wc -l) files"
+echo "Generated $OUTPUT"

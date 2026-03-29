@@ -1,22 +1,148 @@
-home/auth.nix
-{ config, pkgs, lib, ... }:
-
+--- FILE: ./flake.lock ---
 {
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "wiyw";
-        email = "quantumdragon8@gmail.com";
-      };
-      init.defaultBranch = "main";
-      safe.directory = "/etc/nixos";
-    };
-  };
+  "nodes": {
+    "ags": {
+      "inputs": {
+        "astal": "astal",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1764289441,
+        "narHash": "sha256-ak+lgFiYE5PHByN1/BRkO5JP498hno6Ix24C1Qf/vec=",
+        "owner": "aylur",
+        "repo": "ags",
+        "rev": "e169694390548dfd38ff40f1ef2163d6c3ffe3ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aylur",
+        "repo": "ags",
+        "type": "github"
+      }
+    },
+    "astal": {
+      "inputs": {
+        "nixpkgs": [
+          "ags",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764173295,
+        "narHash": "sha256-Jh4VtPcK2Ov+RTcV9FtyQRsxiJmXFQGfqX6jjM7/mgc=",
+        "owner": "aylur",
+        "repo": "astal",
+        "rev": "7d1fac8a4b2a14954843a978d2ddde86168c75ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aylur",
+        "repo": "astal",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774561634,
+        "narHash": "sha256-3q1xsREjqdVIIwQQDZQ9y0YdBzP8gAxdwKoKnZSzJtU=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "7c046c63ac3b467c1d589b99d531da5b6520825a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1763966396,
+        "narHash": "sha256-6eeL1YPcY1MV3DDStIDIdy/zZCDKgHdkCmsrLJFiZf0=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1774386573,
+        "narHash": "sha256-4hAV26quOxdC6iyG7kYaZcM3VOskcPUrdCQd/nx8obc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "46db2e09e1d3f113a13c0d7b81e2f221c63b8ce9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1773646010,
+        "narHash": "sha256-iYrs97hS7p5u4lQzuNWzuALGIOdkPXvjz7bviiBjUu8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "5b2c2d84341b2afb5647081c1386a80d7a8d8605",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ags": "ags",
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs_2",
+        "zen-browser": "zen-browser"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1773722260,
+        "narHash": "sha256-U8MsSiqqYZHR3oKE+cCZ2AJt3b4LcXs+oQuNLipaO78=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "0e6e43342fb3e9a3439fafa777d8cdf98e4ffc49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
 }
 
 
-home/home.nix
+
+--- FILE: ./home/home.nix ---
 { inputs, config, pkgs, lib, ... }:
 
 {
@@ -42,11 +168,472 @@ home/home.nix
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 
-  home.file.".config/ags/app.js".source = ./ags-config.js;
+  # Notice the .tsx extensions!
+  home.file.".config/ags/app.tsx".source = ./ags/ags-config.tsx;
+  home.file.".config/ags/style.css".source = ./ags/ags-style.css;
 }
 
 
-home/hyprland.nix
+
+--- FILE: ./home/rofi.nix ---
+{ config, pkgs, ... }:
+
+{
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi;
+    # Tell Home Manager to load our custom theme file!
+    theme = "~/.config/rofi/interstellar.rasi";
+  };
+
+  # Write your exact Rasi theme to that custom file instead
+  xdg.configFile."rofi/interstellar.rasi".text = ''
+    configuration {
+      modi: "drun,run";
+      show-icons: true;
+      display-drun: "Apps";
+      display-run: "Run";
+      font: "JetBrainsMono Nerd Font 12";
+    }
+
+    * {
+      bg: #1a1b2699;
+      bg-alt: #24283b;
+      fg: #c0caf5;
+      border-col: #7aa2f7;
+      selected: #3d59a1;
+      
+      background-color: transparent;
+      text-color: @fg;
+      margin: 0;
+      padding: 0;
+    }
+
+    window {
+      width: 600px;
+      background-color: @bg;
+      border: 2px solid;
+      border-color: @border-col;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    inputbar {
+      background-color: @bg-alt;
+      padding: 15px;
+      border-radius: 10px;
+      children: [prompt, entry];
+    }
+
+    prompt {
+      text-color: @border-col;
+      padding: 0px 15px 0px 0px;
+      font: "JetBrainsMono Nerd Font Bold 12";
+    }
+
+    entry {
+      placeholder: "Search...";
+      placeholder-color: #565f89;
+    }
+
+    listview {
+      margin: 20px 0px 0px 0px;
+      columns: 1;
+      lines: 7;
+      spacing: 10px;
+    }
+
+    element {
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    element selected {
+      background-color: @selected;
+      text-color: #ffffff;
+    }
+
+    element-icon {
+      size: 24px;
+      padding: 0px 10px 0px 0px;
+    }
+  '';
+}
+
+
+--- FILE: ./home/ags/ags-config.tsx ---
+import { App, Astal, Gtk } from "astal/gtk3"
+import { execAsync } from "astal/process"
+
+// A helper component for our 2x2 grid buttons
+function QuickButton({ icon, command }: { icon: string, command: string }) {
+    return (
+        <button 
+            className="toggle-btn" 
+            onClicked={() => execAsync(["bash", "-c", command]).catch(print)}
+        >
+            <label label={icon} />
+        </button>
+    )
+}
+
+function ControlCenter() {
+    return (
+        <window
+            name="control-center"
+            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
+            marginRight={15}
+            marginTop={10}
+            layer={Astal.Layer.TOP}
+            application={App}
+            visible={false} // Hidden by default, triggered by Waybar
+        >
+            <box className="control-center" vertical spacing={14}>
+                
+                {/* TOP ROW: Quick Settings + Media */}
+                <box spacing={14}>
+                    {/* Quick Settings 2x2 Grid */}
+                    <box className="quick-settings-pod" vertical spacing={8}>
+                        <box spacing={8}>
+                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
+                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
+                        </box>
+                        <box spacing={8}>
+                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+                            <QuickButton icon="󰌾" command="hyprlock" />
+                        </box>
+                    </box>
+
+                    {/* Media Player Pod */}
+                    <box className="media-pod" vertical spacing={6}>
+                        <box className="media-cover" halign={Gtk.Align.CENTER}>
+                            <label label="♪" css="font-size: 32px;" />
+                        </box>
+                        <label className="media-title" label="No Media Playing" truncate />
+                        <label className="media-artist" label="—" truncate />
+                        
+                        <box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
+                            <button className="media-btn" onClicked={() => execAsync("playerctl previous")}>
+                                <label label="󰒮" />
+                            </button>
+                            <button className="media-btn play-btn" onClicked={() => execAsync("playerctl play-pause")}>
+                                <label label="▶" />
+                            </button>
+                            <button className="media-btn" onClicked={() => execAsync("playerctl next")}>
+                                <label label="󰒭" />
+                            </button>
+                        </box>
+                    </box>
+                </box>
+
+                {/* SLIDERS POD */}
+                <box className="sliders-pod" vertical spacing={8}>
+                    <box spacing={12}>
+                        <label label="🔊" />
+                        <label label="Volume" />
+                    </box>
+                    <box spacing={12}>
+                        <label label="☀" />
+                        <label label="Brightness" />
+                    </box>
+                </box>
+
+                {/* NOTIFICATIONS POD */}
+                <box className="notifications-pod" vertical spacing={8} vexpand>
+                    <label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
+                    <label label="No new notifications" halign={Gtk.Align.CENTER} />
+                </box>
+            </box>
+        </window>
+    )
+}
+
+App.start({
+    style: "./style.css", // Load your CSS
+    requestHandler(request, res) {
+        // This listens for the `ags request toggle-control-center` command from Waybar
+        if (request === "toggle-control-center") {
+            const win = App.get_window("control-center")
+            if (win) {
+                win.visible = !win.visible
+                res("Toggled window")
+            } else {
+                res("Window not found")
+            }
+        }
+    },
+    main() {
+        ControlCenter()
+    }
+})
+
+
+--- FILE: ./home/ags/ags-style.css ---
+* {
+    font-family: "JetBrainsMono Nerd Font", -apple-system, sans-serif;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+window.control-center-window {
+    background-color: rgba(26, 27, 38, 0.65); /* Matches your Waybar */
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-center {
+    padding: 16px;
+}
+
+.quick-settings-pod, .sliders-pod, .notifications-pod {
+    background: rgba(40, 40, 50, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px;
+}
+
+.toggle-btn {
+    background: rgba(60, 60, 70, 0.8);
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 20px;
+    min-width: 55px;
+    min-height: 55px;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn:hover { background: rgba(80, 80, 90, 0.9); }
+.toggle-btn.active { background: #7aa2f7; }
+
+.media-pod {
+    background: rgba(40, 40, 50, 0.6);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px;
+    min-width: 140px;
+}
+
+.media-cover {
+    border-radius: 12px;
+    background: #1a1b26;
+    min-width: 80px;
+    min-height: 80px;
+    margin-bottom: 8px;
+}
+
+.media-title { font-weight: bold; font-size: 14px; }
+.media-artist { font-size: 11px; color: #a9b1d6; margin-bottom: 8px; }
+
+.media-btn {
+    background: transparent;
+    font-size: 16px;
+}
+
+.play-btn {
+    font-size: 16px;
+    background: #7aa2f7;
+    border-radius: 50%;
+    min-width: 35px;
+    min-height: 35px;
+}
+
+.notif-header { font-weight: bold; font-size: 11px; color: #a9b1d6; }
+
+
+--- FILE: ./home/waybar.nix ---
+{ config, pkgs, ... }:
+
+{
+  programs.waybar = {
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        margin = "0"; 
+        
+        # Swapped hyprland/window and hyprland/workspaces
+        modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
+        modules-center = [ ];
+        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/control-center" "clock" ];
+        
+        "custom/os_button" = {
+          format = ""; 
+          tooltip = false;
+          on-click = "rofi -show drun"; 
+        };
+
+        "hyprland/window" = {
+          format = "{class}"; 
+          max-length = 50;
+          separate-outputs = true;
+          rewrite = {
+            "kitty" = "Kitty";
+            "zen" = "Zen Browser";
+            "zen-beta" = "Zen Browser";
+            "org.gnome.Nautilus" = "Files";
+            "" = ""; 
+          };
+        };
+
+        "custom/media" = {
+          format = "{}";
+          max-length = 40;
+          escape = true;
+          exec = "playerctl metadata --format '{{title}} - {{artist}}' 2>/dev/null";
+          interval = 2;
+          on-click = "playerctl play-pause";
+        };
+
+        "hyprland/workspaces" = {
+          format = "{icon}";
+          format-icons = {
+            active = "";
+            default = "";
+            urgent = "";
+          };
+          persistent-workspaces = {
+            "*" = 10;
+          };
+        };
+
+        "clock" = {
+          format = "{:%a %b %e  %I:%M %p}";
+        };
+
+        "pulseaudio" = {
+          format = "{icon}  {volume}%";
+          format-muted = " Muted";
+          format-icons = {
+            default = ["" "" ""];
+          };
+          on-click = "pavucontrol";
+        };
+
+        "network" = {
+          format-wifi = " ";
+          format-ethernet = " ";
+          format-disconnected = "⚠";
+        };
+
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-charging = "󰂄  {capacity}%";
+          format-plugged = "  {capacity}%";
+          format-icons = ["" "" "" "" ""];
+        };
+
+        "custom/prev" = { format = "󰒮"; on-click = "playerctl previous"; };
+        "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
+        "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
+
+        # We will keep the button here for now, but rename its execution later to trigger AGS
+        "custom/control-center" = {
+          tooltip = false;
+          format = " ";
+          on-click = "ags request toggle-control-center"; # AGS v2 syntax!
+        };
+      };
+    };
+
+    style = ''
+      * {
+        font-family: "JetBrainsMono Nerd Font", sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      window#waybar {
+        background-color: rgba(26, 27, 38, 0.65); 
+        color: #ffffff;
+        margin: 0px;
+        min-height: 38px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
+
+      #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
+      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
+
+      #workspaces { 
+        padding-left: 4px;
+        padding-right: 8px;
+        border-radius: 50px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        margin-right: 8px;
+      }
+      #workspaces button {
+        color: #565f89;
+        padding: 0 4px;
+        transition: all 0.3s ease;
+      }
+      #workspaces button.active { color: #ffffff; }
+
+      #clock, #pulseaudio, #network, #battery, #custom/control-center {
+          color: #ffffff;
+          padding: 0px 10px;
+      }
+      #clock { padding-right: 16px; padding-left: 10px; }
+      #custom-prev, #custom-play, #custom-next { color: #ffffff; padding: 0px 6px; font-size: 18px; }
+      #custom-media { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
+    '';
+  };
+}
+
+
+--- FILE: ./home/packages.nix ---
+{ pkgs, inputs, ... }:
+
+{
+  home.packages = with pkgs; [
+    # Core Apps
+    inputs.zen-browser.packages.${pkgs.system}.default
+    kitty
+    nautilus 
+    
+    # Ricing Tools
+    waybar
+    mpvpaper # Live video wallpaper engine!
+    hyprlock
+    hypridle
+    wl-clipboard
+    inputs.ags.packages.${pkgs.system}.default
+
+    # Waybar Dependencies (Fixes the crash)
+    playerctl # Needed for the media player module
+    nerd-fonts.jetbrains-mono # Needed for the icons to render
+    ffmpeg # You know what this is
+
+    # AI stuff
+    opencode
+
+    # Custom Rebuild & Backup Command
+    (writeShellScriptBin "sysbuild" ''
+      echo "🛠️ Starting system rebuild..."
+      cd /home/greyson/nixos-config/
+      git add .
+      if ! git diff --cached --quiet; then
+        echo "📦 Committing changes..."
+        git commit -m "Auto-rebuild: $(date +'%Y-%m-%d %H:%M:%S')"
+      else
+        echo "🤷 No new changes to commit."
+      fi
+      echo "☁️ Pushing to GitHub..."
+      git push
+      echo "🚀 Building flake..."
+      sudo nixos-rebuild switch --flake .#iusenixbtw
+      echo "✅ All done!"
+    '')
+  ];
+}
+
+
+--- FILE: ./home/hyprland.nix ---
 { config, pkgs, ... }:
 
 let
@@ -195,497 +782,310 @@ in
   };
 }
 
-home/packages.nix
-{ pkgs, inputs, ... }:
+
+--- FILE: ./home/auth.nix ---
+{ config, pkgs, lib, ... }:
 
 {
-  home.packages = with pkgs; [
-    # Core Apps
-    inputs.zen-browser.packages.${pkgs.system}.default
-    kitty
-    nautilus 
-    
-    # Ricing Tools
-    waybar
-    mpvpaper # Live video wallpaper engine!
-    hyprlock
-    hypridle
-    wl-clipboard
-    inputs.ags.packages.${pkgs.system}.default
-
-    # Waybar Dependencies (Fixes the crash)
-    playerctl # Needed for the media player module
-    nerd-fonts.jetbrains-mono # Needed for the icons to render
-    ffmpeg # You know what this is
-
-    # AI stuff
-    opencode
-
-    # Custom Rebuild & Backup Command
-    (writeShellScriptBin "sysbuild" ''
-      echo "🛠️ Starting system rebuild..."
-      cd /home/greyson/nixos-config/
-      git add .
-      if ! git diff --cached --quiet; then
-        echo "📦 Committing changes..."
-        git commit -m "Auto-rebuild: $(date +'%Y-%m-%d %H:%M:%S')"
-      else
-        echo "🤷 No new changes to commit."
-      fi
-      echo "☁️ Pushing to GitHub..."
-      git push
-      echo "🚀 Building flake..."
-      sudo nixos-rebuild switch --flake .#iusenixbtw
-      echo "✅ All done!"
-    '')
-  ];
-}
-
-home/rofi.nix
-{ config, pkgs, ... }:
-
-{
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi;
-    # Tell Home Manager to load our custom theme file!
-    theme = "~/.config/rofi/interstellar.rasi";
-  };
-
-  # Write your exact Rasi theme to that custom file instead
-  xdg.configFile."rofi/interstellar.rasi".text = ''
-    configuration {
-      modi: "drun,run";
-      show-icons: true;
-      display-drun: "Apps";
-      display-run: "Run";
-      font: "JetBrainsMono Nerd Font 12";
-    }
-
-    * {
-      bg: #1a1b2699;
-      bg-alt: #24283b;
-      fg: #c0caf5;
-      border-col: #7aa2f7;
-      selected: #3d59a1;
-      
-      background-color: transparent;
-      text-color: @fg;
-      margin: 0;
-      padding: 0;
-    }
-
-    window {
-      width: 600px;
-      background-color: @bg;
-      border: 2px solid;
-      border-color: @border-col;
-      border-radius: 15px;
-      padding: 20px;
-    }
-
-    inputbar {
-      background-color: @bg-alt;
-      padding: 15px;
-      border-radius: 10px;
-      children: [prompt, entry];
-    }
-
-    prompt {
-      text-color: @border-col;
-      padding: 0px 15px 0px 0px;
-      font: "JetBrainsMono Nerd Font Bold 12";
-    }
-
-    entry {
-      placeholder: "Search...";
-      placeholder-color: #565f89;
-    }
-
-    listview {
-      margin: 20px 0px 0px 0px;
-      columns: 1;
-      lines: 7;
-      spacing: 10px;
-    }
-
-    element {
-      padding: 12px;
-      border-radius: 10px;
-    }
-
-    element selected {
-      background-color: @selected;
-      text-color: #ffffff;
-    }
-
-    element-icon {
-      size: 24px;
-      padding: 0px 10px 0px 0px;
-    }
-  '';
-}
-
-home/waybar.nix
-{ config, pkgs, ... }:
-
-{
-  programs.waybar = {
+  programs.git = {
     enable = true;
     settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        margin = "0"; 
-        
-        # Swapped hyprland/window and hyprland/workspaces
-        modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
-        modules-center = [ ];
-        modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/swaync" "clock" ];
-        
-        "custom/os_button" = {
-          format = ""; 
-          tooltip = false;
-          on-click = "rofi -show drun"; 
-        };
+      user = {
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
+      };
+      init.defaultBranch = "main";
+      safe.directory = "/etc/nixos";
+    };
+  };
+}
 
-        "hyprland/window" = {
-          format = "{class}"; 
-          max-length = 50;
-          separate-outputs = true;
-          rewrite = {
-            "kitty" = "Kitty";
-            "zen" = "Zen Browser";
-            "zen-beta" = "Zen Browser";
-            "org.gnome.Nautilus" = "Files";
-            "" = ""; 
-          };
-        };
 
-        "custom/media" = {
-          format = "{}";
-          max-length = 40;
-          escape = true;
-          exec = "playerctl metadata --format '{{title}} - {{artist}}' 2>/dev/null";
-          interval = 2;
-          on-click = "playerctl play-pause";
-        };
 
-        "hyprland/workspaces" = {
-          format = "{icon}";
-          format-icons = {
-            active = "";
-            default = "";
-            urgent = "";
-          };
-          persistent-workspaces = {
-            "*" = 10;
-          };
-        };
+--- FILE: ./LICENSE ---
+MIT License
 
-        "clock" = {
-          format = "{:%a %b %e  %I:%M %p}";
-        };
+Copyright (c) 2026 Greyson
 
-        "pulseaudio" = {
-          format = "{icon}  {volume}%";
-          format-muted = " Muted";
-          format-icons = {
-            default = ["" "" ""];
-          };
-          on-click = "pavucontrol";
-        };
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-        "network" = {
-          format-wifi = " ";
-          format-ethernet = " ";
-          format-disconnected = "⚠";
-        };
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-        "battery" = {
-          states = {
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon}  {capacity}%";
-          format-charging = "󰂄  {capacity}%";
-          format-plugged = "  {capacity}%";
-          format-icons = ["" "" "" "" ""];
-        };
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-        "custom/prev" = { format = "󰒮"; on-click = "playerctl previous"; };
-        "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
-        "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
 
-        # We will keep the button here for now, but rename its execution later to trigger AGS
-        "custom/swaync" = {
-          tooltip = false;
-          format = " ";
-          on-click = "ags toggle control-center || ags run";
+--- FILE: ./hardware-configuration.nix ---
+# Do not modify this file!  It was generated by ‘nixos-generate-config’
+# and may be overwritten by future invocations.  Please make changes
+# to /etc/nixos/configuration.nix instead.
+{ config, lib, pkgs, modulesPath, ... }:
+
+{
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+    ];
+
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/ba86184e-8805-4bed-ab35-bc7b98f50a9a";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/C351-2251";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/cf1fe300-2801-47cb-8ca6-de7bc81ac412"; }
+    ];
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+
+
+
+--- FILE: ./error.txt ---
+[2026-03-29 14:22:47.514] [info] Using configuration file /home/greyson/.config/waybar/config
+[2026-03-29 14:22:47.515] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+[2026-03-29 14:22:47.515] [info] Using CSS file /home/greyson/.config/waybar/style.css
+[2026-03-29 14:22:47.521] [info] Hyprland IPC starting
+[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Waybar config
+[2026-03-29 14:22:47.523] [info] Loading persistent workspaces from Hyprland workspace rules
+Full
+[2026-03-29 14:22:47.565] [info] Bar configured (width: 1920, height: 30) for output: eDP-1
+[2026-03-29 14:23:05.025] [info] Quitting.
+[2026-03-29 14:23:05.037] [info] Hyprland IPC stopping...
+
+
+
+--- FILE: ./README.md ---
+# iusenixbtw | NixOS + Hyprland Config
+
+> "We're not meant to save the world. We're meant to leave it."
+
+A highly customized, Flake-based NixOS configuration focused on a macOS-inspired aesthetic with an Interstellar-themed twist. This setup utilizes **Hyprland** for tiling window management and **Waybar** for a clean, glass-morphic top bar.
+
+## 🛠️ Tech Stack
+
+* **OS:** [NixOS](https://nixos.org/) (Unstable/Flake)
+* **WM:** [Hyprland](https://hyprland.org/)
+* **Bar:** [Waybar](https://github.com/Alexays/Waybar)
+* **Shell:** Zsh (with custom plugins)
+* **Terminal:** Kitty
+* **Browser:** Zen Browser (Optimized Firefox Fork)
+* **Widgets:** AGS (Aylur's GTK Shell) - *In Migration*
+* **Wallpaper:** Live Interstellar video engine via `mpvpaper`
+
+## 📁 Project Structure
+
+```text
+.
+├── flake.nix               # System entry point
+├── configuration.nix       # System-level settings (GC, Boot, Users)
+├── home/
+│   ├── home.nix            # Home Manager entry point
+│   ├── waybar.nix          # macOS style top bar
+│   ├── hyprland.nix        # Window manager logic & keybinds
+│   ├── auth.nix            # Secure Git & Identity module
+│   ├── secrets.nix         # (GIT IGNORED) Local private data
+│   └── wallpapers/         # Cinematic assets
+└── nextsteps.md            # Project roadmap & TODOs
+
+
+
+
+--- FILE: ./nextsteps.md ---
+# NixOS Ricing & Configuration Roadmap
+
+## ✅ Completed
+- [x] fix sound not playing anymore when on home screen (Fixed via mpvpaper background script)
+- [x] make modules on waybar interactable
+- [x] change the waybar so the workspaces is closer to the edge of the screen
+- [x] less dramatic curve at the bottom so its a cleaner transition (Waybar flush with screen)
+- [x] make waybar bigger (Adjusted font sizes and margins)
+- [x] Setup weekly garbage cleanup and store optimization
+
+## 🚧 In Progress
+- [ ] make the furthermost right button into a control panel themed after macos *(Currently migrating from SwayNC to AGS)*
+- [ ] more interstellar references
+
+## 📋 To-Do
+
+**System & Security**
+- [ ] setup better gitignore
+- [ ] add a auth module in main home directory to configure Git email/username securely (add to gitignore)
+- [ ] split up /home/greyson/nixos-config/home into multiple parts so can configure multiple themes later
+- [ ] make a project README
+- [ ] add a MIT LICENSE
+- [ ] add a grub2 theme possibly or something that allows for nix rollbacks while still looking better then systemd
+
+**Visuals & Theming**
+- [ ] move /home/greyson/videos/interstellar.mp4 to /home/greyson/nixos-config/home/wallpapers/interstellar.mp4
+- [ ] frost blur so its easier to read text (make apps more transparent)
+- [ ] bold current window showing more
+- [ ] add better looking zsh
+- [ ] add a lock screen (Hyprlock is installed, needs config)
+- [ ] add a gui greeter
+
+**Functionality**
+- [ ] add a dedicated settings app to control everything
+
+
+--- FILE: ./configuration.nix ---
+{ config, lib, pkgs, ... }:
+
+{
+  imports = [ 
+    ./hardware-configuration.nix 
+  ];
+
+  # Bootloader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Networking
+  networking.hostName = "iusenixbtw"; 
+  networking.networkmanager.enable = true;
+
+  # Time & Locale
+  time.timeZone = "America/Los_Angeles";
+
+  # Nix Package Management & Garbage Collection
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true; # Saves massive disk space
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+  };
+
+  # Enable nix-ld so pre-compiled binaries can run
+  programs.nix-ld.enable = true;
+
+  # User Configuration
+  users.users.greyson = {
+    isNormalUser = true;
+    description = "Greyson";
+    extraGroups = [ "wheel" "networkmanager" ];
+  };
+
+  # System-level Programs & Shell
+  programs.hyprland.enable = true;
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
+  # Base System Packages
+  environment.systemPackages = with pkgs; [
+    neovim 
+    wget
+  ];
+
+  # Services
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = true;
+      PermitRootLogin = "no";
+      AllowTcpForwarding = true;
+    };
+  };
+
+  # DO NOT CHANGE THIS
+  system.stateVersion = "25.11"; 
+}
+
+
+--- FILE: ./generate-code.sh ---
+#!/usr/bin/env bash
+OUTPUT="code.txt"
+
+# Clear the output file first
+> "$OUTPUT"
+
+# -type f: find only files
+# ! -name "$OUTPUT": exclude the output file itself
+# ! -name "*.mp4": exclude MP4 video files
+# ! -path '*/.*': skip hidden files and directories (like .git)
+find . -type f ! -name "$OUTPUT" ! -name "*.mp4" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
+    {
+        echo "--- FILE: $file ---"
+        cat "$file"
+        echo -e "\n\n"
+    } >> "$OUTPUT"
+done
+
+echo "Generated $OUTPUT"
+
+
+
+--- FILE: ./Setup.md ---
+# Setup necessities
+## Download Interstellar Wallpaper Video
+https://drive.usercontent.google.com/download?id=1rFjfl0s_XdW0TRvn0r-8oztS8jSKWte6&export=download&authuser=0&confirm=t&uuid=834c765f-27f9-4aa7-bc6f-2f219976f597&at=AGN2oQ2UOY43Qd-P1r2zA28inwKn:1774748360846
+(Credits to Wonger100 on Reddit for creating and rendering the video)
+
+## Convert the download to mp4 for mpvwallpaper
+ffmpeg -i ~/Downloads/Live.mov -vf "scale=1920:trunc(ow/a/2)*2" -c:v libx264 -preset ultrafast -c:a aac /etc/nixos/home/wallpapers/interstellar.mp4
+(You may have to make directory wallpapers as if it doesnt exist it wont work)
+
+
+--- FILE: ./flake.nix ---
+{
+  description = "MacOS / Interstellar style NixOS rice";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # The community Zen Browser flake
+    zen-browser.url = "github:youwen5/zen-browser-flake";
+    # AGS (Aylur's GTK Shell)
+    ags.url = "github:aylur/ags";
+  };
+
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+      nixosConfigurations = {
+        iusenixbtw = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hardware-configuration.nix
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.users.greyson = import ./home/home.nix;
+            }
+          ];
         };
       };
     };
-
-    style = ''
-      * {
-        font-family: "JetBrainsMono Nerd Font", sans-serif;
-        font-size: 15px;
-        font-weight: bold;
-      }
-
-      window#waybar {
-        background-color: rgba(26, 27, 38, 0.65); 
-        color: #ffffff;
-        margin: 0px;
-        min-height: 38px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      #custom-os_button { font-size: 20px; color: #c0caf5; padding: 0px 16px; }
-
-      #window { color: #ffffff; padding-left: 10px; padding-right: 15px; }
-      #window.empty { margin: 0px; padding: 0px; min-width: 0px; border: none; }
-
-      #workspaces { 
-        padding-left: 4px;
-        padding-right: 8px;
-        border-radius: 50px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        margin-right: 8px;
-      }
-      #workspaces button {
-        color: #565f89;
-        padding: 0 4px;
-        transition: all 0.3s ease;
-      }
-      #workspaces button.active { color: #ffffff; }
-
-      #clock, #pulseaudio, #network, #battery, #custom-swaync {
-          color: #ffffff;
-          padding: 0px 10px;
-      }
-      #clock { padding-right: 16px; padding-left: 10px; }
-      #custom-prev, #custom-play, #custom-next { color: #ffffff; padding: 0px 6px; font-size: 18px; }
-      #custom-media { color: #a9b1d6; padding-right: 12px; padding-left: 6px; }
-    '';
-  };
 }
-
-home/ags-config.js
-import app from "ags/gtk4/app"
-import { Gtk, Gdk, Astal } from "ags/gtk4"
-
-const { exec, spawn } = (await import("ags/process"))
-
-app.start({
-    requestHandler(request) {
-        const win = app.get_window("control-center")
-        if (win) {
-            win.visible = !win.visible
-        }
-    },
-    css: `
-        * {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            font-size: 13px;
-            color: #ffffff;
-        }
-
-        window#control-center {
-            background-color: rgba(30, 30, 30, 0.85);
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .control-center {
-            padding: 14px;
-        }
-
-        .quick-settings-pod {
-            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px;
-        }
-
-        .toggle-btn {
-            background: linear-gradient(180deg, rgba(80, 80, 80, 0.8), rgba(60, 60, 60, 0.8));
-            border-radius: 12px;
-            border: none;
-            color: #ffffff;
-            font-size: 18px;
-            padding: 8px;
-        }
-
-        .toggle-btn:hover {
-            background: linear-gradient(180deg, rgba(100, 100, 100, 0.9), rgba(80, 80, 80, 0.9));
-        }
-
-        .toggle-btn.active {
-            background: linear-gradient(180deg, #007AFF, #0056CC);
-        }
-
-        .media-pod {
-            background: linear-gradient(180deg, rgba(70, 70, 70, 0.9), rgba(50, 50, 50, 0.9));
-            border-radius: 14px;
-            padding: 12px;
-            min-width: 130px;
-        }
-
-        .media-cover {
-            border-radius: 10px;
-            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
-            min-width: 80px;
-            min-height: 80px;
-        }
-
-        .media-title {
-            font-weight: 600;
-            font-size: 14px;
-            color: #ffffff;
-        }
-
-        .media-artist {
-            font-size: 12px;
-            color: #a0a0a0;
-        }
-
-        .media-btn {
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 16px;
-            padding: 6px 10px;
-            border-radius: 20px;
-        }
-
-        .media-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .play-btn {
-            font-size: 22px;
-            background: #007AFF;
-            border-radius: 50%;
-            margin: 0 4px;
-        }
-
-        .play-btn:hover {
-            background: #0056CC;
-        }
-
-        .sliders-pod {
-            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 14px;
-        }
-
-        .slider-row {
-            padding: 6px 0;
-        }
-
-        .slider-row label {
-            font-size: 18px;
-            color: #ffffff;
-            min-width: 28px;
-        }
-
-        .notifications-pod {
-            background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 12px;
-        }
-
-        .notif-header {
-            font-weight: 600;
-            font-size: 12px;
-            color: #a0a0a0;
-            margin-bottom: 10px;
-        }
-
-        .notification {
-            background: rgba(50, 50, 50, 0.6);
-            border-radius: 10px;
-            padding: 10px;
-        }
-    `,
-
-    main() {
-        const ControlCenter = (
-            <window
-                name="control-center"
-                anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-                margin="10 45 10 0"
-                defaultWidth={360}
-                defaultHeight={520}
-                layer={Astal.Layer.TOP}
-                exclusivity={Astal.Exclusivity.AUTO}
-                visible={true}
-                application={app}
-            >
-                <box class="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={14}>
-                    <box class="quick-settings-pod" homogeneous>
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={8} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
-                            <box spacing={8}>
-                                <button class="toggle-btn" onClicked={() => exec("nmcli radio wifi toggle")}>
-                                    <label label="󰤮" />
-                                </button>
-                                <button class="toggle-btn" onClicked={() => exec("rfkill toggle bluetooth")}>
-                                    <label label="󰥭" />
-                                </button>
-                            </box>
-                            <box spacing={8}>
-                                <button class="toggle-btn" onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
-                                    <label label="󰝟" />
-                                </button>
-                                <button class="toggle-btn" onClicked={() => exec("hyprlock")}>
-                                    <label label="󰌾" />
-                                </button>
-                            </box>
-                        </box>
-                        <box class="media-pod" orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand valign={Gtk.Align.CENTER}>
-                            <box class="media-cover" halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
-                                <label label="♪" font_size={32} />
-                            </box>
-                            <label class="media-title" label="No Media Playing" maxWidthChars={18} truncate ellipsize="middle" halign={Gtk.Align.CENTER} />
-                            <label class="media-artist" label="— " maxWidthChars={18} truncate ellipsize="middle" halign={Gtk.Align.CENTER} />
-                            <box class="media-controls" spacing={4} halign={Gtk.Align.CENTER} homogeneous>
-                                <button class="media-btn" onClicked={() => exec("playerctl previous")}>
-                                    <label label="󰒮" />
-                                </button>
-                                <button class="media-btn play-btn" onClicked={() => exec("playerctl play-pause")}>
-                                    <label label="▶" />
-                                </button>
-                                <button class="media-btn" onClicked={() => exec("playerctl next")}>
-                                    <label label="󰒭" />
-                                </button>
-                            </box>
-                        </box>
-                    </box>
-                    <box class="sliders-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
-                        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={12} valign={Gtk.Align.CENTER}>
-                            <label label="🔊" />
-                            <label label="Volume" hexpand halign={Gtk.Align.START} />
-                        </box>
-                        <box class="slider-row" orientation={Gtk.Orientation.HORIZONTAL} spacing={12} valign={Gtk.Align.CENTER}>
-                            <label label="☀" />
-                            <label label="Brightness" hexpand halign={Gtk.Align.START} />
-                        </box>
-                    </box>
-                    <box class="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>
-                        <label class="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6}>
-                            <label label="No new notifications" color="rgba(160,160,160,0.8)" halign={Gtk.Align.CENTER} />
-                        </box>
-                    </box>
-                </box>
-            </window>
-        )
-
-        app.add_window(ControlCenter)
-    },
-})
 
 

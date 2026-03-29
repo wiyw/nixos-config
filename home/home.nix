@@ -23,5 +23,8 @@
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 
-  home.file.".config/ags/app.js".source = ./ags-config.js;
+  # Notice the .tsx extensions!
+  home.file.".config/ags/app.tsx".source = ./ags/ags-config.tsx;
+  home.file.".config/ags/style.css".source = ./ags/ags-style.css;
+  home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
 }
