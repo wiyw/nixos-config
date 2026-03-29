@@ -1,0 +1,11 @@
+greyson@iusenixbtw:~/ > ags run
+✘ [ERROR] Could not resolve /nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/jsx-runtime (originally ags/jsx-runtime)
+
+    control-center.tsx:10:12:
+      10 │             <label label={icon} />
+         ╵             ^
+
+  The path ags/jsx-runtime was remapped to
+  /nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/jsx-runtime using the alias feature,
+  which then couldn't be resolved. Keep in mind that import path aliases are resolved in the current
+  working directory.

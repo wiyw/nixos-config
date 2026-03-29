@@ -4,17 +4,16 @@ import ControlCenter from "./control-center"
 app.start({
     css: `./style.css`,
     requestHandler(request, res) {
-        if (request === "toggle-control-center") {
-            const win = app.get_window("control-center")
-            if (win) {
-                win.visible = !win.visible
-                res("Toggled window")
-            } else {
-                res("Window not found")
-            }
+        const win = app.get_window("control-center")
+        if (win) {
+            win.visible = !win.visible
+            res("Toggled")
+        } else {
+            res("Window not found")
         }
     },
     main() {
-        ControlCenter()
+        const window = ControlCenter()
+        app.add_window(window)
     }
 })
