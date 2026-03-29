@@ -148,7 +148,7 @@ export default function ControlCenter() {
         anchor: Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT,
         layer: Astal.Layer.TOP,
         application: app,
-        visible: false,
+        visible: true,
         child: mainBox
     })
 }
