@@ -1,11 +1,11 @@
-import { App } from "astal/gtk3";
-import ControlCenter from "./control-center";
+import app from "ags/gtk4/app"
+import ControlCenter from "./control-center"
 
-App.start({
-    style: "./style.css",
+app.start({
+    css: `./style.css`,
     requestHandler(request, res) {
         if (request === "toggle-control-center") {
-            const win = App.get_window("control-center")
+            const win = app.get_window("control-center")
             if (win) {
                 win.visible = !win.visible
                 res("Toggled window")

@@ -1,84 +1,78 @@
-import { App, Astal, Gtk } from "astal/gtk3"
-import { Window, Box, Button, Label } from "astal/gtk3/widget"
-import { execAsync } from "astal/process"
+import { Gtk, Astal } from "ags/gtk4"
+import { exec } from "ags/process"
 
-// A helper component for our 2x2 grid buttons
 function QuickButton({ icon, command }: { icon: string, command: string }) {
     return (
-        <Button 
+        <button 
             className="toggle-btn" 
-            onClicked={() => execAsync(["bash", "-c", command]).catch(print)}
+            onClicked={() => exec(command)}
         >
-            <Label label={icon} />
-        </Button>
+            <label label={icon} />
+        </button>
     )
 }
 
 export default function ControlCenter() {
     return (
-        <Window
+        <window
             name="control-center"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginRight={15}
             marginTop={10}
             layer={Astal.Layer.TOP}
-            application={App}
-            visible={false} // Hidden by default, triggered by Waybar
+            application={app}
+            visible={false}
         >
-            <Box className="control-center" vertical spacing={14}>
-                {/* TOP ROW: Quick Settings + Media */}
-                <Box spacing={14}>
-                    <Box className="quick-settings-pod" vertical spacing={8}>
-                        <Box spacing={8}>
+            <box className="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={14}>
+                <box spacing={14}>
+                    <box className="quick-settings-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                        <box spacing={8}>
                             <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
                             <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
-                        </Box>
-                        <Box spacing={8}>
+                        </box>
+                        <box spacing={8}>
                             <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
                             <QuickButton icon="󰌾" command="hyprlock" />
-                        </Box>
-                    </Box>
+                        </box>
+                    </box>
 
-                    {/* Media Player Pod */}
-                    <Box className="media-pod" vertical spacing={6}>
-                        <Box className="media-cover" halign={Gtk.Align.CENTER}>
-                            <Label label="♪" css="font-size: 32px;" />
-                        </Box>
-                        <Label className="media-title" label="No Media Playing" truncate />
-                        <Label className="media-artist" label="—" truncate />
+                    <box className="media-pod" orientation={Gtk.Orientation.VERTICAL} spacing={6}>
+                        <box className="media-cover" halign={Gtk.Align.CENTER}>
+                            <label label="♪" css="font-size: 32px;" />
+                        </box>
+                        <label className="media-title" label="No Media Playing" truncate />
+                        <label className="media-artist" label="—" truncate />
                         
-                        <Box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
-                            <Button className="media-btn" onClicked={() => execAsync("playerctl previous")}>
-                                <Label label="󰒮" />
-                            </Button>
-                            <Button className="media-btn play-btn" onClicked={() => execAsync("playerctl play-pause")}>
-                                <Label label="▶" />
-                            </Button>
-                            <Button className="media-btn" onClicked={() => execAsync("playerctl next")}>
-                                <Label label="󰒭" />
-                            </Button>
-                        </Box>
-                    </Box>
-                </Box>
+                        <box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
+                            <button className="media-btn" onClicked={() => exec("playerctl previous")}>
+                                <label label="󰒮" />
+                            </button>
+                            <button className="media-btn play-btn" onClicked={() => exec("playerctl play-pause")}>
+                                <label label="▶" />
+                            </button>
+                            <button className="media-btn" onClicked={() => exec("playerctl next")}>
+                                <label label="󰒭" />
+                            </button>
+                        </box>
+                    </box>
+                </box>
 
-                {/* SLIDERS POD */}
-                <Box className="sliders-pod" vertical spacing={8}>
-                    <Box spacing={12}>
-                        <Label label="🔊" />
-                        <Label label="Volume" />
-                    </Box>
-                    <Box spacing={12}>
-                        <Label label="☀" />
-                        <Label label="Brightness" />
-                    </Box>
-                </Box>
+                <box className="sliders-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                    <box spacing={12}>
+                        <label label="🔊" />
+                        <label label="Volume" />
+                    </box>
+                    <box spacing={12}>
+                        <label label="☀" />
+                        <label label="Brightness" />
+                    </box>
+                </box>
 
-                {/* NOTIFICATIONS POD */}
-                <Box className="notifications-pod" vertical spacing={8} vexpand>
-                    <Label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
-                    <Label label="No new notifications" halign={Gtk.Align.CENTER} />
-                </Box>
-            </Box>
-        </Window>
+                <box className="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>
+                    <label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
+                    <label label="No new notifications" halign={Gtk.Align.CENTER} />
+                </box>
+            </box>
+        </window>
     )
 }
