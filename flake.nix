@@ -13,7 +13,11 @@
     ags.url = "github:aylur/ags";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
+    let
+      secrets = builtins.fromJSON (builtins.readFile ./home/secrets.json);
+    in
+    {
       nixosConfigurations = {
         iusenixbtw = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -24,7 +28,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = { inherit inputs; secrets = secrets; };
               home-manager.users.greyson = import ./home/home.nix;
             }
           ];

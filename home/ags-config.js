@@ -180,9 +180,7 @@ app.start({
                     </box>
                     <box class="notifications-pod" orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand>
                         <label class="notif-header" label="Notifications" halign={Gtk.Align.START} />
-                        <scrollable valign={Gtk.Align.START} hexpand vexpand>
-                            <box class="notifications" orientation={Gtk.Orientation.VERTICAL} spacing={8} />
-                        </scrollable>
+                        <box class="notifications" orientation={Gtk.Orientation.VERTICAL} spacing={8} />
                     </box>
                 </box>
             </window>

@@ -1,8 +1,8 @@
-greyson@iusenixbtw:~/nixos-config/ > ags run                                                                                      
+greyson@iusenixbtw:~/nixos-config/ > ags run
 
-(gjs:58280): Gjs-CRITICAL **: 12:55:46.576: JS ERROR: Error: unknown intrinsic element scale
+(gjs:64128): Gjs-CRITICAL **: 12:59:13.684: JS ERROR: Error: unknown intrinsic element scrollable
 jsx@file:///run/user/1001/ags.js:708:13 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/jsx.ts:253:19
-main@file:///run/user/1001/ags.js:2172:31 -> ../../../nix/store/gzhfpi2flrkv1zccp7w85amff6s8h0nc-hm_agsconfig.js:193:29
+main@file:///run/user/1001/ags.js:2162:29 -> ../../../nix/store/7ccz3dvsrfsng4xc58ddzn2fy0aqi2dx-hm_agsconfig.js:183:25
 vfunc_command_line/<@file:///run/user/1001/ags.js:1803:66 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:292:17
 createRoot/<@file:///run/user/1001/ags.js:359:28 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:28
 run@file:///run/user/1001/ags.js:387:18 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:32:20

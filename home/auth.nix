@@ -1,14 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, secrets, ... }:
 
-let
-  secretsFile = "/home/greyson/.config/nixos/secrets.json";
-  secrets = if builtins.pathExists secretsFile then 
-    builtins.fromJSON (builtins.readFile secretsFile)
-  else {
-    gitUsername = "placeholder";
-    gitEmail = "placeholder@example.com";
-  };
-in
 {
   programs.git = {
     enable = true;
