@@ -120,8 +120,8 @@ app.start({
                 name="control-center"
                 anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
                 margin="10 45 10 0"
-                width={380}
-                height={600}
+                defaultWidth={380}
+                defaultHeight={600}
                 layer={Astal.Layer.TOP}
                 exclusivity={Astal.Exclusivity.AUTO}
                 visible={false}
