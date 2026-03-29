@@ -1,27 +1,26 @@
 { pkgs, inputs, ... }:
 
-let
-  my-ags = inputs.ags.lib.bundle {
-    inherit pkgs;
-    src = ./ags; # <--- IMPORTANT: Point this to your actual AGS source directory!
-    name = "my-ags";
-    entry = "app.ts"; # The main entry point of your config
-    gtk4 = false;     # Tells the bundler to strictly use gtk3
+{
+  # 1. Import the official AGS Home Manager module
+  imports = [ inputs.ags.homeManagerModules.default ];
 
-    # Explicitly list the Astal modules your TypeScript code imports
-    extraPackages = [
-      inputs.ags.packages.${pkgs.system}.astal3
-      inputs.ags.packages.${pkgs.system}.apps
-      inputs.ags.packages.${pkgs.system}.hyprland
-      inputs.ags.packages.${pkgs.system}.network
-      inputs.ags.packages.${pkgs.system}.tray
-      inputs.ags.packages.${pkgs.system}.wireplumber
-      # Add any others you use (like battery, mpris, etc.)
+  # 2. Configure AGS and inject the Astal libraries into its runtime
+  programs.ags = {
+    enable = true;
+    extraPackages = with inputs.ags.packages.${pkgs.system}; [
+      astal3
+      apps
+      hyprland
+      network
+      tray
+      wireplumber
+      # Add any others you use here!
     ];
   };
-in
 
-{
+  # 3. Tell Home Manager to symlink your config safely
+  xdg.configFile."ags".source = ./ags; 
+
   home.packages = with pkgs; [
     # Core Apps
     inputs.zen-browser.packages.${pkgs.system}.default
@@ -34,7 +33,6 @@ in
     hyprlock
     hypridle
     wl-clipboard
-    my-ags
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
