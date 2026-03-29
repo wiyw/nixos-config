@@ -21,6 +21,9 @@
     nerd-fonts.jetbrains-mono # Needed for the icons to render
     ffmpeg # You know what this is
 
+    # AI stuff
+    opencode
+
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
       echo "🛠️ Starting system rebuild..."
