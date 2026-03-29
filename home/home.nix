@@ -16,9 +16,10 @@
   # <-- 2. CONFIGURE AGS WITH GTK3 -->
   programs.ags = {
     enable = true;
-    # This explicitly injects GTK3 into the AGS runtime environment
     extraPackages = with pkgs; [
       gtk3
+      gtk-layer-shell
+      gobject-introspection
     ];
   };
 
@@ -38,13 +39,4 @@
   home.file.".config/ags/control-center.tsx".source = ./ags/control-center.tsx;
   home.file.".config/ags/style.css".source = ./ags/style.css;
   home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
-
-  programs.ags = {
-    enable = true;
-    extraPackages = with pkgs; [
-      gtk3
-      gtk-layer-shell # <-- Add this! Required for Wayland desktop widgets
-      gobject-introspection # <-- Helps GJS discover the C libraries
-    ];
-  };
 }
