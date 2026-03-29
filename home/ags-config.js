@@ -148,7 +148,7 @@ app.start({
                 defaultHeight={520}
                 layer={Astal.Layer.TOP}
                 exclusivity={Astal.Exclusivity.AUTO}
-                visible={false}
+                visible={true}
                 application={app}
             >
                 <box class="control-center" orientation={Gtk.Orientation.VERTICAL} spacing={14}>
