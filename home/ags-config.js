@@ -4,6 +4,12 @@ import { Gtk, Gdk, Astal } from "ags/gtk4"
 const { exec, spawn } = (await import("ags/process"))
 
 app.start({
+    requestHandler(request) {
+        const win = app.get_window("control-center")
+        if (win) {
+            win.visible = !win.visible
+        }
+    },
     css: `
         * {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
