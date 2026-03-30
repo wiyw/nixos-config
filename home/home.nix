@@ -11,6 +11,7 @@
     ./rofi.nix
     ./auth.nix
     ./zsh.nix
+    ./hyprlock.nix
   ];
 
   home.pointerCursor = {
