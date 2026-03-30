@@ -12,6 +12,7 @@
     ./auth.nix
     ./zsh.nix
     ./hyprlock.nix
+    ./ags.nix
   ];
 
   home.pointerCursor = {
