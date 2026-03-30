@@ -92,7 +92,7 @@
         "custom/control-center" = {
           tooltip = false;
           format = " ";
-          on-click = "ags request toggle-control-center";
+          on-click = "ags toggle control-center";
         };
       };
     };
