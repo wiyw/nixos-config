@@ -1,46 +1,6 @@
 --- FILE: ./flake.lock ---
 {
   "nodes": {
-    "ags": {
-      "inputs": {
-        "astal": "astal",
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1764289441,
-        "narHash": "sha256-ak+lgFiYE5PHByN1/BRkO5JP498hno6Ix24C1Qf/vec=",
-        "owner": "aylur",
-        "repo": "ags",
-        "rev": "e169694390548dfd38ff40f1ef2163d6c3ffe3ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "aylur",
-        "repo": "ags",
-        "type": "github"
-      }
-    },
-    "astal": {
-      "inputs": {
-        "nixpkgs": [
-          "ags",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764173295,
-        "narHash": "sha256-Jh4VtPcK2Ov+RTcV9FtyQRsxiJmXFQGfqX6jjM7/mgc=",
-        "owner": "aylur",
-        "repo": "astal",
-        "rev": "7d1fac8a4b2a14954843a978d2ddde86168c75ef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "aylur",
-        "repo": "astal",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -63,22 +23,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1763966396,
-        "narHash": "sha256-6eeL1YPcY1MV3DDStIDIdy/zZCDKgHdkCmsrLJFiZf0=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "lastModified": 1774386573,
         "narHash": "sha256-4hAV26quOxdC6iyG7kYaZcM3VOskcPUrdCQd/nx8obc=",
         "owner": "nixos",
@@ -93,7 +37,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1773646010,
         "narHash": "sha256-iYrs97hS7p5u4lQzuNWzuALGIOdkPXvjz7bviiBjUu8=",
@@ -111,15 +55,14 @@
     },
     "root": {
       "inputs": {
-        "ags": "ags",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "zen-browser": "zen-browser"
       }
     },
     "zen-browser": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1773722260,
@@ -156,6 +99,8 @@
     ./rofi.nix
     ./auth.nix
     ./zsh.nix
+    ./hyprlock.nix
+    ./ags.nix
   ];
 
   home.pointerCursor = {
@@ -168,8 +113,6 @@
 
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
-
-  home.file.".config/ags".source = ./ags;
 }
 
 
@@ -259,192 +202,182 @@
 }
 
 
+--- FILE: ./home/ags/ControlCenter.tsx ---
+import Widget from "resource:///com/github/Aylur/ags/widget.js";
+
+export default () => (
+    <Widget.Window
+        name="control-center"
+        anchor={["top", "right"]}   // Snap to top right
+        margins={[10, 15]}          // Push it away from the screen edges
+        exclusivity="normal"
+        keymode="on-demand"
+        visible={false}             // Keep it hidden until Waybar calls it
+    >
+        <Widget.Box
+            className="control-center-container"
+            vertical={true}
+        >
+            <Widget.Label
+                className="header"
+                label="Control Center"
+            />
+            
+            {/* Volume Slider Section */}
+            <Widget.Box className="slider-box">
+                <Widget.Label label="󰕾 " className="icon" />
+                <Widget.Slider
+                    className="volume-slider"
+                    hexpand={true}
+                    drawValue={false}
+                    min={0}
+                    max={100}
+                    value={50}
+                    onChange={({ value }) => print(`Slider moved to ${value}`)}
+                />
+            </Widget.Box>
+        </Widget.Box>
+    </Widget.Window>
+);
+
+
 --- FILE: ./home/ags/style.css ---
-* {
-    font-family: "JetBrainsMono Nerd Font", -apple-system, sans-serif;
-    font-size: 13px;
-    color: #ffffff;
-}
-
-window.control-center-window {
-    background-color: rgba(26, 27, 38, 0.65); /* Matches your Waybar */
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.control-center {
-    padding: 16px;
-}
-
-.quick-settings-pod, .sliders-pod, .notifications-pod {
-    background: rgba(40, 40, 50, 0.6);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 14px;
-}
-
-.toggle-btn {
-    background: rgba(60, 60, 70, 0.8);
-    border-radius: 14px;
-    color: #ffffff;
-    font-size: 20px;
-    min-width: 55px;
-    min-height: 55px;
-    transition: all 0.2s ease;
-}
-
-.toggle-btn:hover { background: rgba(80, 80, 90, 0.9); }
-.toggle-btn.active { background: #7aa2f7; }
-
-.media-pod {
-    background: rgba(40, 40, 50, 0.6);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 14px;
-    min-width: 140px;
-}
-
-.media-cover {
+.control-center-container {
+    background-color: rgba(26, 27, 38, 0.85);
+    border: 2px solid rgba(122, 162, 247, 0.5);
     border-radius: 12px;
-    background: #1a1b26;
-    min-width: 80px;
-    min-height: 80px;
-    margin-bottom: 8px;
+    padding: 20px;
+    min-width: 320px;
 }
 
-.media-title { font-weight: bold; font-size: 14px; }
-.media-artist { font-size: 11px; color: #a9b1d6; margin-bottom: 8px; }
-
-.media-btn {
-    background: transparent;
-    font-size: 16px;
+.header {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 20px;
+    font-weight: bold;
+    color: #c0caf5;
+    margin-bottom: 20px;
 }
 
-.play-btn {
-    font-size: 16px;
-    background: #7aa2f7;
-    border-radius: 50%;
-    min-width: 35px;
-    min-height: 35px;
+.slider-box {
+    margin-top: 10px;
 }
 
-.notif-header { font-weight: bold; font-size: 11px; color: #a9b1d6; }
-
-
---- FILE: ./home/ags/app.tsx ---
-import app from "ags/gtk4/app"
-import { Gtk, Astal } from "ags/gtk4"
-import { exec } from "ags/process"
-
-function ControlCenter() {
-    return (
-        <window anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} visible={true}>
-            <box orientation={Gtk.Orientation.VERTICAL} spacing={14} margin={14}>
-                <box homogeneous spacing={14}>
-                    <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="quick-settings-pod">
-                        <box spacing={8}>
-                            <button onClicked={() => exec("nmcli radio wifi toggle")}>
-                                <label label="󰤮" />
-                            </button>
-                            <button onClicked={() => exec("rfkill toggle bluetooth")}>
-                                <label label="󰥭" />
-                            </button>
-                        </box>
-                        <box spacing={8}>
-                            <button onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
-                                <label label="󰝟" />
-                            </button>
-                            <button onClicked={() => exec("hyprlock")}>
-                                <label label="󰌾" />
-                            </button>
-                        </box>
-                    </box>
-                    <box orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand class="media-pod">
-                        <box halign={Gtk.Align.CENTER} hexpand>
-                            <label label="♪" class="music-icon" />
-                        </box>
-                        <label label="No Media Playing" class="media-title" />
-                        <label label="—" class="media-artist" />
-                        <box spacing={8} halign={Gtk.Align.CENTER} homogeneous>
-                            <button onClicked={() => exec("playerctl previous")}>
-                                <label label="󰒮" />
-                            </button>
-                            <button onClicked={() => exec("playerctl play-pause")}>
-                                <label label="▶" />
-                            </button>
-                            <button onClicked={() => exec("playerctl next")}>
-                                <label label="󰒭" />
-                            </button>
-                        </box>
-                    </box>
-                </box>
-                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="sliders-pod">
-                    <box spacing={12}>
-                        <label label="🔊" />
-                        <label label="Volume" />
-                    </box>
-                    <box spacing={12}>
-                        <label label="☀" />
-                        <label label="Brightness" />
-                    </box>
-                </box>
-                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand class="notifications-pod">
-                    <label label="NOTIFICATIONS" class="notif-header" />
-                    <label label="No new notifications" />
-                </box>
-            </box>
-        </window>
-    )
+.icon {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 22px;
+    color: #a9b1d6;
+    margin-right: 15px;
 }
 
-app.start({
-    css: `
-        * { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: white; }
-        window { background: rgba(30,30,30,0.9); border-radius: 20px; }
-        .quick-settings-pod, .media-pod, .sliders-pod, .notifications-pod { background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px; }
-        .music-icon { font-size: 32px; }
-        .media-title { font-weight: bold; }
-        .media-artist { color: #a0a0a0; }
-        .notif-header { color: #a0a0a0; font-weight: bold; font-size: 11px; }
-    `,
-    requestHandler(request, res) {
-        const wins = app.get_windows()
-        if (wins.length > 0) {
-            wins[0].visible = !wins[0].visible
-            res("Toggled")
-        } else {
-            res("No windows")
+.volume-slider {
+    background-color: #414868;
+    border-radius: 10px;
+    min-height: 12px;
+}
+
+.volume-slider highlight {
+    background-color: #7aa2f7;
+    border-radius: 10px;
+}
+
+
+--- FILE: ./home/ags/config.ts ---
+import App from "resource:///com/github/Aylur/ags/app.js";
+import ControlCenter from "./ControlCenter.js"; // Always import as .js, even if the file is .tsx!
+
+export default {
+    style: App.configDir + "/style.css",
+    windows: [
+        ControlCenter(), // Initialize our slide-out window
+    ],
+};
+
+
+--- FILE: ./home/hyprlock.nix ---
+{ config, pkgs, ... }:
+
+{
+  programs.hyprlock = {
+    enable = true;
+    
+    settings = {
+      general = {
+        disable_loading_bar = true;
+        hide_cursor = true;
+        grace = 0;
+        no_fade_in = false;
+      };
+
+      background = [
+        {
+          monitor = "";
+          path = "screenshot";   # Takes a snapshot of your current desktop/video
+          blur_passes = 3;       # Frosty blur
+          blur_size = 8;
+          color = "rgba(26, 27, 38, 0.8)"; # Tokyo Night background fallback
         }
-    },
-    main() {
-        ControlCenter()
-    }
-})
+      ];
 
+      input-field = [
+        {
+          monitor = "";
+          size = "300, 50";
+          outline_thickness = 2;
+          dots_size = 0.2;
+          dots_spacing = 0.2;
+          dots_center = true;
+          outer_color = "rgba(122, 162, 247, 1)"; # Tokyo Night Blue (#7aa2f7)
+          inner_color = "rgba(26, 27, 38, 0.5)";  # Semi-transparent Tokyo Night Dark
+          font_color = "rgba(192, 202, 245, 1)";  # Tokyo Night Text (#c0caf5)
+          fade_on_empty = false;
+          placeholder_text = "<i>󰌾  Enter Password...</i>";
+          hide_input = false;
+          position = "0, -120";
+          halign = "center";
+          valign = "center";
+        }
+      ];
 
-
---- FILE: ./home/ags/package.json ---
-{
-  "name": "ags-config",
-  "version": "1.0.0",
-  "dependencies": {
-    "ags": "*"
-  }
+      label = [
+        # 1. The Giant Clock
+        {
+          monitor = "";
+          text = "cmd[update:1000] echo \"<b>$(date +\"%H:%M\")</b>\"";
+          color = "rgba(192, 202, 245, 1)"; # #c0caf5
+          font_size = 120;
+          font_family = "JetBrainsMono Nerd Font";
+          position = "0, 150";
+          halign = "center";
+          valign = "center";
+        }
+        
+        # 2. The Date
+        {
+          monitor = "";
+          text = "cmd[update:1000] echo \"$(date +\"%A, %B %d\")\"";
+          color = "rgba(122, 162, 247, 1)"; # #7aa2f7
+          font_size = 25;
+          font_family = "JetBrainsMono Nerd Font";
+          position = "0, 40";
+          halign = "center";
+          valign = "center";
+        }
+        
+        # 3. The Greeting
+        {
+          monitor = "";
+          text = "Welcome back, $USER";
+          color = "rgba(192, 202, 245, 1)"; # #c0caf5
+          font_size = 18;
+          font_family = "JetBrainsMono Nerd Font";
+          position = "0, -50";
+          halign = "center";
+          valign = "center";
+        }
+      ];
+    };
+  };
 }
-
-
-
---- FILE: ./home/ags/tsconfig.json ---
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "ags"
-  }
-}
-
 
 
 --- FILE: ./home/waybar.nix ---
@@ -459,7 +392,6 @@ app.start({
         position = "top";
         margin = "0"; 
         
-        # Swapped hyprland/window and hyprland/workspaces
         modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
         modules-center = [ ];
         modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/control-center" "clock" ];
@@ -495,15 +427,17 @@ app.start({
         "hyprland/workspaces" = {
           format = "{icon}";
           format-icons = {
-            active = "";
-            default = "";
+            active = "";    # Currently focused
+            visible = "";   # On screen, but not focused (The Fix!)
+            default = "";   # Empty/Hidden
             urgent = "";
           };
           persistent-workspaces = {
-            "*" = 10;
+            "DP-4" = [ 1 2 3 4 5 6 7 8 9 10 ];
+            "eDP-1" = [ 11 12 13 14 15 16 17 18 19 20 ];
           };
         };
-
+        
         "clock" = {
           format = "{:%a %b %e  %I:%M %p}";
         };
@@ -538,11 +472,10 @@ app.start({
         "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
         "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
 
-        # We will keep the button here for now, but rename its execution later to trigger AGS
         "custom/control-center" = {
           tooltip = false;
           format = " ";
-          on-click = "ags request toggle-control-center"; # AGS v2 syntax!
+          on-click = "ags toggle control-center";
         };
       };
     };
@@ -593,281 +526,59 @@ app.start({
 }
 
 
---- FILE: ./home/zsh/starship.toml ---
-# ~/.config/starship.toml
+--- FILE: ./home/hypridle.nix ---
+{ config, pkgs, ... }:
 
-"$schema" = 'https://starship.rs/config-schema.json'
-add_newline = true
+let
+  # This custom script intercepts hypridle's commands.
+  # It checks your hardware sensors to see if AC power is connected.
+  batteryIdle = pkgs.writeShellScriptBin "battery-idle" ''
+    #!/usr/bin/env bash
+    
+    # If ANY power supply sensor reports "1" for online, we are plugged into the wall.
+    if grep -q 1 /sys/class/power_supply/*/online 2>/dev/null; then
+      echo "Plugged in. Ignoring idle command."
+      exit 0
+    else
+      # We are on battery power! Execute the command passed from hypridle.
+      eval "$@"
+    fi
+  '';
+in
+{
+  services.hypridle = {
+    enable = true;
+    
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";
+        before_sleep_cmd = "loginctl lock-session"; # Ensure it locks before suspending
+        after_sleep_cmd = "hyprctl dispatch dpms on"; # Ensure screens wake up
+      };
 
-# ==========================================
-# LEFT PROMPT: The Kitchen Sink
-# ==========================================
-format = """
-$os\
-$username\
-$hostname\
-$directory\
-$git_branch\
-$git_commit\
-$git_state\
-$git_metrics\
-$git_status\
-$c\
-$cmake\
-$cobol\
-$crystal\
-$dart\
-$deno\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
-$golang\
-$haskell\
-$java\
-$julia\
-$kotlin\
-$lua\
-$nim\
-$nodejs\
-$bun\
-$ocaml\
-$perl\
-$php\
-$python\
-$rlang\
-$ruby\
-$rust\
-$scala\
-$swift\
-$zig\
-$aws\
-$azure\
-$gcloud\
-$docker_context\
-$kubernetes\
-$terraform\
-$pulumi\
-$vagrant\
-$nix_shell\
-$conda\
-$jobs\
-$character"""
+      listener = [
+        # STAGE 1: Lock the screen after 5 minutes (300 seconds) on battery
+        {
+          timeout = 300;
+          on-timeout = "${batteryIdle}/bin/battery-idle 'loginctl lock-session'";
+        }
+        
+        # STAGE 2: Turn off the displays after 5.5 minutes (330 seconds) on battery
+        {
+          timeout = 330;
+          on-timeout = "${batteryIdle}/bin/battery-idle 'hyprctl dispatch dpms off'";
+          on-resume = "hyprctl dispatch dpms on"; # Always turn screens back on when you move the mouse
+        }
 
-# ==========================================
-# RIGHT PROMPT: System Telemetry
-# ==========================================
-right_format = """
-$status\
-$cmd_duration\
-$memory_usage\
-$battery\
-$time\
-"""
-
-# ==========================================
-# TOKYO NIGHT COLORS & MODULES
-# ==========================================
-
-[os]
-disabled = false
-format = "[$symbol]($style)"
-style = "bold #7aa2f7"
-[os.symbols]
-Windows = "󰍲 "
-
-[username]
-disabled = false
-show_always = true
-format = "[$user]($style)@"
-style_user = "bold #7aa2f7"
-
-[hostname]
-disabled = false
-ssh_only = false
-format = "[$hostname]($style) "
-style = "bold #7aa2f7"
-
-[directory]
-disabled = false
-style = "bold #2ac3de"
-read_only = " "
-truncate_to_repo = true
-truncation_length = 4
-format = "[$path]($style)[$read_only]($read_only_style) "
-
-# --- GIT ---
-[git_branch]
-disabled = false
-symbol = " "
-style = "bold #bb9af7"
-format = "[$symbol$branch]($style) "
-
-[git_commit]
-disabled = false
-commit_hash_length = 7
-format = "[\\($hash$tag\\)]($style) "
-style = "bold #e0af68"
-
-[git_state]
-disabled = false
-format = "[$state($progress_current/$progress_total)]($style) "
-style = "bold #f7768e"
-
-[git_metrics]
-disabled = false
-added_style = "bold #9ece6a"
-deleted_style = "bold #f7768e"
-format = "([+$added]($added_style) )([-$deleted]($deleted_style) )"
-
-[git_status]
-disabled = false
-style = "bold #f7768e"
-format = '([\[$all_status$ahead_behind\]]($style) )'
-
-# --- LANGUAGES (VERSION-FREE) ---
-[nodejs]
-disabled = false
-symbol = " "
-style = "bold #9ece6a"
-format = '[$symbol]($style)'
-
-[bun]
-disabled = false
-symbol = "󰛦 "
-style = "bold #c0caf5"
-format = '[$symbol]($style)'
-
-[python]
-disabled = false
-symbol = " "
-style = "bold #e0af68"
-format = '[$symbol(\($virtualenv\) )]($style)'
-
-[rust]
-disabled = false
-symbol = " "
-style = "bold #f7768e"
-format = '[$symbol]($style)'
-
-[golang]
-disabled = false
-symbol = " "
-style = "bold #2ac3de"
-format = '[$symbol]($style)'
-
-[java]
-disabled = false
-symbol = " "
-style = "bold #7aa2f7"
-format = '[$symbol]($style)'
-
-[c]
-disabled = false
-symbol = " "
-style = "bold #7aa2f7"
-format = '[$symbol]($style)'
-
-[php]
-disabled = false
-symbol = " "
-style = "bold #7aa2f7"
-format = '[$symbol]($style)'
-
-[ruby]
-disabled = false
-symbol = " "
-style = "bold #f7768e"
-format = '[$symbol]($style)'
-
-[lua]
-disabled = false
-symbol = " "
-style = "bold #7aa2f7"
-format = '[$symbol]($style)'
-
-# (To save space, other languages like Swift, Kotlin, Dart, Zig, etc., 
-# share this identical format under the hood in Starship, so they 
-# will trigger natively using their default icons and inherit your terminal colors!)
-
-# --- INFRASTRUCTURE ---
-[docker_context]
-disabled = false
-symbol = " "
-style = "bold #7aa2f7"
-format = '[$symbol]($style) '
-
-[kubernetes]
-disabled = false
-symbol = "󱃾 "
-style = "bold #7aa2f7"
-format = '[$symbol$context]($style) '
-
-[terraform]
-disabled = false
-symbol = "󱁢 "
-style = "bold #bb9af7"
-format = '[$symbol$workspace]($style) '
-
-[aws]
-disabled = false
-symbol = " "
-style = "bold #ff9e64"
-format = '[$symbol$profile]($style) '
-
-# --- RIGHT PROMPT TELEMETRY ---
-[status]
-disabled = false
-format = '[\[$symbol$status\]]($style) '
-symbol = "✘ "
-style = "bold #f7768e"
-
-[jobs]
-disabled = false
-symbol = "⚙ "
-style = "bold #7aa2f7"
-format = '[$symbol$number]($style) '
-
-[memory_usage]
-disabled = false
-threshold = -1
-format = "[$symbol$ram]($style) "
-style = "bold #2ac3de"
-symbol = "󰍛 "
-
-[battery]
-disabled = false
-full_symbol = "󰁹 "
-charging_symbol = "󰂄 "
-discharging_symbol = "󰂃 "
-format = "[$symbol$percentage]($style) "
-[[battery.display]]
-threshold = 100
-style = "bold #9ece6a" 
-[[battery.display]]
-threshold = 30
-style = "bold #e0af68" 
-[[battery.display]]
-threshold = 15
-style = "bold #f7768e" 
-
-[cmd_duration]
-disabled = false
-min_time = 500
-format = "[$duration]($style) "
-style = "bold #e0af68"
-
-[time]
-disabled = false
-time_format = "%T" 
-format = "[$time]($style)"
-style = "bold #565f89"
-
-[character]
-disabled = false
-success_symbol = "[❯ ](bold #9ece6a) "
-error_symbol = "[❯ ](bold #f7768e) "
-vicmd_symbol = "[❮ ](bold #e0af68) "
+        # STAGE 3: Suspend the laptop entirely after 15 minutes (900 seconds) on battery
+        {
+          timeout = 900;
+          on-timeout = "${batteryIdle}/bin/battery-idle 'systemctl suspend'";
+        }
+      ];
+    };
+  };
+}
 
 
 --- FILE: ./home/packages.nix ---
@@ -886,9 +597,13 @@ vicmd_symbol = "[❮ ](bold #e0af68) "
     hyprlock
     hypridle
     wl-clipboard
-    inputs.ags.packages.${pkgs.system}.default
     ffmpeg # You know what this is
-
+    ags
+    dart-sass        # Compiles the SCSS styling into CSS
+    upower           # Reads battery percentage
+    brightnessctl    # Controls screen brightness
+    pamixer          # Controls audio volume
+    
     # Zsh customization
     starship
     fzf
@@ -898,6 +613,8 @@ vicmd_symbol = "[❮ ](bold #e0af68) "
     fd
     zoxide
     delta
+
+    
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
@@ -939,6 +656,7 @@ vicmd_symbol = "[❮ ](bold #e0af68) "
     # This reads your raw TOML file and injects it natively into Home Manager
     settings = builtins.fromTOML (builtins.readFile ./zsh/starship.toml);
   };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -949,7 +667,7 @@ vicmd_symbol = "[❮ ](bold #e0af68) "
     historySubstringSearch.enable = true;
 
     # Inject your cleaned-up .zshrc at the end
-    initExtra = builtins.readFile ./zsh/.zshrc;
+    initContent = builtins.readFile ./zsh/.zshrc;
   };
 
   # Let Home Manager handle Zoxide and FZF integrations automatically
@@ -979,27 +697,72 @@ let
     CURRENT_STATE="unmuted"
 
     while true; do
-      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
+      # Get the IDs of the currently active workspace on EVERY connected monitor
+      ACTIVE_WS_IDS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq '.[] | .activeWorkspace.id')
       
-      if [[ -z "$WINDOWS" || "$WINDOWS" == "null" ]]; then
-        WINDOWS=0
-      fi
+      ALL_HAVE_WINDOWS=true
       
-      if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
-        echo "--> Muting audio!" >> $LOG
-        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+      # Loop through those workspaces to see if any are empty
+      for ID in $ACTIVE_WS_IDS; do
+        WINS=$(${pkgs.hyprland}/bin/hyprctl workspaces -j | ${pkgs.jq}/bin/jq ".[] | select(.id == $ID) | .windows")
+        if [[ -z "$WINS" || "$WINS" == "null" || "$WINS" -eq 0 ]]; then
+          ALL_HAVE_WINDOWS=false
+          break
+        fi
+      done
+      
+      # Mute ONLY if ALL visible workspaces have at least one window
+      if [[ "$ALL_HAVE_WINDOWS" == true ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
+        echo "--> Both sides covered. Muting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="muted"
         
-      elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
-        echo "--> Unmuting audio!" >> $LOG
-        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
+      # Unmute if AT LEAST ONE side is showing the bare wallpaper
+      elif [[ "$ALL_HAVE_WINDOWS" == false ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
+        echo "--> Uncovered wallpaper detected. Unmuting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="unmuted"
       fi
       
       sleep 0.5
     done
+  '';
+
+  # Switches BOTH monitors simultaneously
+  workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
+    #!/usr/bin/env bash
+    WS=$1
+    ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
+
+    # If DP-4 is connected, trigger dual-workspace logic
+    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+        WS_RIGHT=$((WS + 10))
+        
+        # Batching executes this in a single frame, preventing flicker and focus-breaking!
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor $ACTIVE_MON"
+    else
+        # Fallback: Laptop-only mode
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+    fi
+  '';
+
+  # Moves windows to the correct monitor's paired workspace
+  windowMoveScript = pkgs.writeShellScriptBin "ws-move" ''
+    #!/usr/bin/env bash
+    WS=$1
+    ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
+
+    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+        if [ "$ACTIVE_MON" = "DP-4" ]; then
+            ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
+        else
+            TARGET=$((WS + 10))
+            ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $TARGET
+        fi
+    else
+        # Fallback: Laptop-only mode
+        ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
+    fi
   '';
 in
 {
@@ -1008,7 +771,34 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      monitor = ",preferred,auto,1";
+      monitor = [
+        "DP-4, preferred, 0x0, 1"
+        "eDP-1, preferred, 1920x0, 1"
+        ", preferred, auto, 1"
+      ];
+
+      workspace = [
+        "1, monitor:DP-4, default:true"
+        "2, monitor:DP-4"
+        "3, monitor:DP-4"
+        "4, monitor:DP-4"
+        "5, monitor:DP-4"
+        "6, monitor:DP-4"
+        "7, monitor:DP-4"
+        "8, monitor:DP-4"
+        "9, monitor:DP-4"
+        "10, monitor:DP-4"
+        "11, monitor:eDP-1, default:true"
+        "12, monitor:eDP-1"
+        "13, monitor:eDP-1"
+        "14, monitor:eDP-1"
+        "15, monitor:eDP-1"
+        "16, monitor:eDP-1"
+        "17, monitor:eDP-1"
+        "18, monitor:eDP-1"
+        "19, monitor:eDP-1"
+        "20, monitor:eDP-1"
+      ];
 
       exec-once = [
         "waybar"
@@ -1036,23 +826,17 @@ in
         };
       };
 
-      # REPEATABLE BINDS (Hold down to change volume)
       binde = [
-        # Unmutes first, then raises volume
         ", XF86AudioRaiseVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+'"
-        # Unmutes first, then lowers volume
         ", XF86AudioLowerVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'"
       ];
 
-      # STANDARD BINDS
       bind = [
-        # Media Keys
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
         ", XF86AudioNext, exec, playerctl next"
 
-        # Window Controls
         "$mod, T, exec, kitty"
         "$mod, B, exec, zen"
         "$mod, Q, killactive,"
@@ -1060,29 +844,27 @@ in
         "$mod SHIFT, M, exit,"
         "$mod, W, exec, killall waybar; waybar"
 
-        # Workspaces
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 10"
+        "$mod, 1, exec, ${workspaceSyncScript}/bin/ws-sync 1"
+        "$mod, 2, exec, ${workspaceSyncScript}/bin/ws-sync 2"
+        "$mod, 3, exec, ${workspaceSyncScript}/bin/ws-sync 3"
+        "$mod, 4, exec, ${workspaceSyncScript}/bin/ws-sync 4"
+        "$mod, 5, exec, ${workspaceSyncScript}/bin/ws-sync 5"
+        "$mod, 6, exec, ${workspaceSyncScript}/bin/ws-sync 6"
+        "$mod, 7, exec, ${workspaceSyncScript}/bin/ws-sync 7"
+        "$mod, 8, exec, ${workspaceSyncScript}/bin/ws-sync 8"
+        "$mod, 9, exec, ${workspaceSyncScript}/bin/ws-sync 9"
+        "$mod, 0, exec, ${workspaceSyncScript}/bin/ws-sync 10"
 
-        # Move to Workspaces
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod SHIFT, 0, movetoworkspace, 10"
+        "$mod SHIFT, 1, exec, ${windowMoveScript}/bin/ws-move 1"
+        "$mod SHIFT, 2, exec, ${windowMoveScript}/bin/ws-move 2"
+        "$mod SHIFT, 3, exec, ${windowMoveScript}/bin/ws-move 3"
+        "$mod SHIFT, 4, exec, ${windowMoveScript}/bin/ws-move 4"
+        "$mod SHIFT, 5, exec, ${windowMoveScript}/bin/ws-move 5"
+        "$mod SHIFT, 6, exec, ${windowMoveScript}/bin/ws-move 6"
+        "$mod SHIFT, 7, exec, ${windowMoveScript}/bin/ws-move 7"
+        "$mod SHIFT, 8, exec, ${windowMoveScript}/bin/ws-move 8"
+        "$mod SHIFT, 9, exec, ${windowMoveScript}/bin/ws-move 9"
+        "$mod SHIFT, 0, exec, ${windowMoveScript}/bin/ws-move 10"
       ];
 
       bindr = [
@@ -1103,8 +885,6 @@ in
         ignore_alpha = 0.2
       }
 
-      # The new 0.53+ syntax for global transparency
-      # Increased transparency (70% active, 60% inactive)
       windowrule {
         name = global-transparency
         match:class = .*
@@ -1121,10 +901,13 @@ in
 {
   programs.git = {
     enable = true;
-    userName = "wiyw";
-    userEmail = "quantumdragon8@gmail.com";
     
-    extraConfig = {
+    # The new, updated syntax for Git settings
+    settings = {
+      user = {
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
+      };
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";
       
@@ -1140,6 +923,23 @@ in
       merge.conflictstyle = "diff3";
     };
   };
+}
+
+
+--- FILE: ./home/ags.nix ---
+{ config, pkgs, ... }:
+
+{
+  # Install AGS and required dependencies
+  home.packages = with pkgs; [
+    ags
+    esbuild      # REQUIRED: Compiles TS/TSX into JS on the fly
+    dart-sass    # Useful if we ever switch from CSS to SCSS
+    wireplumber  # For controlling audio later
+  ];
+
+  # Symlink our custom folder to the system config path
+  xdg.configFile."ags".source = ./ags;
 }
 
 
@@ -1362,14 +1162,17 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 #!/usr/bin/env bash
 OUTPUT="code.txt"
 
-# Clear the output file first
+# Clear the output file
 > "$OUTPUT"
 
-# -type f: find only files
-# ! -name "$OUTPUT": exclude the output file itself
-# ! -name "*.mp4": exclude MP4 video files
-# ! -path '*/.*': skip hidden files and directories (like .git)
-find . -type f ! -name "$OUTPUT" ! -name "*.mp4" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
+# Use -o (OR) within parentheses to group exclusions
+find . -type f \
+    ! -name "$OUTPUT" \
+    ! -name "*.mp4" \
+    ! -name "*.toml" \
+    ! -name ".zshrc" \
+    ! -path '*/.*' \
+    -print0 | while IFS= read -r -d '' file; do
     {
         echo "--- FILE: $file ---"
         cat "$file"
@@ -1404,8 +1207,6 @@ ffmpeg -i ~/Downloads/Live.mov -vf "scale=1920:trunc(ow/a/2)*2" -c:v libx264 -pr
     };
     # The community Zen Browser flake
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    # AGS (Aylur's GTK Shell)
-    ags.url = "github:aylur/ags";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }: {

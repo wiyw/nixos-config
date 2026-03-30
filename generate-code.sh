@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 OUTPUT="code.txt"
 
-# Clear the output file first
+# Clear the output file
 > "$OUTPUT"
 
-# -type f: find only files
-# ! -name "$OUTPUT": exclude the output file itself
-# ! -name "*.mp4": exclude MP4 video files
-# ! -path '*/.*': skip hidden files and directories (like .git)
-find . -type f ! -name "$OUTPUT" ! -name "*.mp4" "*.toml" ".zshrc" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
+# Use -o (OR) within parentheses to group exclusions
+find . -type f \
+    ! -name "$OUTPUT" \
+    ! -name "*.mp4" \
+    ! -name "*.toml" \
+    ! -name ".zshrc" \
+    ! -path '*/.*' \
+    -print0 | while IFS= read -r -d '' file; do
     {
         echo "--- FILE: $file ---"
         cat "$file"

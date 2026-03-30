@@ -156,7 +156,7 @@ in
         "$mod, Q, killactive,"
         "$mod, F, togglefloating,"
         "$mod SHIFT, M, exit,"
-        "$mod, W, exec, killall waybar; waybar"
+        "$mod, L, exec, hyprlock"
 
         "$mod, 1, exec, ${workspaceSyncScript}/bin/ws-sync 1"
         "$mod, 2, exec, ${workspaceSyncScript}/bin/ws-sync 2"
