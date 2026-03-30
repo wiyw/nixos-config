@@ -9,7 +9,6 @@
         position = "top";
         margin = "0"; 
         
-        # Swapped hyprland/window and hyprland/workspaces
         modules-left = [ "custom/os_button" "hyprland/window" "hyprland/workspaces" ]; 
         modules-center = [ ];
         modules-right = [ "custom/media" "custom/prev" "custom/play" "custom/next" "network" "pulseaudio" "battery" "custom/control-center" "clock" ];
@@ -49,8 +48,10 @@
             default = "";
             urgent = "";
           };
+          # Explicitly isolate the workspaces per monitor so they don't break the UI
           persistent-workspaces = {
-            "*" = 10;
+            "DP-4" = [ 1 2 3 4 5 6 7 8 9 10 ];
+            "eDP-1" = [ 11 12 13 14 15 16 17 18 19 20 ];
           };
         };
 
@@ -88,11 +89,10 @@
         "custom/play" = { format = "󰐊"; on-click = "playerctl play-pause"; };
         "custom/next" = { format = "󰒭"; on-click = "playerctl next"; };
 
-        # We will keep the button here for now, but rename its execution later to trigger AGS
         "custom/control-center" = {
           tooltip = false;
           format = " ";
-          on-click = "ags request toggle-control-center"; # AGS v2 syntax!
+          on-click = "ags request toggle-control-center";
         };
       };
     };

@@ -11,19 +11,29 @@ let
     CURRENT_STATE="unmuted"
 
     while true; do
-      WINDOWS=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows')
+      # Get the IDs of the currently active workspace on EVERY connected monitor
+      ACTIVE_WS_IDS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq '.[] | .activeWorkspace.id')
       
-      if [[ -z "$WINDOWS" || "$WINDOWS" == "null" ]]; then
-        WINDOWS=0
-      fi
+      ALL_HAVE_WINDOWS=true
       
-      if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
-        echo "--> Muting audio!" >> $LOG
+      # Loop through those workspaces to see if any are empty
+      for ID in $ACTIVE_WS_IDS; do
+        WINS=$(${pkgs.hyprland}/bin/hyprctl workspaces -j | ${pkgs.jq}/bin/jq ".[] | select(.id == $ID) | .windows")
+        if [[ -z "$WINS" || "$WINS" == "null" || "$WINS" -eq 0 ]]; then
+          ALL_HAVE_WINDOWS=false
+          break
+        fi
+      done
+      
+      # Mute ONLY if ALL visible workspaces have at least one window
+      if [[ "$ALL_HAVE_WINDOWS" == true ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
+        echo "--> Both sides covered. Muting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="muted"
         
-      elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
-        echo "--> Unmuting audio!" >> $LOG
+      # Unmute if AT LEAST ONE side is showing the bare wallpaper
+      elif [[ "$ALL_HAVE_WINDOWS" == false ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
+        echo "--> Uncovered wallpaper detected. Unmuting audio!" >> $LOG
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="unmuted"
       fi
@@ -42,11 +52,8 @@ let
     if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
         WS_RIGHT=$((WS + 10))
         
-        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
-        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS_RIGHT
-        
-        # Restore focus so your mouse doesn't violently jump screens
-        ${pkgs.hyprland}/bin/hyprctl dispatch focusmonitor $ACTIVE_MON
+        # Batching executes this in a single frame, preventing flicker and focus-breaking!
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor $ACTIVE_MON"
     else
         # Fallback: Laptop-only mode
         ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
@@ -60,7 +67,6 @@ let
     ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
 
     if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
-        # Check which monitor the active window is on
         if [ "$ACTIVE_MON" = "DP-4" ]; then
             ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
         else
@@ -85,7 +91,6 @@ in
         ", preferred, auto, 1"
       ];
 
-      # Pin workspaces 1-10 to DP-4, and 11-20 to eDP-1
       workspace = [
         "1, monitor:DP-4, default:true"
         "2, monitor:DP-4"
@@ -153,7 +158,6 @@ in
         "$mod SHIFT, M, exit,"
         "$mod, W, exec, killall waybar; waybar"
 
-        # Universal Workspace Switching
         "$mod, 1, exec, ${workspaceSyncScript}/bin/ws-sync 1"
         "$mod, 2, exec, ${workspaceSyncScript}/bin/ws-sync 2"
         "$mod, 3, exec, ${workspaceSyncScript}/bin/ws-sync 3"
@@ -165,7 +169,6 @@ in
         "$mod, 9, exec, ${workspaceSyncScript}/bin/ws-sync 9"
         "$mod, 0, exec, ${workspaceSyncScript}/bin/ws-sync 10"
 
-        # Context-Aware Window Moving
         "$mod SHIFT, 1, exec, ${windowMoveScript}/bin/ws-move 1"
         "$mod SHIFT, 2, exec, ${windowMoveScript}/bin/ws-move 2"
         "$mod SHIFT, 3, exec, ${windowMoveScript}/bin/ws-move 3"
@@ -189,10 +192,18 @@ in
     };
 
     extraConfig = ''
-      layerrule = blur,waybar
-      layerrule = ignorealpha 0.2,waybar
+      layerrule {
+        name = waybar-blur
+        match:namespace = waybar
+        blur = on
+        ignore_alpha = 0.2
+      }
 
-      windowrule = opacity 0.70 0.60, .*
+      windowrule {
+        name = global-transparency
+        match:class = .*
+        opacity = 0.70 0.60 
+      }
     '';
   };
 }
