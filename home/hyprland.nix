@@ -19,19 +19,58 @@ let
       
       if [[ "$WINDOWS" -gt 0 ]] && [[ "$CURRENT_STATE" == "unmuted" ]]; then
         echo "--> Muting audio!" >> $LOG
-        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
         echo '{ "command": ["set_property", "mute", true] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="muted"
         
       elif [[ "$WINDOWS" -eq 0 ]] && [[ "$CURRENT_STATE" == "muted" ]]; then
         echo "--> Unmuting audio!" >> $LOG
-        # DUMP ERRORS TO THE LOG INSTEAD OF DEV/NULL
         echo '{ "command": ["set_property", "mute", false] }' | ${pkgs.socat}/bin/socat - UNIX-CONNECT:/tmp/mpv-socket >> $LOG 2>&1
         CURRENT_STATE="unmuted"
       fi
       
       sleep 0.5
     done
+  '';
+
+  # Switches BOTH monitors simultaneously
+  workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
+    #!/usr/bin/env bash
+    WS=$1
+    ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
+
+    # If DP-4 is connected, trigger dual-workspace logic
+    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+        WS_RIGHT=$((WS + 10))
+        
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS_RIGHT
+        
+        # Restore focus so your mouse doesn't violently jump screens
+        ${pkgs.hyprland}/bin/hyprctl dispatch focusmonitor $ACTIVE_MON
+    else
+        # Fallback: Laptop-only mode
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+    fi
+  '';
+
+  # Moves windows to the correct monitor's paired workspace
+  windowMoveScript = pkgs.writeShellScriptBin "ws-move" ''
+    #!/usr/bin/env bash
+    WS=$1
+    ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
+
+    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+        # Check which monitor the active window is on
+        if [ "$ACTIVE_MON" = "DP-4" ]; then
+            ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
+        else
+            TARGET=$((WS + 10))
+            ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $TARGET
+        fi
+    else
+        # Fallback: Laptop-only mode
+        ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
+    fi
   '';
 in
 {
@@ -41,9 +80,33 @@ in
       "$mod" = "SUPER";
 
       monitor = [
-        "DP-4, preferred, 0x0, 1"       # <-- Replace DP-1 with your actual external monitor name
-        "eDP-1, preferred, 1920x0, 1"   # <-- Replace 1920 with the actual width of your external monitor
-        ", preferred, auto, 1"          # Catch-all fallback for plugging in random projectors/TVs
+        "DP-4, preferred, 0x0, 1"
+        "eDP-1, preferred, 1920x0, 1"
+        ", preferred, auto, 1"
+      ];
+
+      # Pin workspaces 1-10 to DP-4, and 11-20 to eDP-1
+      workspace = [
+        "1, monitor:DP-4, default:true"
+        "2, monitor:DP-4"
+        "3, monitor:DP-4"
+        "4, monitor:DP-4"
+        "5, monitor:DP-4"
+        "6, monitor:DP-4"
+        "7, monitor:DP-4"
+        "8, monitor:DP-4"
+        "9, monitor:DP-4"
+        "10, monitor:DP-4"
+        "11, monitor:eDP-1, default:true"
+        "12, monitor:eDP-1"
+        "13, monitor:eDP-1"
+        "14, monitor:eDP-1"
+        "15, monitor:eDP-1"
+        "16, monitor:eDP-1"
+        "17, monitor:eDP-1"
+        "18, monitor:eDP-1"
+        "19, monitor:eDP-1"
+        "20, monitor:eDP-1"
       ];
 
       exec-once = [
@@ -72,23 +135,17 @@ in
         };
       };
 
-      # REPEATABLE BINDS (Hold down to change volume)
       binde = [
-        # Unmutes first, then raises volume
         ", XF86AudioRaiseVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+'"
-        # Unmutes first, then lowers volume
         ", XF86AudioLowerVolume, exec, sh -c 'wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'"
       ];
 
-      # STANDARD BINDS
       bind = [
-        # Media Keys
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
         ", XF86AudioNext, exec, playerctl next"
 
-        # Window Controls
         "$mod, T, exec, kitty"
         "$mod, B, exec, zen"
         "$mod, Q, killactive,"
@@ -96,29 +153,29 @@ in
         "$mod SHIFT, M, exit,"
         "$mod, W, exec, killall waybar; waybar"
 
-        # Workspaces
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 10"
+        # Universal Workspace Switching
+        "$mod, 1, exec, ${workspaceSyncScript}/bin/ws-sync 1"
+        "$mod, 2, exec, ${workspaceSyncScript}/bin/ws-sync 2"
+        "$mod, 3, exec, ${workspaceSyncScript}/bin/ws-sync 3"
+        "$mod, 4, exec, ${workspaceSyncScript}/bin/ws-sync 4"
+        "$mod, 5, exec, ${workspaceSyncScript}/bin/ws-sync 5"
+        "$mod, 6, exec, ${workspaceSyncScript}/bin/ws-sync 6"
+        "$mod, 7, exec, ${workspaceSyncScript}/bin/ws-sync 7"
+        "$mod, 8, exec, ${workspaceSyncScript}/bin/ws-sync 8"
+        "$mod, 9, exec, ${workspaceSyncScript}/bin/ws-sync 9"
+        "$mod, 0, exec, ${workspaceSyncScript}/bin/ws-sync 10"
 
-        # Move to Workspaces
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod SHIFT, 0, movetoworkspace, 10"
+        # Context-Aware Window Moving
+        "$mod SHIFT, 1, exec, ${windowMoveScript}/bin/ws-move 1"
+        "$mod SHIFT, 2, exec, ${windowMoveScript}/bin/ws-move 2"
+        "$mod SHIFT, 3, exec, ${windowMoveScript}/bin/ws-move 3"
+        "$mod SHIFT, 4, exec, ${windowMoveScript}/bin/ws-move 4"
+        "$mod SHIFT, 5, exec, ${windowMoveScript}/bin/ws-move 5"
+        "$mod SHIFT, 6, exec, ${windowMoveScript}/bin/ws-move 6"
+        "$mod SHIFT, 7, exec, ${windowMoveScript}/bin/ws-move 7"
+        "$mod SHIFT, 8, exec, ${windowMoveScript}/bin/ws-move 8"
+        "$mod SHIFT, 9, exec, ${windowMoveScript}/bin/ws-move 9"
+        "$mod SHIFT, 0, exec, ${windowMoveScript}/bin/ws-move 10"
       ];
 
       bindr = [
@@ -132,20 +189,10 @@ in
     };
 
     extraConfig = ''
-      layerrule {
-        name = waybar-blur
-        match:namespace = waybar
-        blur = on
-        ignore_alpha = 0.2
-      }
+      layerrule = blur,waybar
+      layerrule = ignorealpha 0.2,waybar
 
-      # The new 0.53+ syntax for global transparency
-      # Increased transparency (70% active, 60% inactive)
-      windowrule {
-        name = global-transparency
-        match:class = .*
-        opacity = 0.70 0.60 
-      }
+      windowrule = opacity 0.70 0.60, .*
     '';
   };
 }
