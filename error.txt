@@ -1,6 +1,0 @@
-✘ [ERROR] Expected ">" but found "onClicked"
-
-    app.ts:7:16:
-      7 │         <button onClicked={() => exec(command)}>
-        │                 ~~~~~~~~~
-        ╵                 >

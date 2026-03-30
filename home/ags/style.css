@@ -1,37 +1,64 @@
 .control-center-container {
-    background-color: rgba(26, 27, 38, 0.85);
-    border: 2px solid rgba(122, 162, 247, 0.5);
-    border-radius: 12px;
+    background-color: rgba(30, 30, 46, 0.4); /* Translucent dark base */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle edge highlight */
+    border-radius: 24px; /* macOS style curves */
     padding: 20px;
-    min-width: 320px;
+    min-width: 340px;
 }
 
-.header {
+.module-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.square-card {
+    min-width: 145px;
+    min-height: 80px;
+}
+
+/* Typography */
+.text-bold {
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 20px;
     font-weight: bold;
-    color: #c0caf5;
-    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 14px;
 }
 
-.slider-box {
-    margin-top: 10px;
-}
-
-.icon {
+.text-sub {
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 22px;
     color: #a9b1d6;
-    margin-right: 15px;
+    font-size: 12px;
 }
 
-.volume-slider {
-    background-color: #414868;
-    border-radius: 10px;
-    min-height: 12px;
+.icon, .icon-large {
+    font-family: "JetBrainsMono Nerd Font";
+    color: #c0caf5;
 }
 
-.volume-slider highlight {
-    background-color: #7aa2f7;
-    border-radius: 10px;
+.icon-large {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+/* The macOS Sliders */
+.macos-slider {
+    min-height: 22px;
+}
+
+.macos-slider trough {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    min-height: 22px;
+}
+
+.macos-slider highlight {
+    background-color: #ffffff; /* Crisp white fill */
+    border-radius: 12px;
+    min-height: 22px;
+}
+
+.macos-slider slider {
+    background-color: transparent; /* Hides the grabber circle */
+    box-shadow: none;
 }
