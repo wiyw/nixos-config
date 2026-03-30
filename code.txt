@@ -150,23 +150,12 @@
   home.homeDirectory = "/home/greyson";
 
   imports = [
-    inputs.ags.homeManagerModules.default # <-- 1. IMPORT THE AGS MODULE
     ./packages.nix
     ./hyprland.nix
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
   ];
-
-  # <-- 2. CONFIGURE AGS WITH ASTAL3 -->
-  programs.ags = {
-    enable = true;
-    # We are swapping standard pkgs for your AGS flake inputs
-    extraPackages = [
-      inputs.ags.packages.${pkgs.system}.astal3
-      inputs.ags.packages.${pkgs.system}.io
-    ];
-  };
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
@@ -179,11 +168,7 @@
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
 
-  # AGS v2 Configuration Files
-  home.file.".config/ags/app.ts".source = ./ags/app.ts;
-  home.file.".config/ags/control-center.tsx".source = ./ags/control-center.tsx;
-  home.file.".config/ags/style.css".source = ./ags/style.css;
-  home.file.".config/ags/tsconfig.json".source = ./ags/tsconfig.json;
+  home.file.".config/ags".source = ./ags;
 }
 
 
@@ -345,108 +330,100 @@ window.control-center-window {
 .notif-header { font-weight: bold; font-size: 11px; color: #a9b1d6; }
 
 
---- FILE: ./home/ags/control-center.tsx ---
-import { App, Astal, Gtk } from "astal/gtk3"
-import { Window, Box, Button, Label } from "astal/gtk3/widget"
-import { execAsync } from "astal/process"
-
-// A helper component for our 2x2 grid buttons
-function QuickButton({ icon, command }: { icon: string, command: string }) {
-    return (
-        <Button 
-            className="toggle-btn" 
-            onClicked={() => execAsync(["bash", "-c", command]).catch(print)}
-        >
-            <Label label={icon} />
-        </Button>
-    )
+--- FILE: ./home/ags/package.json ---
+{
+  "name": "ags-config",
+  "version": "1.0.0",
+  "dependencies": {
+    "ags": "*"
+  }
 }
 
-export default function ControlCenter() {
-    return (
-        <Window
-            name="control-center"
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginRight={15}
-            marginTop={10}
-            layer={Astal.Layer.TOP}
-            application={App}
-            visible={false} // Hidden by default, triggered by Waybar
-        >
-            <Box className="control-center" vertical spacing={14}>
-                {/* TOP ROW: Quick Settings + Media */}
-                <Box spacing={14}>
-                    <Box className="quick-settings-pod" vertical spacing={8}>
-                        <Box spacing={8}>
-                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
-                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
-                        </Box>
-                        <Box spacing={8}>
-                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
-                            <QuickButton icon="󰌾" command="hyprlock" />
-                        </Box>
-                    </Box>
-
-                    {/* Media Player Pod */}
-                    <Box className="media-pod" vertical spacing={6}>
-                        <Box className="media-cover" halign={Gtk.Align.CENTER}>
-                            <Label label="♪" css="font-size: 32px;" />
-                        </Box>
-                        <Label className="media-title" label="No Media Playing" truncate />
-                        <Label className="media-artist" label="—" truncate />
-                        
-                        <Box className="media-controls" spacing={8} halign={Gtk.Align.CENTER}>
-                            <Button className="media-btn" onClicked={() => execAsync("playerctl previous")}>
-                                <Label label="󰒮" />
-                            </Button>
-                            <Button className="media-btn play-btn" onClicked={() => execAsync("playerctl play-pause")}>
-                                <Label label="▶" />
-                            </Button>
-                            <Button className="media-btn" onClicked={() => execAsync("playerctl next")}>
-                                <Label label="󰒭" />
-                            </Button>
-                        </Box>
-                    </Box>
-                </Box>
-
-                {/* SLIDERS POD */}
-                <Box className="sliders-pod" vertical spacing={8}>
-                    <Box spacing={12}>
-                        <Label label="🔊" />
-                        <Label label="Volume" />
-                    </Box>
-                    <Box spacing={12}>
-                        <Label label="☀" />
-                        <Label label="Brightness" />
-                    </Box>
-                </Box>
-
-                {/* NOTIFICATIONS POD */}
-                <Box className="notifications-pod" vertical spacing={8} vexpand>
-                    <Label className="notif-header" label="NOTIFICATIONS" halign={Gtk.Align.START} />
-                    <Label label="No new notifications" halign={Gtk.Align.CENTER} />
-                </Box>
-            </Box>
-        </Window>
-    )
-}
 
 
 --- FILE: ./home/ags/app.ts ---
-import { App } from "astal/gtk3";
-import ControlCenter from "./control-center";
+import app from "ags/gtk4/app"
+import { Gtk, Astal } from "ags/gtk4"
+import { exec } from "ags/process"
 
-App.start({
-    style: "./style.css",
+function ControlCenter() {
+    return (
+        <window anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} visible={true}>
+            <box orientation={Gtk.Orientation.VERTICAL} spacing={14} margin={14}>
+                <box homogeneous spacing={14}>
+                    <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="quick-settings-pod">
+                        <box spacing={8}>
+                            <button onClicked={() => exec("nmcli radio wifi toggle")}>
+                                <label label="󰤮" />
+                            </button>
+                            <button onClicked={() => exec("rfkill toggle bluetooth")}>
+                                <label label="󰥭" />
+                            </button>
+                        </box>
+                        <box spacing={8}>
+                            <button onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
+                                <label label="󰝟" />
+                            </button>
+                            <button onClicked={() => exec("hyprlock")}>
+                                <label label="󰌾" />
+                            </button>
+                        </box>
+                    </box>
+                    <box orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand class="media-pod">
+                        <box halign={Gtk.Align.CENTER} hexpand>
+                            <label label="♪" class="music-icon" />
+                        </box>
+                        <label label="No Media Playing" class="media-title" />
+                        <label label="—" class="media-artist" />
+                        <box spacing={8} halign={Gtk.Align.CENTER} homogeneous>
+                            <button onClicked={() => exec("playerctl previous")}>
+                                <label label="󰒮" />
+                            </button>
+                            <button onClicked={() => exec("playerctl play-pause")}>
+                                <label label="▶" />
+                            </button>
+                            <button onClicked={() => exec("playerctl next")}>
+                                <label label="󰒭" />
+                            </button>
+                        </box>
+                    </box>
+                </box>
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="sliders-pod">
+                    <box spacing={12}>
+                        <label label="🔊" />
+                        <label label="Volume" />
+                    </box>
+                    <box spacing={12}>
+                        <label label="☀" />
+                        <label label="Brightness" />
+                    </box>
+                </box>
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand class="notifications-pod">
+                    <label label="NOTIFICATIONS" class="notif-header" />
+                    <label label="No new notifications" />
+                </box>
+            </box>
+        </window>
+    )
+}
+
+app.start({
+    css: `
+        * { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: white; }
+        window { background: rgba(30,30,30,0.9); border-radius: 20px; }
+        .quick-settings-pod, .media-pod, .sliders-pod, .notifications-pod { background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px; }
+        .music-icon { font-size: 32px; }
+        .media-title { font-weight: bold; }
+        .media-artist { color: #a0a0a0; }
+        .notif-header { color: #a0a0a0; font-weight: bold; font-size: 11px; }
+    `,
     requestHandler(request, res) {
-        if (request === "toggle-control-center") {
-            const win = App.get_window("control-center")
-            if (win) {
-                win.visible = !win.visible
-                res("Toggled window")
-            } else {
-                res("Window not found")
-            }
+        const wins = app.get_windows()
+        if (wins.length > 0) {
+            wins[0].visible = !wins[0].visible
+            res("Toggled")
+        } else {
+            res("No windows")
         }
     },
     main() {
@@ -455,17 +432,18 @@ App.start({
 })
 
 
+
 --- FILE: ./home/ags/tsconfig.json ---
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "moduleResolution": "Bundler",
     "strict": true,
-    "jsx": "react",
-    "jsxFactory": "JSX"
+    "jsx": "react-jsx",
+    "jsxImportSource": "ags"
   }
 }
+
 
 
 --- FILE: ./home/waybar.nix ---
@@ -623,19 +601,29 @@ App.start({
     inputs.zen-browser.packages.${pkgs.system}.default
     kitty
     nautilus 
-    
+
     # Ricing Tools
     waybar
     mpvpaper # Live video wallpaper engine!
     hyprlock
     hypridle
     wl-clipboard
-    # REMOVED: inputs.ags.packages.${pkgs.system}.default <--- Take this out!
+    inputs.ags.packages.${pkgs.system}.default
+    ffmpeg # You know what this is
+
+    # Zsh customization
+    starship
+    fzf
+    eza
+    bat
+    ripgrep
+    fd
+    zoxide
+    delta
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
     nerd-fonts.jetbrains-mono # Needed for the icons to render
-    ffmpeg # You know what this is
 
     # AI stuff
     opencode
@@ -659,6 +647,7 @@ App.start({
     '')
   ];
 }
+
 
 
 --- FILE: ./home/hyprland.nix ---
@@ -892,20 +881,12 @@ SOFTWARE.
 
 
 --- FILE: ./error.txt ---
-✘ [ERROR] Could not resolve astal/gtk3
+✘ [ERROR] Expected ">" but found "onClicked"
 
-    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:1:20:
-      1 │ import { App } from astal/gtk3
-        ╵                     ~~~~~~~~~~~~
-
-  You can mark the path astal/gtk3 as external to exclude it from the bundle, which will remove
-  this error and leave the unresolved path in the bundle.
-
-✘ [ERROR] Could not resolve ./control-center
-
-    ../../nix/store/457dpbng3cgp9sbvshzby1vhx9xcbqix-hm_app.ts:2:26:
-      2 │ import ControlCenter from ./control-center
-        ╵                           ~~~~~~~~~~~~~~~~~~
+    app.ts:7:16:
+      7 │         <button onClicked={() => exec(command)}>
+        │                 ~~~~~~~~~
+        ╵                 >
 
 
 
@@ -1022,12 +1003,13 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
     isNormalUser = true;
     description = "Greyson";
     extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.zsh
   };
 
   # System-level Programs & Shell
   programs.hyprland.enable = true;
-  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
 
   # Base System Packages
   environment.systemPackages = with pkgs; [

@@ -37,12 +37,12 @@
     isNormalUser = true;
     description = "Greyson";
     extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.zsh;
   };
 
   # System-level Programs & Shell
   programs.hyprland.enable = true;
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
 
   # Base System Packages
   environment.systemPackages = with pkgs; [

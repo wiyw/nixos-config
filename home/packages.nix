@@ -14,11 +14,21 @@
     hypridle
     wl-clipboard
     inputs.ags.packages.${pkgs.system}.default
+    ffmpeg # You know what this is
+
+    # Zsh customization
+    starship
+    fzf
+    eza
+    bat
+    ripgrep
+    fd
+    zoxide
+    delta
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
     nerd-fonts.jetbrains-mono # Needed for the icons to render
-    ffmpeg # You know what this is
 
     # AI stuff
     opencode

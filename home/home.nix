@@ -10,6 +10,7 @@
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
+    ./zsh.nix
   ];
 
   home.pointerCursor = {
