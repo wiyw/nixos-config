@@ -155,6 +155,7 @@
     ./waybar.nix
     ./rofi.nix
     ./auth.nix
+    ./zsh.nix
   ];
 
   home.pointerCursor = {
@@ -330,18 +331,7 @@ window.control-center-window {
 .notif-header { font-weight: bold; font-size: 11px; color: #a9b1d6; }
 
 
---- FILE: ./home/ags/package.json ---
-{
-  "name": "ags-config",
-  "version": "1.0.0",
-  "dependencies": {
-    "ags": "*"
-  }
-}
-
-
-
---- FILE: ./home/ags/app.ts ---
+--- FILE: ./home/ags/app.tsx ---
 import app from "ags/gtk4/app"
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
@@ -430,6 +420,17 @@ app.start({
         ControlCenter()
     }
 })
+
+
+
+--- FILE: ./home/ags/package.json ---
+{
+  "name": "ags-config",
+  "version": "1.0.0",
+  "dependencies": {
+    "ags": "*"
+  }
+}
 
 
 
@@ -592,6 +593,283 @@ app.start({
 }
 
 
+--- FILE: ./home/zsh/starship.toml ---
+# ~/.config/starship.toml
+
+"$schema" = 'https://starship.rs/config-schema.json'
+add_newline = true
+
+# ==========================================
+# LEFT PROMPT: The Kitchen Sink
+# ==========================================
+format = """
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$c\
+$cmake\
+$cobol\
+$crystal\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$golang\
+$haskell\
+$java\
+$julia\
+$kotlin\
+$lua\
+$nim\
+$nodejs\
+$bun\
+$ocaml\
+$perl\
+$php\
+$python\
+$rlang\
+$ruby\
+$rust\
+$scala\
+$swift\
+$zig\
+$aws\
+$azure\
+$gcloud\
+$docker_context\
+$kubernetes\
+$terraform\
+$pulumi\
+$vagrant\
+$nix_shell\
+$conda\
+$jobs\
+$character"""
+
+# ==========================================
+# RIGHT PROMPT: System Telemetry
+# ==========================================
+right_format = """
+$status\
+$cmd_duration\
+$memory_usage\
+$battery\
+$time\
+"""
+
+# ==========================================
+# TOKYO NIGHT COLORS & MODULES
+# ==========================================
+
+[os]
+disabled = false
+format = "[$symbol]($style)"
+style = "bold #7aa2f7"
+[os.symbols]
+Windows = "󰍲 "
+
+[username]
+disabled = false
+show_always = true
+format = "[$user]($style)@"
+style_user = "bold #7aa2f7"
+
+[hostname]
+disabled = false
+ssh_only = false
+format = "[$hostname]($style) "
+style = "bold #7aa2f7"
+
+[directory]
+disabled = false
+style = "bold #2ac3de"
+read_only = " "
+truncate_to_repo = true
+truncation_length = 4
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+# --- GIT ---
+[git_branch]
+disabled = false
+symbol = " "
+style = "bold #bb9af7"
+format = "[$symbol$branch]($style) "
+
+[git_commit]
+disabled = false
+commit_hash_length = 7
+format = "[\\($hash$tag\\)]($style) "
+style = "bold #e0af68"
+
+[git_state]
+disabled = false
+format = "[$state($progress_current/$progress_total)]($style) "
+style = "bold #f7768e"
+
+[git_metrics]
+disabled = false
+added_style = "bold #9ece6a"
+deleted_style = "bold #f7768e"
+format = "([+$added]($added_style) )([-$deleted]($deleted_style) )"
+
+[git_status]
+disabled = false
+style = "bold #f7768e"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+# --- LANGUAGES (VERSION-FREE) ---
+[nodejs]
+disabled = false
+symbol = " "
+style = "bold #9ece6a"
+format = '[$symbol]($style)'
+
+[bun]
+disabled = false
+symbol = "󰛦 "
+style = "bold #c0caf5"
+format = '[$symbol]($style)'
+
+[python]
+disabled = false
+symbol = " "
+style = "bold #e0af68"
+format = '[$symbol(\($virtualenv\) )]($style)'
+
+[rust]
+disabled = false
+symbol = " "
+style = "bold #f7768e"
+format = '[$symbol]($style)'
+
+[golang]
+disabled = false
+symbol = " "
+style = "bold #2ac3de"
+format = '[$symbol]($style)'
+
+[java]
+disabled = false
+symbol = " "
+style = "bold #7aa2f7"
+format = '[$symbol]($style)'
+
+[c]
+disabled = false
+symbol = " "
+style = "bold #7aa2f7"
+format = '[$symbol]($style)'
+
+[php]
+disabled = false
+symbol = " "
+style = "bold #7aa2f7"
+format = '[$symbol]($style)'
+
+[ruby]
+disabled = false
+symbol = " "
+style = "bold #f7768e"
+format = '[$symbol]($style)'
+
+[lua]
+disabled = false
+symbol = " "
+style = "bold #7aa2f7"
+format = '[$symbol]($style)'
+
+# (To save space, other languages like Swift, Kotlin, Dart, Zig, etc., 
+# share this identical format under the hood in Starship, so they 
+# will trigger natively using their default icons and inherit your terminal colors!)
+
+# --- INFRASTRUCTURE ---
+[docker_context]
+disabled = false
+symbol = " "
+style = "bold #7aa2f7"
+format = '[$symbol]($style) '
+
+[kubernetes]
+disabled = false
+symbol = "󱃾 "
+style = "bold #7aa2f7"
+format = '[$symbol$context]($style) '
+
+[terraform]
+disabled = false
+symbol = "󱁢 "
+style = "bold #bb9af7"
+format = '[$symbol$workspace]($style) '
+
+[aws]
+disabled = false
+symbol = " "
+style = "bold #ff9e64"
+format = '[$symbol$profile]($style) '
+
+# --- RIGHT PROMPT TELEMETRY ---
+[status]
+disabled = false
+format = '[\[$symbol$status\]]($style) '
+symbol = "✘ "
+style = "bold #f7768e"
+
+[jobs]
+disabled = false
+symbol = "⚙ "
+style = "bold #7aa2f7"
+format = '[$symbol$number]($style) '
+
+[memory_usage]
+disabled = false
+threshold = -1
+format = "[$symbol$ram]($style) "
+style = "bold #2ac3de"
+symbol = "󰍛 "
+
+[battery]
+disabled = false
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+format = "[$symbol$percentage]($style) "
+[[battery.display]]
+threshold = 100
+style = "bold #9ece6a" 
+[[battery.display]]
+threshold = 30
+style = "bold #e0af68" 
+[[battery.display]]
+threshold = 15
+style = "bold #f7768e" 
+
+[cmd_duration]
+disabled = false
+min_time = 500
+format = "[$duration]($style) "
+style = "bold #e0af68"
+
+[time]
+disabled = false
+time_format = "%T" 
+format = "[$time]($style)"
+style = "bold #565f89"
+
+[character]
+disabled = false
+success_symbol = "[❯ ](bold #9ece6a) "
+error_symbol = "[❯ ](bold #f7768e) "
+vicmd_symbol = "[❮ ](bold #e0af68) "
+
+
 --- FILE: ./home/packages.nix ---
 { pkgs, inputs, ... }:
 
@@ -648,6 +926,43 @@ app.start({
   ];
 }
 
+
+
+--- FILE: ./home/zsh.nix ---
+{ config, pkgs, lib, ... }:
+
+{
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    
+    # This reads your raw TOML file and injects it natively into Home Manager
+    settings = builtins.fromTOML (builtins.readFile ./zsh/starship.toml);
+  };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    
+    # Your core plugins from the old .zshrc!
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    historySubstringSearch.enable = true;
+
+    # Inject your cleaned-up .zshrc at the end
+    initExtra = builtins.readFile ./zsh/.zshrc;
+  };
+
+  # Let Home Manager handle Zoxide and FZF integrations automatically
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+}
 
 
 --- FILE: ./home/hyprland.nix ---
@@ -806,17 +1121,26 @@ in
 {
   programs.git = {
     enable = true;
-    settings = {
-      user = {
-        name = "wiyw";
-        email = "quantumdragon8@gmail.com";
-      };
+    userName = "wiyw";
+    userEmail = "quantumdragon8@gmail.com";
+    
+    extraConfig = {
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";
+      
+      # The Tokyo Night Delta Config
+      core.pager = "delta";
+      interactive.diffFilter = "delta --color-only";
+      delta = {
+        navigate = true;
+        light = false;
+        side-by-side = true;
+        line-numbers = true;
+      };
+      merge.conflictstyle = "diff3";
     };
   };
 }
-
 
 
 --- FILE: ./LICENSE ---
@@ -1003,12 +1327,11 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
     isNormalUser = true;
     description = "Greyson";
     extraGroups = [ "wheel" "networkmanager" ];
-    shell = pkgs.zsh
+    shell = pkgs.zsh;
   };
 
   # System-level Programs & Shell
   programs.hyprland.enable = true;
-  users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
   # Base System Packages

@@ -3,10 +3,13 @@
 {
   programs.git = {
     enable = true;
-    userName = "wiyw";
-    userEmail = "quantumdragon8@gmail.com";
     
-    extraConfig = {
+    # The new, updated syntax for Git settings
+    settings = {
+      user = {
+        name = "wiyw";
+        email = "quantumdragon8@gmail.com";
+      };
       init.defaultBranch = "main";
       safe.directory = "/etc/nixos";
       
