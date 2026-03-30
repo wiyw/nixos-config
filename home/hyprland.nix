@@ -40,7 +40,11 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      monitor = ",preferred,auto,1";
+      monitor = [
+        "DP-4, preferred, 0x0, 1"       # <-- Replace DP-1 with your actual external monitor name
+        "eDP-1, preferred, 1920x0, 1"   # <-- Replace 1920 with the actual width of your external monitor
+        ", preferred, auto, 1"          # Catch-all fallback for plugging in random projectors/TVs
+      ];
 
       exec-once = [
         "waybar"
