@@ -8,7 +8,7 @@ OUTPUT="code.txt"
 # ! -name "$OUTPUT": exclude the output file itself
 # ! -name "*.mp4": exclude MP4 video files
 # ! -path '*/.*': skip hidden files and directories (like .git)
-find . -type f ! -name "$OUTPUT" ! -name "*.mp4" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
+find . -type f ! -name "$OUTPUT" ! -name "*.mp4" "*.toml" ".zshrc" ! -path '*/.*' -print0 | while IFS= read -r -d '' file; do
     {
         echo "--- FILE: $file ---"
         cat "$file"

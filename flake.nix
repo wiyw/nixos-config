@@ -9,8 +9,6 @@
     };
     # The community Zen Browser flake
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    # AGS (Aylur's GTK Shell)
-    ags.url = "github:aylur/ags";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }: {

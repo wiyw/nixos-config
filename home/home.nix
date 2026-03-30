@@ -24,6 +24,4 @@
 
   programs.home-manager.enable = true;
   home.stateVersion = "25.11";
-
-  home.file.".config/ags".source = ./ags;
 }
