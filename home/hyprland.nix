@@ -199,8 +199,12 @@ in
         ignore_alpha = 0.2
       }
 
-      layerrule = blur on, match:namespace ^(control-center)$
-      layerrule = ignore_alpha 0.1, match:namespace ^(control-center)$
+      layerrule {
+        name = ags-control-center-blur
+        match:namespace = ^(control-center)$
+        blur = true
+        ignore_alpha = 0.2
+      }
 
       windowrule {
         name = global-transparency
