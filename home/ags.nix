@@ -9,6 +9,7 @@
         astal.network
         astal.wireplumber
         astal.bluetooth
+        networkmanager
       ];
     })
     esbuild        # REQUIRED: Compiles TS/TSX into JS on the fly
