@@ -9,6 +9,8 @@
         astal.network
         astal.wireplumber
         astal.bluetooth
+        astal.mpris
+        astal.battery
         networkmanager
       ];
     })
