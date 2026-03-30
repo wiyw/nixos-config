@@ -197,7 +197,9 @@ in
         match:namespace = waybar
         blur = on
         ignore_alpha = 0.2
-        
+      }
+
+      layerrule {
         name = ags-blur
         match:namespace = control-center
         blur = on
