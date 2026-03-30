@@ -2,14 +2,6 @@ import app from "ags/gtk4/app"
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
 
-function QuickButton({ icon, command }: { icon: string, command: string }) {
-    return (
-        <button onClicked={() => exec(command)}>
-            <label label={icon} />
-        </button>
-    )
-}
-
 function ControlCenter() {
     return (
         <window anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} visible={true}>
@@ -17,12 +9,20 @@ function ControlCenter() {
                 <box homogeneous spacing={14}>
                     <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="quick-settings-pod">
                         <box spacing={8}>
-                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
-                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
+                            <button onClicked={() => exec("nmcli radio wifi toggle")}>
+                                <label label="󰤮" />
+                            </button>
+                            <button onClicked={() => exec("rfkill toggle bluetooth")}>
+                                <label label="󰥭" />
+                            </button>
                         </box>
                         <box spacing={8}>
-                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
-                            <QuickButton icon="󰌾" command="hyprlock" />
+                            <button onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
+                                <label label="󰝟" />
+                            </button>
+                            <button onClicked={() => exec("hyprlock")}>
+                                <label label="󰌾" />
+                            </button>
                         </box>
                     </box>
                     <box orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand class="media-pod">
@@ -32,15 +32,27 @@ function ControlCenter() {
                         <label label="No Media Playing" class="media-title" />
                         <label label="—" class="media-artist" />
                         <box spacing={8} halign={Gtk.Align.CENTER} homogeneous>
-                            <button onClicked={() => exec("playerctl previous")}><label label="󰒮" /></button>
-                            <button onClicked={() => exec("playerctl play-pause")}><label label="▶" /></button>
-                            <button onClicked={() => exec("playerctl next")}><label label="󰒭" /></button>
+                            <button onClicked={() => exec("playerctl previous")}>
+                                <label label="󰒮" />
+                            </button>
+                            <button onClicked={() => exec("playerctl play-pause")}>
+                                <label label="▶" />
+                            </button>
+                            <button onClicked={() => exec("playerctl next")}>
+                                <label label="󰒭" />
+                            </button>
                         </box>
                     </box>
                 </box>
                 <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="sliders-pod">
-                    <box spacing={12}><label label="🔊" /><label label="Volume" /></box>
-                    <box spacing={12}><label label="☀" /><label label="Brightness" /></box>
+                    <box spacing={12}>
+                        <label label="🔊" />
+                        <label label="Volume" />
+                    </box>
+                    <box spacing={12}>
+                        <label label="☀" />
+                        <label label="Brightness" />
+                    </box>
                 </box>
                 <box orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand class="notifications-pod">
                     <label label="NOTIFICATIONS" class="notif-header" />
