@@ -1,0 +1,7 @@
+greyson@iusenixbtw:~/ > ags run                    
+✘ [ERROR] Expected ">" but found "name"
+
+    app.ts:7:16:
+      7 │         <window name="control-center" visible={true} anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} defaultWidth={360} defaultHeig...
+        │                 ~~~~
+        ╵                 >

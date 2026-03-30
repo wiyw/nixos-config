@@ -2,61 +2,49 @@ import app from "ags/gtk4/app"
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
 
+function QuickButton({ icon, command }: { icon: string, command: string }) {
+    return (
+        <button onClicked={() => exec(command)}>
+            <label label={icon} />
+        </button>
+    )
+}
+
 function ControlCenter() {
     return (
-        <window name="control-center" visible={true} anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} defaultWidth={360} defaultHeight={520}>
+        <window anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} marginTop={10} marginEnd={15} layer={Astal.Layer.TOP} visible={true}>
             <box orientation={Gtk.Orientation.VERTICAL} spacing={14} margin={14}>
                 <box homogeneous spacing={14}>
-                    <box orientation={Gtk.Orientation.VERTICAL} spacing={8} css="background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px;">
+                    <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="quick-settings-pod">
                         <box spacing={8}>
-                            <button onClicked={() => exec("nmcli radio wifi toggle")}>
-                                <label label="󰤮" />
-                            </button>
-                            <button onClicked={() => exec("rfkill toggle bluetooth")}>
-                                <label label="󰥭" />
-                            </button>
+                            <QuickButton icon="󰤮" command="nmcli radio wifi toggle" />
+                            <QuickButton icon="󰥭" command="rfkill toggle bluetooth" />
                         </box>
                         <box spacing={8}>
-                            <button onClicked={() => exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")}>
-                                <label label="󰝟" />
-                            </button>
-                            <button onClicked={() => exec("hyprlock")}>
-                                <label label="󰌾" />
-                            </button>
+                            <QuickButton icon="󰝟" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+                            <QuickButton icon="󰌾" command="hyprlock" />
                         </box>
                     </box>
-                    <box orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand css="background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px; min-width: 140px;">
+                    <box orientation={Gtk.Orientation.VERTICAL} spacing={6} hexpand class="media-pod">
                         <box halign={Gtk.Align.CENTER} hexpand>
-                            <label label="♪" css="font-size: 32px;" />
+                            <label label="♪" class="music-icon" />
                         </box>
-                        <label label="No Media Playing" halign={Gtk.Align.CENTER} css="font-weight: bold;" />
-                        <label label="—" halign={Gtk.Align.CENTER} css="color: #a0a0a0;" />
+                        <label label="No Media Playing" class="media-title" />
+                        <label label="—" class="media-artist" />
                         <box spacing={8} halign={Gtk.Align.CENTER} homogeneous>
-                            <button onClicked={() => exec("playerctl previous")}>
-                                <label label="󰒮" />
-                            </button>
-                            <button onClicked={() => exec("playerctl play-pause")}>
-                                <label label="▶" />
-                            </button>
-                            <button onClicked={() => exec("playerctl next")}>
-                                <label label="󰒭" />
-                            </button>
+                            <button onClicked={() => exec("playerctl previous")}><label label="󰒮" /></button>
+                            <button onClicked={() => exec("playerctl play-pause")}><label label="▶" /></button>
+                            <button onClicked={() => exec("playerctl next")}><label label="󰒭" /></button>
                         </box>
                     </box>
                 </box>
-                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} css="background: rgba(40,40,50,0.8); border-radius: 16px; padding: 14px;">
-                    <box spacing={12}>
-                        <label label="🔊" />
-                        <label label="Volume" />
-                    </box>
-                    <box spacing={12}>
-                        <label label="☀" />
-                        <label label="Brightness" />
-                    </box>
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} class="sliders-pod">
+                    <box spacing={12}><label label="🔊" /><label label="Volume" /></box>
+                    <box spacing={12}><label label="☀" /><label label="Brightness" /></box>
                 </box>
-                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand css="background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px;">
-                    <label label="NOTIFICATIONS" halign={Gtk.Align.START} css="color: #a0a0a0; font-weight: bold; font-size: 11px;" />
-                    <label label="No new notifications" halign={Gtk.Align.CENTER} css="color: #808080;" />
+                <box orientation={Gtk.Orientation.VERTICAL} spacing={8} vexpand class="notifications-pod">
+                    <label label="NOTIFICATIONS" class="notif-header" />
+                    <label label="No new notifications" />
                 </box>
             </box>
         </window>
@@ -64,14 +52,22 @@ function ControlCenter() {
 }
 
 app.start({
-    css: `* { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: white; } window { background: rgba(30,30,30,0.9); border-radius: 20px; }`,
+    css: `
+        * { font-family: -apple-system, sans-serif; color: white; }
+        window { background: rgba(30,30,30,0.9); border-radius: 20px; }
+        .quick-settings-pod, .media-pod, .sliders-pod, .notifications-pod { background: rgba(40,40,50,0.8); border-radius: 16px; padding: 12px; }
+        .music-icon { font-size: 32px; }
+        .media-title { font-weight: bold; }
+        .media-artist { color: #a0a0a0; }
+        .notif-header { color: #a0a0a0; font-weight: bold; font-size: 11px; }
+    `,
     requestHandler(request, res) {
-        const win = app.get_window("control-center")
-        if (win) {
-            win.visible = !win.visible
+        const wins = app.get_windows()
+        if (wins.length > 0) {
+            wins[0].visible = !wins[0].visible
             res("Toggled")
         } else {
-            res("Window not found")
+            res("No windows")
         }
     },
     main() {
