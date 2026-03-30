@@ -14,12 +14,7 @@
     hypridle
     wl-clipboard
     ffmpeg # You know what this is
-    ags
-    dart-sass        # Compiles the SCSS styling into CSS
-    upower           # Reads battery percentage
-    brightnessctl    # Controls screen brightness
-    pamixer          # Controls audio volume
-    
+
     # Zsh customization
     starship
     fzf
@@ -29,8 +24,6 @@
     fd
     zoxide
     delta
-
-    
 
     # Waybar Dependencies (Fixes the crash)
     playerctl # Needed for the media player module
