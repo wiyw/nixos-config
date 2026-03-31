@@ -10,13 +10,14 @@ let
     WALLPAPER_DIR="${wallpaperDir}"
     WALLPAPERS=($WALLPAPER_DIR/*.jpg)
 
-    if [ ${#WALLPAPERS[@]} -eq 0 ]; then
+    COUNT="''${#WALLPAPERS[@]}"
+    if [ "$COUNT" -eq 0 ]; then
       echo "No wallpapers found in $WALLPAPER_DIR"
       exit 1
     fi
 
-    RANDOM_INDEX=$((RANDOM % ${#WALLPAPERS[@]}))
-    SELECTED_WALLPAPER="${WALLPAPERS[$RANDOM_INDEX]}"
+    RANDOM_INDEX=$((RANDOM % "$COUNT"))
+    SELECTED_WALLPAPER="''${WALLPAPERS[$RANDOM_INDEX]}"
 
     hyprctl hyprpaper wallpaper "" "$SELECTED_WALLPAPER"
     echo "Wallpaper set to: $SELECTED_WALLPAPER"
