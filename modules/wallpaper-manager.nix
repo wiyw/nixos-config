@@ -6,6 +6,8 @@ let
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
+    sleep 3
+
     WALLPAPER_DIR="/etc/nixos/wallpapers"
     WALLPAPERS=($WALLPAPER_DIR/*.jpg)
     COUNT=''${#WALLPAPERS[@]}
@@ -19,10 +21,17 @@ let
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
     echo "preload = $SELECTED" > /tmp/hyprpaper.conf
-    echo "wallpaper = ,$SELECTED" >> /tmp/hyprpaper.conf
+    echo "wallpaper = eDP-1,$SELECTED" >> /tmp/hyprpaper.conf
+    cat /tmp/hyprpaper.conf
 
     pkill hyprpaper 2>/dev/null || true
+    sleep 1
+
     hyprpaper -c /tmp/hyprpaper.conf &
+    sleep 2
+
+    hyprctl hyprpaper preload "$SELECTED"
+    hyprctl hyprpaper wallpaper eDP-1 "$SELECTED"
     echo "Wallpaper set to: $SELECTED"
   '';
 
