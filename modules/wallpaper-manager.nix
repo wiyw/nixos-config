@@ -20,8 +20,13 @@ let
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
     pkill swww 2>/dev/null || true
+    pkill swww-daemon 2>/dev/null || true
     sleep 0.5
-    swww img "$SELECTED" --transition-type any --transition-duration 2 &
+
+    swww-daemon &
+    sleep 1
+
+    swww img "$SELECTED" --transition-type any --transition-duration 2
     echo "Wallpaper set to: $SELECTED"
   '';
 
