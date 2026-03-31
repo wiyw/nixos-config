@@ -1,110 +1,108 @@
-/* 1. Base window MUST be transparent */
-window.ControlCenterWindow {
-    background: transparent;
+/* 1. Base window - must be transparent to show Hyprland blur */
+window#control-center {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
 }
 
-/* 2. Make sure all default labels are readable */
-.tn-container label {
+/* 2. Main Container */
+.tn-container {
+    background-color: rgba(26, 27, 38, 0.92);
+    border: 1px solid rgba(122, 162, 247, 0.15);
+    border-radius: 20px;
+    padding: 18px;
+    min-width: 380px;
+}
+
+/* 3. Nuke Adwaita Default Buttons */
+/* Using window#control-center ensures our CSS is higher priority than GTK defaults */
+window#control-center button {
+    background-image: none;
+    box-shadow: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+    background-color: rgba(48, 54, 75, 0.8);
+    border: 1px solid rgba(122, 162, 247, 0.15);
+    border-radius: 14px;
+    padding: 14px 12px;
     color: #c0caf5;
 }
 
-/* 3. Main Container */
-.tn-container {
-    /* Using 'background' destroys any default GTK gradients */
-    background: rgba(26, 27, 38, 0.65); 
-    border: 1px solid rgba(65, 72, 104, 0.8);
-    border-radius: 16px;
-    padding: 16px;
-    min-width: 380px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+window#control-center button:hover {
+    background-color: rgba(69, 77, 102, 0.9);
 }
 
-/* Typography */
-.text-header { font-weight: bold; font-size: 15px; color: #c0caf5; }
-.text-bold { font-weight: bold; font-size: 13px; color: #c0caf5; }
-.text-muted { font-size: 12px; color: #565f89; }
-.text-left { justify-content: left; }
-
-/* Panels (Header, Sliders, Media) */
-.tn-panel {
-    background: rgba(36, 40, 59, 0.85);
-    border-radius: 12px;
-    padding: 15px;
+/* Active / Expanded Toggles */
+window#control-center button.active, 
+window#control-center button.expanded {
+    background-color: rgba(122, 162, 247, 0.25);
+    border: 1px solid rgba(122, 162, 247, 0.5);
 }
 
-/* 4. OVERRIDE ADWAITA BUTTONS */
-/* Explicitly targeting 'button' forces GTK to prioritize our CSS */
-button.tn-toggle {
-    background: rgba(36, 40, 59, 0.85);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    padding: 16px 10px;
-    box-shadow: none; /* Kill default GTK shadow */
-    transition: all 0.2s;
-}
-button.tn-toggle:hover {
-    background: rgba(41, 46, 66, 0.95);
-}
-button.tn-toggle .toggle-icon {
-    font-size: 24px;
-    color: #565f89;
-    margin-bottom: 6px;
-}
-
-/* Active Toggles */
-button.tn-toggle.active {
-    background: rgba(122, 162, 247, 0.1);
-    border: 1px solid #7aa2f7;
-}
-button.tn-toggle.active .toggle-icon, 
-button.tn-toggle.active .text-bold {
-    color: #7aa2f7;
-}
-
-/* Icon Buttons */
-button.tn-icon-btn {
-    background: transparent;
+/* Icon Buttons (Transparent background) */
+window#control-center button.tn-icon-btn,
+window#control-center button.tn-close-btn {
+    background-color: transparent;
     border: none;
-    box-shadow: none;
-    color: #a9b1d6;
-    font-size: 22px;
-    transition: color 0.2s;
+    padding: 8px;
+    color: #9aa5ce;
+    border-radius: 8px;
 }
-button.tn-icon-btn:hover { 
-    background: transparent;
-    color: #c0caf5; 
-}
-.play-btn { font-size: 28px; color: #c0caf5; }
-.destructive { color: #f7768e; font-size: 24px; }
-.destructive:hover { color: #ff9e64; }
 
-/* Art & Icons */
+window#control-center button.tn-icon-btn:hover,
+window#control-center button.tn-close-btn:hover {
+    background-color: rgba(122, 162, 247, 0.15);
+    color: #c0caf5;
+}
+
+/* Destructive Button Override */
+window#control-center button.destructive {
+    color: #f7768e;
+}
+
+/* 4. Panels & Sliders */
+.tn-panel {
+    background-color: rgba(36, 40, 59, 0.7);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+scale trough { 
+    background-color: rgba(48, 54, 75, 0.8); 
+    border-radius: 3px; 
+    min-height: 6px; 
+}
+
+scale highlight { 
+    background-color: #7aa2f7; 
+    border-radius: 3px; 
+}
+
+/* 5. Typography & Icons */
+.text-header { font-weight: bold; font-size: 16px; color: #a9b1d6; }
+.text-bold { font-weight: bold; font-size: 14px; color: #c0caf5; }
+.text-muted { font-size: 13px; color: #565f89; }
+.toggle-icon { color: #7aa2f7; font-size: 22px; }
+.icon-large { color: #7dcfff; font-size: 22px; }
+.play-btn { color: #7aa2f7; font-size: 24px; }
+
+/* 6. Art & Popups */
 .tn-profile-pic, .tn-media-art {
-    min-width: 48px;
-    min-height: 48px;
-    background: #15161e;
+    background-color: rgba(48, 54, 75, 0.9);
     border-radius: 10px;
-    border: 1px solid #414868;
+    min-width: 48px; 
+    min-height: 48px;
 }
-.icon-large { font-size: 26px; color: #7aa2f7; }
 
-/* Sliders */
-.slider-icon { font-size: 16px; color: #a9b1d6; min-width: 24px; }
-.tn-slider { min-height: 12px; }
-.tn-slider trough {
-    background: #15161e;
-    border-radius: 6px;
-    min-height: 8px;
+.tn-popup {
+    background-color: rgba(26, 27, 38, 0.98);
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 14px;
+    padding: 14px;
 }
-.tn-slider highlight {
-    background: #7aa2f7;
-    border-radius: 6px;
-}
-.tn-slider slider {
-    background: #c0caf5;
-    border: 2px solid #7aa2f7;
-    min-width: 14px;
-    min-height: 14px;
-    border-radius: 99px;
-    box-shadow: none; /* Kill default Adwaita slider shadow */
+
+.tn-network-item, .tn-device-item {
+    background-color: rgba(48, 54, 75, 0.6);
+    border-radius: 8px;
+    padding: 10px;
 }
