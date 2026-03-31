@@ -1,27 +1,6 @@
+✘ [ERROR] Expected } but found requestHandler
 
-❄️ greyson@iusenixbtw nixos-config  main +59 -45 [+] ❯   ags run                                                                                                                    󰍛 740MiB/7GiB 󰂄 92% 08:51:34
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.707: CSS Error :4:43 Junk at end of value for background-color
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.707: CSS Error :5:36 Junk at end of value for background-image
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.707: CSS Error :6:30 Junk at end of value for box-shadow
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.708: CSS Error :10:48 Junk at end of value for background
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.708: CSS Error :19:36 Junk at end of value for background-image
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.708: CSS Error :20:30 Junk at end of value for box-shadow
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.708: CSS Error :21:31 Junk at end of value for text-shadow
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.708: CSS Error :22:36 Junk at end of value for -gtk-icon-shadow
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.709: CSS Error :26:47 Junk at end of value for background
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.709: CSS Error :35:48 Junk at end of value for background
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.710: CSS Error :39:51 Junk at end of value for background
-
-(gjs:13860): Gjs-Console-CRITICAL **: 08:59:08.710: CSS Error :40:56 Junk at end of value for border
-No window
+    app.ts:6:4:
+      6 │     requestHandler(request, res) {
+        │     ~~~~~~~~~~~~~~
+        ╵     }
