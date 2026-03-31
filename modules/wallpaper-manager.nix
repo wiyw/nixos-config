@@ -6,11 +6,12 @@ let
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
-    WALLPAPERS=($wallpaperDir/*.jpg)
+    WALLPAPER_DIR="/etc/nixos/wallpapers"
+    WALLPAPERS=($WALLPAPER_DIR/*.jpg)
     COUNT=''${#WALLPAPERS[@]}
 
     if [ "$COUNT" -eq 0 ]; then
-      echo "No wallpapers found in $wallpaperDir"
+      echo "No wallpapers found in $WALLPAPER_DIR"
       exit 1
     fi
 
@@ -18,7 +19,7 @@ let
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
     hyprctl hyprpaper preload "$SELECTED"
-    hyprctl hyprpaper wallpaper "" "$SELECTED"
+    hyprctl hyprpaper wallpaper eDP-1 "$SELECTED"
     echo "Wallpaper set to: $SELECTED"
   '';
 
