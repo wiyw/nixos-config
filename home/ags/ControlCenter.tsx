@@ -1,6 +1,6 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
-import { createState, bind } from "ags"
+import { Variable } from "ags/astal-io"
 import app from "ags/gtk4/app"
 
 type PopupType = 'wifi' | 'bluetooth' | 'nightlight' | 'screenshot' | null
@@ -39,7 +39,7 @@ const BluetoothPopup = ({ onClose }: { onClose: () => void }) => (
 )
 
 const NightLightPopup = ({ onClose }: { onClose: () => void }) => {
-    const [temp, setTemp] = createState(4000)
+    const temp = Variable(4000)
     return (
         <box cssClasses={["tn-popup"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box spacing={8}>
@@ -51,8 +51,8 @@ const NightLightPopup = ({ onClose }: { onClose: () => void }) => {
             <scale 
                 min={1000} 
                 max={10000} 
-                value={bind(temp)} 
-                onValueChanged={(self) => setTemp(self.get_value())} 
+                value={temp} 
+                onValueChanged={(self) => temp.set_value(self.get_value())} 
                 hexpand 
             />
         </box>
@@ -77,16 +77,14 @@ const ScreenshotPopup = ({ onClose }: { onClose: () => void }) => (
 )
 
 export default function ControlCenterWindow() {
-    // 1. Initialize State using AGS v3 createState (SolidJS style)
-    const [wifiOn, setWifiOn] = createState(true)
-    const [bluetoothOn, setBluetoothOn] = createState(false)
-    const [volume, setVolume] = createState(50)
-    const [brightness, setBrightness] = createState(80)
-    const [activePopup, setActivePopup] = createState<PopupType>(null)
+    const wifiOn = Variable(true)
+    const bluetoothOn = Variable(false)
+    const volume = Variable(50)
+    const brightness = Variable(80)
+    const activePopup = Variable<PopupType>(null)
 
-    // Helper to toggle popups
     const togglePopup = (popup: PopupType) => {
-        setActivePopup(activePopup() === popup ? null : popup)
+        activePopup.set_value(activePopup.get_value() === popup ? null : popup)
     }
 
     return (
@@ -103,7 +101,6 @@ export default function ControlCenterWindow() {
             layer={Astal.Layer.TOP}
         >
             <box cssClasses={["tn-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={16}>
-                {/* Header */}
                 <box spacing={15}>
                     <box cssClasses={["tn-profile-pic"]} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
                         <label cssClasses={["icon-large"]} label="󰒓 " />
@@ -117,43 +114,41 @@ export default function ControlCenterWindow() {
                     </button>
                 </box>
 
-                {/* Quick Toggles */}
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={bind([wifiOn, activePopup], (on, popup) => 
+                        cssClasses={Variable.derive([wifiOn, activePopup], (on, popup) => 
                             ["tn-toggle", on ? "active" : "", popup === 'wifi' ? "expanded" : ""].filter(Boolean)
                         )} 
                         onClicked={() => {
-                            setWifiOn(!wifiOn())
+                            wifiOn.set_value(!wifiOn.get_value())
                             togglePopup('wifi')
                         }}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label={bind(wifiOn).as(on => on ? "󰤯 " : "󰤮 ")} />
+                            <label cssClasses={["toggle-icon"]} label={wifiOn.as(on => on ? "󰤯 " : "󰤮 ")} />
                             <label cssClasses={["text-bold"]} label="WiFi" />
                         </box>
                     </button>
                     
                     <button 
-                        cssClasses={bind([bluetoothOn, activePopup], (on, popup) => 
+                        cssClasses={Variable.derive([bluetoothOn, activePopup], (on, popup) => 
                             ["tn-toggle", on ? "active" : "", popup === 'bluetooth' ? "expanded" : ""].filter(Boolean)
                         )} 
                         onClicked={() => {
-                            setBluetoothOn(!bluetoothOn())
+                            bluetoothOn.set_value(!bluetoothOn.get_value())
                             togglePopup('bluetooth')
                         }}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label={bind(bluetoothOn).as(on => on ? "󰂯 " : "󰂲 ")} />
+                            <label cssClasses={["toggle-icon"]} label={bluetoothOn.as(on => on ? "󰂯 " : "󰂲 ")} />
                             <label cssClasses={["text-bold"]} label="Bluetooth" />
                         </box>
                     </button>
                 </box>
 
-                {/* Secondary Toggles */}
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={bind(activePopup).as(p => ["tn-toggle", p === 'nightlight' ? "expanded" : ""].filter(Boolean))} 
+                        cssClasses={activePopup.as(p => ["tn-toggle", p === 'nightlight' ? "expanded" : ""].filter(Boolean))} 
                         onClicked={() => togglePopup('nightlight')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
@@ -162,7 +157,7 @@ export default function ControlCenterWindow() {
                         </box>
                     </button>
                     <button 
-                        cssClasses={bind(activePopup).as(p => ["tn-toggle", p === 'screenshot' ? "expanded" : ""].filter(Boolean))} 
+                        cssClasses={activePopup.as(p => ["tn-toggle", p === 'screenshot' ? "expanded" : ""].filter(Boolean))} 
                         onClicked={() => togglePopup('screenshot')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
@@ -172,27 +167,24 @@ export default function ControlCenterWindow() {
                     </button>
                 </box>
 
-                {/* Popups Area */}
                 <box cssClasses={["tn-popup-container"]}>
-                    <box visible={bind(activePopup).as(p => p === 'wifi')}><WifiPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={bind(activePopup).as(p => p === 'bluetooth')}><BluetoothPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={bind(activePopup).as(p => p === 'nightlight')}><NightLightPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={bind(activePopup).as(p => p === 'screenshot')}><ScreenshotPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'wifi')}><WifiPopup onClose={() => activePopup.set_value(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'bluetooth')}><BluetoothPopup onClose={() => activePopup.set_value(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'nightlight')}><NightLightPopup onClose={() => activePopup.set_value(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'screenshot')}><ScreenshotPopup onClose={() => activePopup.set_value(null)} /></box>
                 </box>
 
-                {/* Sliders */}
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰝀 " />
-                        <scale hexpand min={0} max={100} value={bind(volume)} onValueChanged={(self) => setVolume(self.get_value())} />
+                        <scale hexpand min={0} max={100} value={volume} onValueChanged={(self) => volume.set_value(self.get_value())} />
                     </box>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰛨 " />
-                        <scale hexpand min={0} max={100} value={bind(brightness)} onValueChanged={(self) => setBrightness(self.get_value())} />
+                        <scale hexpand min={0} max={100} value={brightness} onValueChanged={(self) => brightness.set_value(self.get_value())} />
                     </box>
                 </box>
 
-                {/* Media */}
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                     <box spacing={15} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER} hexpand>
                         <box cssClasses={["tn-media-art"]} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>

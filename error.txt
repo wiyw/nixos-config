@@ -1,15 +1,6 @@
-❄️ greyson@iusenixbtw nixos-config  main +10 -7 [!] ❯   ags run                                                                                                                   3s 󰍛 2GiB/7GiB 󰁹 100% 10:09:30
-ags-Message: 10:21:06.610: Starting AGS main()...
+❄️ greyson@iusenixbtw nixos-config  main +14 -11 [!] ❯   ags run                                                                                                                  2s 󰍛 2GiB/7GiB 󰁹 100% 10:21:26
+✘ [ERROR] No matching export in "../8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/index.ts" for import "bind"
 
-(gjs:207575): ags-CRITICAL **: 10:21:06.612: ❌ FATAL ERROR while building Control Center: Error: Wrong type Function; string expected
-_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
-jsx@file:///run/user/1001/ags.js:1204:55
-ControlCenterWindow@file:///run/user/1001/ags.js:1957:33
-main@file:///run/user/1001/ags.js:2056:13
-vfunc_command_line/<@file:///run/user/1001/ags.js:1437:66
-createRoot/<@file:///run/user/1001/ags.js:869:28
-run@file:///run/user/1001/ags.js:846:14
-createRoot@file:///run/user/1001/ags.js:869:16
-vfunc_command_line@file:///run/user/1001/ags.js:1434:17
-_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
-  
+    ControlCenter.tsx:3:22:
+      3 │ import { createState, bind } from "ags"
+        ╵                       ~~~~
