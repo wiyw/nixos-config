@@ -49,7 +49,6 @@ const NightLightPopup = ({ onClose }: { onClose: () => void }) => {
                 </button>
             </box>
             <Gtk.Scale 
-                value={temp} 
                 onValueChanged={(self) => setTemp(self.get_value())} 
                 hexpand 
             />
@@ -179,11 +178,11 @@ export default function ControlCenterWindow() {
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰝀 " />
-                        <Gtk.Scale hexpand value={volume} onValueChanged={(self) => setVolume(self.get_value())} />
+                        <Gtk.Scale hexpand onValueChanged={(self) => setVolume(self.get_value())} />
                     </box>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰛨 " />
-                        <Gtk.Scale hexpand value={brightness} onValueChanged={(self) => setBrightness(self.get_value())} />
+                        <Gtk.Scale hexpand onValueChanged={(self) => setBrightness(self.get_value())} />
                     </box>
                 </box>
 
