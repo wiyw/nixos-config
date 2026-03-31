@@ -133,38 +133,38 @@ in
 
       windowrule {
         float = true
-        class = ags
-        title = ^(control-center)$
+        match:class = ags
+        match:title = ^(control-center)$
       }
 
       windowrule {
         opacity = 0.96 0.96
-        class = ags
-        title = ^(control-center)$
+        match:class = ags
+        match:title = ^(control-center)$
       }
 
       windowrule {
         blur = true
-        class = ags
-        title = ^(control-center)$
+        match:class = ags
+        match:title = ^(control-center)$
       }
 
       windowrule {
         float = true
-        class = ags
-        title = ^(.*-popup)$
+        match:class = ags
+        match:title = ^(.*-popup)$
       }
 
       windowrule {
         opacity = 0.96 0.96
-        class = ags
-        title = ^(.*-popup)$
+        match:class = ags
+        match:title = ^(.*-popup)$
       }
 
       windowrule {
         blur = true
-        class = ags
-        title = ^(.*-popup)$
+        match:class = ags
+        match:title = ^(.*-popup)$
       }
     '';
   };
