@@ -1,16 +1,18 @@
-❄️ greyson@iusenixbtw ~ ❯   ags quit                                                                                                                                                   󰍛 1GiB/7GiB 󰂄 99% 09:22:22
+❄️ greyson@iusenixbtw ~ ❯   ags quit                                                                                                                                                  󰍛 2GiB/7GiB 󰁹 100% 09:44:59
 error: org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
 
-❄️ greyson@iusenixbtw ~ ❯   ags run                                                                                                                                              [✘ 1] 󰍛 1GiB/7GiB 󰂄 99% 09:25:08
+❄️ greyson@iusenixbtw ~ ❯   ags run                                                                                                                                             [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:45:08
+ags-Message: 09:45:11.137: Starting AGS main()...
 
-(gjs:55147): Gjs-CRITICAL **: 09:25:12.219: JS ERROR: TypeError: can't access property replace, str is undefined
-kebabify@file:///run/user/1001/ags.js:129:3 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/util.ts:4:5
-createBinding@file:///run/user/1001/ags.js:1093:26 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/state.ts:569:22
-ControlCenterWindow@file:///run/user/1001/ags.js:1991:22 -> ../../../nix/store/08ni75hwg2sg3krc2yyqdxc88h9bx43g-hm_ags/ControlCenter.tsx:128:32
-main@file:///run/user/1001/ags.js:2078:11 -> ../../../nix/store/08ni75hwg2sg3krc2yyqdxc88h9bx43g-hm_ags/app.ts:29:15
-vfunc_command_line/<@file:///run/user/1001/ags.js:1469:66 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:292:17
-createRoot/<@file:///run/user/1001/ags.js:869:28 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:28
-run@file:///run/user/1001/ags.js:846:14 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:32:20
-createRoot@file:///run/user/1001/ags.js:869:16 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/node_modules/gnim/dist/jsx/scope.ts:184:18
-vfunc_command_line@file:///run/user/1001/ags.js:1466:17 -> ../../../nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/gtk4/app.ts:290:13
+(gjs:101635): ags-CRITICAL **: 09:45:11.139: ❌ FATAL ERROR while building Control Center: Error: No property className on GtkLabel
+_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
+jsx@file:///run/user/1001/ags.js:1204:55
+ControlCenterWindow@file:///run/user/1001/ags.js:1931:149
+main@file:///run/user/1001/ags.js:2034:13
+vfunc_command_line/<@file:///run/user/1001/ags.js:1437:66
+createRoot/<@file:///run/user/1001/ags.js:869:28
+run@file:///run/user/1001/ags.js:846:14
+createRoot@file:///run/user/1001/ags.js:869:16
+vfunc_command_line@file:///run/user/1001/ags.js:1434:17
 _init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
+  

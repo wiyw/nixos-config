@@ -42,7 +42,7 @@ let
     done
   '';
 
-  # Switches BOTH monitors simultaneously
+  # Switches workspaces (dual monitor or laptop only)
   workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
     #!/usr/bin/env bash
     WS=$1
@@ -50,13 +50,15 @@ let
     # Get list of connected monitors
     MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
     
-    # Determine which workspace to switch to
+    # Check if external monitor is connected
     if echo "$MONITORS" | grep -q "^DP-4$"; then
-        # External monitor connected - use dual workspace logic
+        # Dual monitor: switch both workspaces
         WS_RIGHT=$((WS + 10))
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS_RIGHT
+        ${pkgs.hyprland}/bin/hyprctl dispatch focusmonitor eDP-1
     else
-        # Laptop only - switch directly on eDP-1 without +10
+        # Laptop only: just switch to the workspace directly
         ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
     fi
   '';
@@ -81,6 +83,23 @@ let
         ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
     fi
   '';
+
+  # Auto-configure monitors on startup based on what's connected
+  monitorSetupScript = pkgs.writeShellScriptBin "monitor-setup" ''
+    #!/usr/bin/env bash
+    sleep 1
+    
+    MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
+    
+    if echo "$MONITORS" | grep -q "^DP-4$"; then
+        # External monitor connected - set up dual monitor
+        ${pkgs.hyprland}/bin/hyprctl keyword monitor "DP-4, preferred, 0x0, 1"
+        ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, preferred, 1920x0, 1"
+    else
+        # Laptop only - set eDP-1 at 0x0
+        ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, preferred, 0x0, 1"
+    fi
+  '';
 in
 {
   wayland.windowManager.hyprland = {
@@ -94,26 +113,26 @@ in
       ];
 
       workspace = [
-        "1, monitor:DP-4, default:true"
-        "2, monitor:DP-4"
-        "3, monitor:DP-4"
-        "4, monitor:DP-4"
-        "5, monitor:DP-4"
-        "6, monitor:DP-4"
-        "7, monitor:DP-4"
-        "8, monitor:DP-4"
-        "9, monitor:DP-4"
-        "10, monitor:DP-4"
-        "11, monitor:eDP-1, default:true"
-        "12, monitor:eDP-1"
-        "13, monitor:eDP-1"
-        "14, monitor:eDP-1"
-        "15, monitor:eDP-1"
-        "16, monitor:eDP-1"
-        "17, monitor:eDP-1"
-        "18, monitor:eDP-1"
-        "19, monitor:eDP-1"
-        "20, monitor:eDP-1"
+        "1, default:true"
+        "2"
+        "3"
+        "4"
+        "5"
+        "6"
+        "7"
+        "8"
+        "9"
+        "10"
+        "11"
+        "12"
+        "13"
+        "14"
+        "15"
+        "16"
+        "17"
+        "18"
+        "19"
+        "20"
       ];
 
       exec-once = [
@@ -123,6 +142,7 @@ in
         "hyprctl setcursor Bibata-Modern-Classic 24"
         "mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /etc/nixos/home/wallpapers/interstellar.mp4"
         "${smartBgScript}/bin/smart-bg"
+        "${monitorSetupScript}/bin/monitor-setup"
       ];
 
       general = {
