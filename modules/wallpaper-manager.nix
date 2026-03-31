@@ -6,35 +6,23 @@ let
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
-    sleep 4
+    sleep 2
 
-    WALLPAPER_DIR="/etc/nixos/wallpapers"
-    WALLPAPERS=($WALLPAPER_DIR/*.jpg)
+    WALLPAPERS=($wallpaperDir/*.jpg)
     COUNT=''${#WALLPAPERS[@]}
 
     if [ "$COUNT" -eq 0 ]; then
-      echo "No wallpapers found in $WALLPAPER_DIR"
+      echo "No wallpapers found in $wallpaperDir"
       exit 1
     fi
 
     RANDOM_INDEX=$((RANDOM % "$COUNT"))
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
-    MONITOR=$(hyprctl monitors -j | jq -r '.[0].name')
-    if [ -z "$MONITOR" ]; then
-      MONITOR="eDP-1"
-    fi
-
-    echo "preload = $SELECTED" > /tmp/hyprpaper.conf
-    echo "wallpaper = $MONITOR,$SELECTED" >> /tmp/hyprpaper.conf
-
-    pkill hyprpaper 2>/dev/null || true
-    sleep 1
-
-    hyprpaper -c /tmp/hyprpaper.conf &
-    sleep 3
-
-    echo "Wallpaper set to: $SELECTED on monitor $MONITOR"
+    pkill swww 2>/dev/null || true
+    sleep 0.5
+    swww img "$SELECTED" --transition-type any --transition-duration 2 &
+    echo "Wallpaper set to: $SELECTED"
   '';
 
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
@@ -48,7 +36,7 @@ let
       if [ -f "$CONFIG_FILE" ]; then
         cat "$CONFIG_FILE"
       else
-        echo "hyprpaper"
+        echo "swww"
       fi
     }
 
@@ -59,22 +47,22 @@ let
 
     current_mode=$(get_current_mode)
 
-    if [ "$1" = "hyprpaper" ]; then
+    if [ "$1" = "swww" ]; then
       pkill mpvpaper 2>/dev/null
-      hyprctl dispatch exec "[workspace 1 silent] hyprpaper"
-      set_mode "hyprpaper"
+      fetch-space-wallpaper
+      set_mode "swww"
     elif [ "$1" = "mpvpaper" ]; then
-      pkill hyprpaper 2>/dev/null
+      pkill swww 2>/dev/null
       hyprctl dispatch exec "[workspace 1 silent] mpvpaper -o 'loop --panscan=1 --input-ipc-server=/tmp/mpv-socket --volume=50 --ao=pipewire' '*' /etc/nixos/wallpapers/interstellar.mp4"
       set_mode "mpvpaper"
     elif [ "$1" = "cycle" ]; then
-      if [ "$current_mode" = "hyprpaper" ]; then
+      if [ "$current_mode" = "swww" ]; then
         wallpaper-toggle mpvpaper
       else
-        wallpaper-toggle hyprpaper
+        wallpaper-toggle swww
       fi
     else
-      echo "Usage: wallpaper-toggle {hyprpaper|mpvpaper|cycle}"
+      echo "Usage: wallpaper-toggle {swww|mpvpaper|cycle}"
       echo "Current mode: $current_mode"
     fi
   '';

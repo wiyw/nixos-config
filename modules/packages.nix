@@ -9,7 +9,8 @@
 
     # Ricing Tools
     waybar
-    hyprpaper
+    swww
+    waypaper
     mpvpaper # Animated video wallpaper (toggleable)
     hyprlock
     hypridle
