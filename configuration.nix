@@ -27,8 +27,6 @@
   environment.systemPackages = with pkgs; [
     neovim 
     wget
-    sddm
-    sddm-themes
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
