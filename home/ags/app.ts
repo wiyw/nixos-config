@@ -4,7 +4,7 @@ import ControlCenter from "./ControlCenter.js"
 app.start({
     css: `
         * { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-        window { background: transparent; }
+        window { background: rgba(20, 20, 30, 0.95); border-radius: 20px; }
         .tn-container {
             background: rgba(20, 20, 30, 0.95);
             border: 1px solid rgba(100, 100, 150, 0.3);
@@ -46,10 +46,14 @@ app.start({
         .icon-large { color: #6699ff; font-size: 24px; }
     `,
     requestHandler(request, res) {
-        const win = app.get_window("control-center")
+        const wins = app.get_windows()
+        const win = wins[0]
         if (win) {
             win.visible = !win.visible
             res(win.visible ? "Shown" : "Hidden")
+        } else if (wins.length > 0) {
+            wins[0].visible = !wins[0].visible
+            res(wins[0].visible ? "Shown" : "Hidden")
         } else {
             res("No window")
         }

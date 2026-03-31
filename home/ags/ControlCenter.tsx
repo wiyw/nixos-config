@@ -9,10 +9,8 @@ export default function ControlCenter() {
             class="ControlCenterWindow"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} 
             margin={15} 
-            visible={false}
+            visible={true}
             application={app}
-            blur={true}
-            layer={Astal.Layer.TOP}
         >
             <box class="tn-container" orientation={Gtk.Orientation.VERTICAL} spacing={16}>
                 {/* Header */}

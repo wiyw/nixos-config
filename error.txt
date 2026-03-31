@@ -1,2 +1,0 @@
-(gjs:14027): Gjs-Console-CRITICAL **: 17:36:27.251: CSS Error :14:22 No property named justify-content
-No window
