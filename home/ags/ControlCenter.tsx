@@ -1,6 +1,6 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
-import { createState } from "ags"
+import { createState, createBinding } from "ags" // Brought createBinding back!
 import app from "ags/gtk4/app"
 
 type PopupType = 'wifi' | 'bluetooth' | 'nightlight' | 'screenshot' | null
@@ -89,7 +89,7 @@ const ControlCenterWindow = () => {
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={15}
             marginRight={15}
-            visible={true} // Starts visible immediately to verify rendering
+            visible={true} 
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
@@ -112,35 +112,37 @@ const ControlCenterWindow = () => {
                 {/* Quick Toggles */}
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={() => [
-                            "tn-toggle", 
-                            wifiOn() ? "active" : "", 
-                            activePopup() === 'wifi' ? "expanded" : ""
-                        ].filter(Boolean)} 
+                        cssClasses={createBinding(() => {
+                            const classes = ["tn-toggle"]
+                            if (wifiOn()) classes.push("active")
+                            if (activePopup() === 'wifi') classes.push("expanded")
+                            return classes
+                        })} 
                         onClicked={() => {
                             setWifiOn(!wifiOn())
                             togglePopup('wifi')
                         }}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label={() => wifiOn() ? "󰤯 " : "󰤮 "} />
+                            <label cssClasses={["toggle-icon"]} label={createBinding(() => wifiOn() ? "󰤯 " : "󰤮 ")} />
                             <label cssClasses={["text-bold"]} label="WiFi" />
                         </box>
                     </button>
                     
                     <button 
-                        cssClasses={() => [
-                            "tn-toggle", 
-                            bluetoothOn() ? "active" : "", 
-                            activePopup() === 'bluetooth' ? "expanded" : ""
-                        ].filter(Boolean)} 
+                        cssClasses={createBinding(() => {
+                            const classes = ["tn-toggle"]
+                            if (bluetoothOn()) classes.push("active")
+                            if (activePopup() === 'bluetooth') classes.push("expanded")
+                            return classes
+                        })} 
                         onClicked={() => {
                             setBluetoothOn(!bluetoothOn())
                             togglePopup('bluetooth')
                         }}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label={() => bluetoothOn() ? "󰂯 " : "󰂲 "} />
+                            <label cssClasses={["toggle-icon"]} label={createBinding(() => bluetoothOn() ? "󰂯 " : "󰂲 ")} />
                             <label cssClasses={["text-bold"]} label="Bluetooth" />
                         </box>
                     </button>
@@ -149,7 +151,11 @@ const ControlCenterWindow = () => {
                 {/* Secondary Toggles */}
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={() => ["tn-toggle", activePopup() === 'nightlight' ? "expanded" : ""].filter(Boolean)} 
+                        cssClasses={createBinding(() => {
+                            const classes = ["tn-toggle"]
+                            if (activePopup() === 'nightlight') classes.push("expanded")
+                            return classes
+                        })} 
                         onClicked={() => togglePopup('nightlight')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
@@ -158,7 +164,11 @@ const ControlCenterWindow = () => {
                         </box>
                     </button>
                     <button 
-                        cssClasses={() => ["tn-toggle", activePopup() === 'screenshot' ? "expanded" : ""].filter(Boolean)} 
+                        cssClasses={createBinding(() => {
+                            const classes = ["tn-toggle"]
+                            if (activePopup() === 'screenshot') classes.push("expanded")
+                            return classes
+                        })} 
                         onClicked={() => togglePopup('screenshot')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
@@ -170,10 +180,10 @@ const ControlCenterWindow = () => {
 
                 {/* Popups Area */}
                 <box cssClasses={["tn-popup-container"]}>
-                    <box visible={() => activePopup() === 'wifi'}><WifiPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={() => activePopup() === 'bluetooth'}><BluetoothPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={() => activePopup() === 'nightlight'}><NightLightPopup onClose={() => setActivePopup(null)} /></box>
-                    <box visible={() => activePopup() === 'screenshot'}><ScreenshotPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={createBinding(() => activePopup() === 'wifi')}><WifiPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={createBinding(() => activePopup() === 'bluetooth')}><BluetoothPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={createBinding(() => activePopup() === 'nightlight')}><NightLightPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={createBinding(() => activePopup() === 'screenshot')}><ScreenshotPopup onClose={() => setActivePopup(null)} /></box>
                 </box>
 
                 {/* Sliders */}

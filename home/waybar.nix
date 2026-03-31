@@ -44,14 +44,10 @@
         "hyprland/workspaces" = {
           format = "{icon}";
           format-icons = {
-            active = "";    # Currently focused
-            visible = "";   # On screen, but not focused (The Fix!)
-            default = "";   # Empty/Hidden
+            active = "";
+            visible = "";
+            default = "";
             urgent = "";
-          };
-          persistent-workspaces = {
-            "DP-4" = [ 1 2 3 4 5 6 7 8 9 10 ];
-            "eDP-1" = [ 11 12 13 14 15 16 17 18 19 20 ];
           };
         };
         

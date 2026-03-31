@@ -42,25 +42,11 @@ let
     done
   '';
 
-  # Switches workspaces (dual monitor or laptop only)
+  # Switches workspaces 
   workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
     #!/usr/bin/env bash
     WS=$1
-    
-    # Get list of connected monitors
-    MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
-    
-    # Check if external monitor is connected
-    if echo "$MONITORS" | grep -q "^DP-4$"; then
-        # Dual monitor: switch both workspaces
-        WS_RIGHT=$((WS + 10))
-        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
-        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS_RIGHT
-        ${pkgs.hyprland}/bin/hyprctl dispatch focusmonitor eDP-1
-    else
-        # Laptop only: just switch to the workspace directly
-        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
-    fi
+    ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
   '';
 
   # Moves windows to the correct monitor's paired workspace
@@ -95,9 +81,33 @@ let
         # External monitor connected - set up dual monitor
         ${pkgs.hyprland}/bin/hyprctl keyword monitor "DP-4, preferred, 0x0, 1"
         ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, preferred, 1920x0, 1"
+        # Assign workspaces to monitors
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "1, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "2, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "3, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "4, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "5, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "6, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "7, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "8, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "9, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "10, monitor:DP-4"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "11, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "12, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "13, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "14, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "15, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "16, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "17, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "18, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "19, monitor:eDP-1"
+        ${pkgs.hyprland}/bin/hyprctl keyword workspace "20, monitor:eDP-1"
     else
-        # Laptop only - set eDP-1 at 0x0
+        # Laptop only - set eDP-1 at 0x0, workspaces on eDP-1
         ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, preferred, 0x0, 1"
+        for i in $(seq 1 20); do
+            ${pkgs.hyprland}/bin/hyprctl keyword workspace "$i, monitor:eDP-1"
+        done
     fi
   '';
 in

@@ -1,14 +1,11 @@
-❄️ greyson@iusenixbtw ~ ❯   ags quit                                                                                                                                                  󰍛 2GiB/7GiB 󰁹 100% 09:44:59
-error: org.freedesktop.DBus.Error.NoReply: Message recipient disconnected from message bus without replying
+❄️ greyson@iusenixbtw nixos-config  main ❯   ags run                                                                                                                           [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:48:25
+ags-Message: 09:48:28.436: Starting AGS main()...
 
-❄️ greyson@iusenixbtw ~ ❯   ags run                                                                                                                                             [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:45:08
-ags-Message: 09:45:11.137: Starting AGS main()...
-
-(gjs:101635): ags-CRITICAL **: 09:45:11.139: ❌ FATAL ERROR while building Control Center: Error: No property className on GtkLabel
+(gjs:112362): ags-CRITICAL **: 09:48:28.441: ❌ FATAL ERROR while building Control Center: Error: Wrong type Function; string expected
 _init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
 jsx@file:///run/user/1001/ags.js:1204:55
-ControlCenterWindow@file:///run/user/1001/ags.js:1931:149
-main@file:///run/user/1001/ags.js:2034:13
+ControlCenterWindow@file:///run/user/1001/ags.js:1952:33
+main@file:///run/user/1001/ags.js:2056:13
 vfunc_command_line/<@file:///run/user/1001/ags.js:1437:66
 createRoot/<@file:///run/user/1001/ags.js:869:28
 run@file:///run/user/1001/ags.js:846:14
