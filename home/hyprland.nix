@@ -200,6 +200,7 @@ in
       }
 
       layerrule {
+        name = control-center-blur
         match:namespace = ^(control-center)$
         blur = on
         ignore_alpha = 0.2
