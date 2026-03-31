@@ -87,6 +87,18 @@ export default function ControlCenterWindow() {
         setActivePopup(activePopup() === popup ? null : popup)
     }
 
+    const wifiClasses = () => {
+        const on = wifiOn()
+        const popup = activePopup()
+        return ["tn-toggle", on ? "active" : "", popup === 'wifi' ? "expanded" : ""].filter(Boolean)
+    }
+    
+    const btClasses = () => {
+        const on = bluetoothOn()
+        const popup = activePopup()
+        return ["tn-toggle", on ? "active" : "", popup === 'bluetooth' ? "expanded" : ""].filter(Boolean)
+    }
+
     return (
         <window
             name="control-center"
@@ -116,9 +128,6 @@ export default function ControlCenterWindow() {
 
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={wifiOn.as(on => activePopup.as(popup => 
-                            ["tn-toggle", on ? "active" : "", popup === 'wifi' ? "expanded" : ""].filter(Boolean)
-                        ))} 
                         onClicked={() => {
                             setWifiOn(!wifiOn())
                             togglePopup('wifi')
@@ -131,9 +140,6 @@ export default function ControlCenterWindow() {
                     </button>
                     
                     <button 
-                        cssClasses={bluetoothOn.as(on => activePopup.as(popup => 
-                            ["tn-toggle", on ? "active" : "", popup === 'bluetooth' ? "expanded" : ""].filter(Boolean)
-                        ))} 
                         onClicked={() => {
                             setBluetoothOn(!bluetoothOn())
                             togglePopup('bluetooth')
@@ -148,7 +154,6 @@ export default function ControlCenterWindow() {
 
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={activePopup.as(p => ["tn-toggle", p === 'nightlight' ? "expanded" : ""].filter(Boolean))} 
                         onClicked={() => togglePopup('nightlight')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
@@ -157,7 +162,6 @@ export default function ControlCenterWindow() {
                         </box>
                     </button>
                     <button 
-                        cssClasses={activePopup.as(p => ["tn-toggle", p === 'screenshot' ? "expanded" : ""].filter(Boolean))} 
                         onClicked={() => togglePopup('screenshot')}
                     >
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>

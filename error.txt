@@ -1,10 +1,14 @@
-✘ [ERROR] Could not resolve "/nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/astal-io" (originally "ags/astal-io")
+❄️ greyson@iusenixbtw nixos-config  main +10 -6 [!] ❯   ags run                                                                                                                   3s 󰍛 2GiB/7GiB 󰁹 100% 10:35:27
+ags-Message: 10:45:12.711: Starting AGS main()...
 
-    ControlCenter.tsx:3:25:
-      3 │ import { Variable } from "ags/astal-io"
-        ╵                          ~~~~~~~~~~~~~~
-
-  The path "ags/astal-io" was remapped to
-  "/nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/astal-io" using the alias feature,
-  which then couldn't be resolved. Keep in mind that import path aliases are resolved in the current
-  working directory.
+(gjs:277160): ags-CRITICAL **: 10:45:12.717: ❌ FATAL ERROR while building Control Center: Error: Wrong type Function; strv expected
+_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
+jsx@file:///run/user/1001/ags.js:1204:55
+ControlCenterWindow@file:///run/user/1001/ags.js:1948:27
+main@file:///run/user/1001/ags.js:2060:13
+vfunc_command_line/<@file:///run/user/1001/ags.js:1437:66
+createRoot/<@file:///run/user/1001/ags.js:869:28
+run@file:///run/user/1001/ags.js:846:14
+createRoot@file:///run/user/1001/ags.js:869:16
+vfunc_command_line@file:///run/user/1001/ags.js:1434:17
+_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
