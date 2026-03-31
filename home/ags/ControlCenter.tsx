@@ -35,7 +35,7 @@ const ControlCenterWindow = () => {
         <window
             name="control-center"
             namespace="control-center"
-            className="ControlCenterWindow"
+            class="ControlCenterWindow"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             margin-top={15}
             margin-right={15}
