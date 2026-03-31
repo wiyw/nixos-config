@@ -32,22 +32,14 @@
     # AI stuff
     opencode
 
-    # Custom Rebuild & Backup Command
-    (writeShellScriptBin "sysbuild" ''
-      echo "🛠️ Starting system rebuild..."
-      cd /home/greyson/nixos-config/
-      git add .
-      if ! git diff --cached --quiet; then
-        echo "📦 Committing changes..."
-        git commit -m "Auto-rebuild: $(date +'%Y-%m-%d %H:%M:%S')"
-      else
-        echo "🤷 No new changes to commit."
-      fi
-      echo "☁️ Pushing to GitHub..."
-      git push
-      echo "🚀 Building flake..."
-      sudo nixos-rebuild switch --flake .#iusenixbtw
-      echo "✅ All done!"
-    '')
+    # Bluetooth
+    blueman
+
+    # Screenshot tools
+    grim
+    slurp
+    brightnessctl
   ];
+
+  programs.home-manager.enable = true;
 }

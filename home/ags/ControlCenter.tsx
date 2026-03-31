@@ -197,7 +197,7 @@ const ControlCenterWindow = () => {
                     <scale min={0} max={100} value={volume()} onChange={(self) => {
                         const val = Math.round(self.value)
                         setVolume(val)
-                        exec(`wpctl set-volume @DEFAULT_AUDIO_SINK@ ${val}%`)
+                        exec(`wpctl set-volume @DEFAULT_AUDIO_SINK@ ${val}% && wpctl set-mute @DEFAULT_AUDIO_SINK@ 0`)
                     }} hexpand={true} />
                     
                     <box spacing={12}>

@@ -11,49 +11,49 @@ app.start({
         }
         
         .tn-container {
-            background: rgba(20, 20, 30, 0.85);
-            border: 1px solid rgba(100, 100, 150, 0.2);
+            background: rgba(26, 27, 38, 0.92);
+            border: 1px solid rgba(122, 162, 247, 0.15);
             border-radius: 20px;
             padding: 18px;
             min-width: 380px;
         }
         
-        .text-header { font-weight: bold; font-size: 16px; color: #ffffff; }
-        .text-bold { font-weight: bold; font-size: 14px; color: #ffffff; }
-        .text-muted { font-size: 13px; color: #8888aa; }
+        .text-header { font-weight: bold; font-size: 16px; color: #a9b1d6; }
+        .text-bold { font-weight: bold; font-size: 14px; color: #c0caf5; }
+        .text-muted { font-size: 13px; color: #565f89; }
         
         .tn-panel {
-            background: rgba(40, 40, 60, 0.6);
+            background: rgba(36, 40, 59, 0.7);
             border-radius: 14px;
             padding: 14px;
         }
         
         button.tn-toggle {
-            background: rgba(50, 50, 70, 0.7);
-            border: 1px solid rgba(80, 80, 120, 0.3);
+            background: rgba(48, 54, 75, 0.8);
+            border: 1px solid rgba(122, 162, 247, 0.15);
             border-radius: 14px;
             padding: 14px 12px;
             min-width: 100px;
         }
         
         button.tn-toggle:hover {
-            background: rgba(70, 70, 100, 0.9);
+            background: rgba(69, 77, 102, 0.9);
         }
         
         button.tn-toggle.active {
-            background: rgba(80, 130, 255, 0.35);
-            border: 1px solid rgba(102, 153, 255, 0.6);
+            background: rgba(122, 162, 247, 0.25);
+            border: 1px solid rgba(122, 162, 247, 0.5);
         }
 
         button.tn-toggle.expanded {
-            background: rgba(80, 130, 255, 0.35);
-            border: 1px solid rgba(102, 153, 255, 0.6);
+            background: rgba(122, 162, 247, 0.25);
+            border: 1px solid rgba(122, 162, 247, 0.5);
         }
         
-        .toggle-icon, .slider-icon { color: #ffffff; font-size: 22px; }
+        .toggle-icon, .slider-icon { color: #7aa2f7; font-size: 22px; }
         
         button.tn-icon-btn { 
-            color: #cccccc; 
+            color: #9aa5ce; 
             background: transparent; 
             border: none; 
             font-size: 18px; 
@@ -62,61 +62,60 @@ app.start({
         }
         
         button.tn-icon-btn:hover { 
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff; 
+            background: rgba(122, 162, 247, 0.15);
+            color: #c0caf5; 
         }
         
         button.tn-close-btn {
-            color: #8888aa;
+            color: #565f89;
             background: transparent;
             border: none;
             font-size: 14px;
             padding: 4px 8px;
             border-radius: 4px;
-            margin-left: auto;
         }
 
         button.tn-close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            background: rgba(122, 162, 247, 0.15);
+            color: #c0caf5;
         }
         
         button.tn-btn {
-            background: rgba(80, 130, 255, 0.3);
-            border: 1px solid rgba(102, 153, 255, 0.4);
+            background: rgba(122, 162, 247, 0.2);
+            border: 1px solid rgba(122, 162, 247, 0.35);
             border-radius: 8px;
             padding: 10px 14px;
-            color: #ffffff;
+            color: #c0caf5;
             font-size: 13px;
         }
 
         button.tn-btn:hover {
-            background: rgba(80, 130, 255, 0.5);
+            background: rgba(122, 162, 247, 0.35);
         }
         
-        .play-btn { color: #6699ff; font-size: 24px; }
-        .destructive { color: #ff6688; }
+        .play-btn { color: #7aa2f7; font-size: 24px; }
+        .destructive { color: #f7768e; }
         
         .tn-profile-pic, .tn-media-art {
-            background: rgba(60, 60, 80, 0.8);
+            background: rgba(48, 54, 75, 0.9);
             border-radius: 10px;
             min-width: 48px; min-height: 48px;
         }
         
-        .icon-large { color: #6699ff; font-size: 22px; }
+        .icon-large { color: #7dcfff; font-size: 22px; }
         
         scale {
             min-height: 6px;
-            color: #6699ff;
+            color: #7aa2f7;
         }
         
         scale trough {
-            background: rgba(80, 80, 120, 0.5);
+            background: rgba(48, 54, 75, 0.8);
             border-radius: 3px;
         }
         
         scale highlight {
-            background: linear-gradient(90deg, #6699ff, #bb9af7);
+            background: linear-gradient(90deg, #7aa2f7, #bb9af7);
             border-radius: 3px;
         }
 
@@ -125,14 +124,14 @@ app.start({
         }
 
         .tn-popup {
-            background: rgba(30, 30, 50, 0.95);
-            border: 1px solid rgba(80, 80, 120, 0.3);
+            background: rgba(26, 27, 38, 0.98);
+            border: 1px solid rgba(122, 162, 247, 0.2);
             border-radius: 14px;
             padding: 14px;
         }
 
         .tn-network-item, .tn-device-item {
-            background: rgba(50, 50, 70, 0.5);
+            background: rgba(48, 54, 75, 0.6);
             border-radius: 8px;
             padding: 10px;
         }
