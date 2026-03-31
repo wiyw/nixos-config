@@ -18,8 +18,11 @@ let
     RANDOM_INDEX=$((RANDOM % "$COUNT"))
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
-    hyprctl hyprpaper preload "$SELECTED"
-    hyprctl hyprpaper wallpaper eDP-1 "$SELECTED"
+    echo "preload = $SELECTED" > /tmp/hyprpaper.conf
+    echo "wallpaper = ,$SELECTED" >> /tmp/hyprpaper.conf
+
+    pkill hyprpaper 2>/dev/null || true
+    hyprpaper -c /tmp/hyprpaper.conf &
     echo "Wallpaper set to: $SELECTED"
   '';
 

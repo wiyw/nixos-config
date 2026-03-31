@@ -42,7 +42,6 @@ in
         "ags run ~/.config/ags"
         "hypridle"
         "hyprctl setcursor Bibata-Modern-Classic 24"
-        "hyprpaper"
         "${scriptsDir}/monitor-setup"
       ];
 
