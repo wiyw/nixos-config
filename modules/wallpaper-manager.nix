@@ -1,39 +1,25 @@
 { config, pkgs, lib, ... }:
 
 let
-  wallpaperDir = "${config.home.homeDirectory}/wallpapers";
-  cacheDir = "${config.home.homeDirectory}/.cache/hyprpaper";
+  wallpaperDir = "/etc/nixos/wallpapers";
+  localWallpapers = "${wallpaperDir}/*.jpg";
 
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
-    WALLPAPER_DIR="${cacheDir}"
-    mkdir -p "$WALLPAPER_DIR"
+    WALLPAPER_DIR="${wallpaperDir}"
+    WALLPAPERS=($WALLPAPER_DIR/*.jpg)
 
-    # Try multiple sources for space/astronaut wallpapers
-    # Source 1: Wallhaven random (space query)
-    URL="https://wallhaven.cc/random?categories=111&purity=100&sorting=random&resolutions=1920x1080"
-
-    # Download the HTML to find the image URL
-    HTML=$(curl -s "$URL")
-    IMAGE_URL=$(echo "$HTML" | grep -oP 'https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+\.(jpg|png)' | head -1)
-
-    if [ -z "$IMAGE_URL" ]; then
-      # Fallback: use picsum with space/galaxy seed
-      IMAGE_URL="https://picsum.photos/seed/spacex/1920/1080"
-    fi
-
-    # Download the image
-    curl -L -o "$WALLPAPER_DIR/wallpaper.jpg" "$IMAGE_URL" 2>/dev/null
-
-    if [ -f "$WALLPAPER_DIR/wallpaper.jpg" ]; then
-      # Set the wallpaper via hyprctl
-      hyprctl hyprpaper wallpaper "" "$WALLPAPER_DIR/wallpaper.jpg"
-      echo "Wallpaper updated: $IMAGE_URL"
-    else
-      echo "Failed to download wallpaper"
+    if [ ${#WALLPAPERS[@]} -eq 0 ]; then
+      echo "No wallpapers found in $WALLPAPER_DIR"
       exit 1
     fi
+
+    RANDOM_INDEX=$((RANDOM % ${#WALLPAPERS[@]}))
+    SELECTED_WALLPAPER="${WALLPAPERS[$RANDOM_INDEX]}"
+
+    hyprctl hyprpaper wallpaper "" "$SELECTED_WALLPAPER"
+    echo "Wallpaper set to: $SELECTED_WALLPAPER"
   '';
 
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
@@ -86,7 +72,6 @@ in
 
   home.sessionVariables = {
     WALLPAPER_DIR = wallpaperDir;
-    WALLPAPER_CACHE = cacheDir;
   };
 
   systemd.user.services.wallpaper-fetch = {
@@ -108,8 +93,14 @@ in
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = [ "${cacheDir}/wallpaper.jpg" ];
-      wallpaper = ", ${cacheDir}/wallpaper.jpg";
+      preload = [
+        "${wallpaperDir}/space1.jpg"
+        "${wallpaperDir}/space2.jpg"
+        "${wallpaperDir}/space3.jpg"
+        "${wallpaperDir}/space4.jpg"
+        "${wallpaperDir}/space5.jpg"
+      ];
+      wallpaper = ", ${wallpaperDir}/space1.jpg";
     };
   };
 }
