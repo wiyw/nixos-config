@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+WS=$1
+
+MONITORS=$(hyprctl monitors -j | jq -r '.[].name')
+ACTIVE_MON=$(hyprctl activeworkspace -j | jq -r '.monitor')
+
+if echo "$MONITORS" | grep -q "^DP-4$"; then
+    if [ "$ACTIVE_MON" = "DP-4" ]; then
+        hyprctl dispatch movetoworkspace $WS
+    else
+        TARGET=$((WS + 10))
+        hyprctl dispatch movetoworkspace $TARGET
+    fi
+else
+    # Laptop only mode
+    hyprctl dispatch movetoworkspace $WS
+fi

@@ -7,6 +7,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Theming framework
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # The community Zen Browser flake
     zen-browser.url = "github:youwen5/zen-browser-flake";
     # AGS (Aylur's GTK Shell)
@@ -25,7 +30,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.greyson = import ./home/home.nix;
+              home-manager.users.greyson = import ./modules/home.nix;
             }
           ];
         };

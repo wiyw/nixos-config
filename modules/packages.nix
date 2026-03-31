@@ -9,7 +9,8 @@
 
     # Ricing Tools
     waybar
-    mpvpaper # Live video wallpaper engine!
+    hyprpaper
+    mpvpaper # Animated video wallpaper (toggleable)
     hyprlock
     hypridle
     wl-clipboard
@@ -43,7 +44,7 @@
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
       echo "🛠️ Starting system rebuild..."
-      cd /home/greyson/nixos-config/
+      cd /etc/nixos/
       git add .
       if ! git diff --cached --quiet; then
         echo "📦 Committing changes..."

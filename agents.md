@@ -2,44 +2,36 @@
 
 > This file documents the project for AI agents. Humans should refer to README.md and Setup.md.
 
-## Project Overview
+## ⚠️ Important Restrictions
 
-This is a NixOS flake-based configuration for a Hyprland desktop environment with a macOS-inspired + Interstellar aesthetic.
-
-**System Name:** `iusenixbtw`
-
-**Tech Stack:**
-- NixOS (Unstable) with Flakes
-- Hyprland (Wayland compositor)
-- Stylix (theming)
-- Hyprpaper/mpvpaper (wallpaper - toggleable)
-- Waybar (top bar)
-- Home Manager (user configuration)
-- AGS (widget system)
+- **NEVER run `sysbuild` or any `sudo` commands without explicit user permission**
+- Always ask the user before making system-changing operations
+- The user must manually run rebuild commands
 
 ---
 
-## File Structure
+## Project Structure
 
 ```
 /home/greyson/nixos-config/
 ├── flake.nix                 # Main flake entry point
 ├── configuration.nix         # System-level config (boot, users, services)
 ├── hardware-configuration.nix # Auto-generated hardware config
-├── home/
+├── scripts/                  # Standalone scripts (for easy editing)
+├── wallpapers/               # Wallpaper assets (interstellar.mp4)
+├── modules/                  # Home Manager configuration modules
 │   ├── home.nix             # Home Manager entry (imports all modules)
 │   ├── packages.nix         # All installed packages
-│   ├── stylix.nix           # Stylix theming config (TO BE CREATED)
-│   ├── wallpaper-manager.nix # Hyprpaper/mpvpaper toggle (TO BE CREATED)
-│   ├── hyprland.nix         # Window manager config, keybinds, scripts
+│   ├── stylix.nix           # Stylix theming config
+│   ├── wallpaper-manager.nix # Hyprpaper/mpvpaper toggle
+│   ├── hyprland.nix         # Window manager config, keybinds
 │   ├── hyprlock.nix         # Lock screen config
 │   ├── hypridle.nix         # Idle/lock/suspend service (battery-aware)
 │   ├── waybar.nix           # Top bar modules
 │   ├── rofi.nix             # App launcher
 │   ├── zsh.nix              # Zsh + Starship config
 │   ├── auth.nix             # Git username/email
-│   ├── ags.nix              # AGS widget config
-│   └── wallpapers/          # Wallpaper assets
+│   └── ags.nix              # AGS widget config
 ├── README.md                 # Human documentation
 ├── Setup.md                  # Setup instructions
 ├── nextsteps.md              # Project roadmap
@@ -52,12 +44,11 @@ This is a NixOS flake-based configuration for a Hyprland desktop environment wit
 
 ### flake.nix
 - Defines `iusenixbtw` NixOS system
-- Inputs: nixpkgs, home-manager, zen-browser, ags, stylix (to be added)
-- Must add `stylix` input and pass `inputs` to home-manager
+- Inputs: nixpkgs, home-manager, zen-browser, ags, stylix
+- Imports modules from `./modules/` directory
 
-### home/hyprland.nix
-Contains several custom scripts:
-- **`smart-bg`** - Muted mpvpaper audio when windows cover wallpaper (now deprecated)
+### modules/hyprland.nix
+Scripts are now in the standalone `scripts/` folder (referenced via relative path):
 - **`ws-sync`** - Switches workspaces on both monitors simultaneously
 - **`ws-move`** - Moves windows to correct monitor's paired workspace
 - **`monitor-setup`** - Auto-configures monitors on startup (DP-4 + eDP-1)
@@ -69,20 +60,19 @@ exec-once = [
   "ags run ~/.config/ags"
   "hypridle"
   "hyprctl setcursor Bibata-Modern-Classic 24"
-  # mpvpaper removed - to be replaced with hyprpaper
-  "${smartBgScript}/bin/smart-bg"  # deprecated
-  "${monitorSetupScript}/bin/monitor-setup"
+  "hyprpaper"
+  "${../scripts/monitor-setup}"
 ];
 ```
 
-### home/hypridle.nix
+### modules/hypridle.nix
 Battery-aware idle service:
 - Lock after 300s (only on battery)
 - DPMS off after 330s (only on battery)
 - Suspend after 900s (only on battery)
 - Uses `battery-idle` script to check power state
 
-### home/hyprlock.nix
+### modules/hyprlock.nix
 Tokyo Night themed lock screen with:
 - Screenshot background + blur
 - Clock (large, centered)
@@ -90,7 +80,7 @@ Tokyo Night themed lock screen with:
 - Greeting with username
 - Password input field
 
-### home/waybar.nix
+### modules/waybar.nix
 macOS-style top bar with:
 - Workspaces (1-10 on external, 11-20 on laptop)
 - Window title
@@ -99,21 +89,22 @@ macOS-style top bar with:
 - Battery
 - Clock
 
-### home/packages.nix
+### modules/packages.nix
 Key packages:
 - `zen-browser` - Browser
 - `kitty` - Terminal
 - `waybar` - Status bar
 - `hyprlock` / `hypridle` - Lock/idle
 - `mpvpaper` - Animated wallpaper (keep for toggle)
-- `hyprpaper` - Static wallpaper (TO BE ADDED)
+- `hyprpaper` - Static wallpaper
 - Starship, fzf, eza, bat, etc.
 
 ---
 
 ## Planned Changes
 
-### 1. Add Stylix (Stylix is not yet installed)
+### Stylix Integration (COMPLETED)
+Stylix has been added to flake.nix and configured in `modules/stylix.nix`
 
 **In flake.nix:**
 ```nix
@@ -121,32 +112,27 @@ stylix.url = "github:nix-community/stylix";
 # In outputs, pass inputs to home-manager
 ```
 
-**Create home/stylix.nix:**
-```nix
-{ config, pkgs, lib, inputs, ... }:
-{
-  imports = [ inputs.stylix.homeManagerModules.stylix ];
-  
-  stylix = {
-    enable = true;
-    # Will use hyprpaper wallpaper path
-  };
-}
-```
+**In modules/stylix.nix:**
+- Tokyo Night base16 theme
+- JetBrains Mono font
+- Bibata cursor
 
-### 2. Replace mpvpaper with hyprpaper (with toggle)
+### Hyprpaper + mpvpaper Toggle (COMPLETED)
 
-**In home/packages.nix:**
-- Keep `mpvpaper` (for toggle option)
-- Add `hyprpaper`
+**In modules/packages.nix:**
+- Both `mpvpaper` and `hyprpaper` installed
 
-**Create home/wallpaper-manager.nix:**
-- Configure hyprpaper service
-- Create `fetch-space-wallpaper` script (Unsplash)
-- Create `wallpaper-toggle` script
-- Add keybind `SUPER + W` to cycle modes
+**In modules/wallpaper-manager.nix:**
+- `fetch-space-wallpaper` script (Wallhaven)
+- `wallpaper-toggle` script
+- Keybind `SUPER + W` to cycle modes
 
-### 3. Update home/home.nix
+---
+
+## File Reference
+
+### 3. Update modules/home.nix (DONE)
+Import new modules in correct order
 Import new modules:
 ```nix
 imports = [
@@ -180,11 +166,13 @@ imports = [
 ## Common Tasks
 
 ### Rebuild System
+**⚠️ User must run this manually:**
 ```bash
 sudo nixos-rebuild switch --flake .#iusenixbtw
 ```
 
 ### Quick Rebuild (auto-commits)
+**⚠️ User must run this manually:**
 ```bash
 sysbuild
 ```
@@ -202,6 +190,7 @@ systemctl --user status hyprpaper
 ```
 
 ### Test Configuration (without applying)
+**⚠️ User must run this manually:**
 ```bash
 sudo nixos-rebuild dry-activate --flake .#iusenixbtw
 ```
@@ -221,7 +210,7 @@ sudo nixos-rebuild dry-activate --flake .#iusenixbtw
 
 ## Known Issues
 
-1. **AGS compilation error** - Current issue in `home/ags/ControlCenter.tsx`
+1. **AGS compilation error** - Current issue in `modules/ags/ControlCenter.tsx`
    - Error: `No matching export in "../ags-js-lib/lib/index.ts" for import "bind"`
    - Related to outdated AGS version or API changes
 

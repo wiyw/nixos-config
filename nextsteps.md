@@ -17,7 +17,7 @@
 - [x] add a lock screen (Hyprlock configured with Tokyo Night theme)
 - [x] add better looking zsh (Starship prompt, autosuggestions, syntax highlighting)
 - [x] add a gui greeter (SDDM configured)
-- [x] move interstellar.mp4 to nixos-config (wallpapers directory)
+- [x] move interstellar.mp4 to /etc/nixos/wallpapers
 - [x] frost blur so its easier to read text (Hyprland transparency rules)
 
 **Functionality**
@@ -37,7 +37,7 @@
 
 **System & Security**
 - [ ] setup better gitignore
-- [ ] split up /home/greyson/nixos-config/home into multiple parts so can configure multiple themes later
+- [ ] split up /etc/nixos/modules into multiple parts so can configure multiple themes later
 - [ ] add a grub2 theme possibly or something that allows for nix rollbacks while still looking better than systemd
 
 **Visuals & Theming**

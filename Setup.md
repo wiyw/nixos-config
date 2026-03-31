@@ -43,7 +43,7 @@ To use the animated Interstellar wallpaper:
 
 2. Convert to mp4 format with ffmpeg:
    ```bash
-   ffmpeg -i ~/Downloads/Live.mov -vf "scale=1920:trunc(ow/a/2)*2" -c:v libx264 -preset ultrafast -c:a aac ./home/wallpapers/interstellar.mp4
+   ffmpeg -i ~/Downloads/Live.mov -vf "scale=1920:trunc(ow/a/2)*2" -c:v libx264 -preset ultrafast -c:a aac ./wallpapers/interstellar.mp4
    ```
    (You may need to create the wallpapers directory first)
 

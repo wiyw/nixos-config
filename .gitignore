@@ -10,3 +10,7 @@ result-*
 # OS generated files
 .DS_Store
 .swp
+
+# Generated/auto files
+code.txt
+error.txt

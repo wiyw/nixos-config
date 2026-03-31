@@ -22,10 +22,15 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 .
 ├── flake.nix               # System entry point with Stylix input
 ├── configuration.nix       # System-level settings (GC, Boot, Users)
-├── home/
+├── scripts/                # Standalone shell scripts
+│   ├── ws-sync             # Switch workspaces on both monitors
+│   ├── ws-move             # Move windows to correct monitor workspace
+│   └── monitor-setup       # Auto-configure monitors on startup
+├── wallpapers/             # Wallpaper assets (interstellar.mp4)
+├── modules/
 │   ├── home.nix            # Home Manager entry point
 │   ├── stylix.nix          # Stylix theming configuration
-│   ├── wallpaper-manager.nix  # Hyprpaper/mpvpaper toggle + Unsplash fetch
+│   ├── wallpaper-manager.nix  # Hyprpaper/mpvpaper toggle + fetch
 │   ├── waybar.nix          # macOS style top bar
 │   ├── hyprland.nix        # Window manager logic & keybinds
 │   ├── hyprlock.nix        # Lock screen (Tokyo Night theme)
@@ -34,8 +39,7 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 │   ├── zsh.nix             # Zsh shell with Starship
 │   ├── auth.nix            # Git configuration
 │   ├── ags.nix             # AGS widget config
-│   ├── packages.nix        # All installed packages
-│   └── wallpapers/        # Wallpaper assets & cache
+│   └── packages.nix        # All installed packages
 └── nextsteps.md            # Project roadmap & TODOs
 ```
 
@@ -44,7 +48,7 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 ### Hyprpaper (Default - Static)
 - Fetches random minimalistic space/astronaut wallpapers from Unsplash
 - Falls back to local wallpapers when offline
-- Configured via `home/wallpaper-manager.nix`
+- Configured via `modules/wallpaper-manager.nix`
 
 ### mpvpaper (Optional - Animated)
 - Can toggle to use for the animated Interstellar wallpaper
@@ -77,7 +81,7 @@ Stylix automatically applies:
 - JetBrains Mono font throughout
 - Cursor theming
 
-Manual overrides in `home/stylix.nix` can customize further.
+Manual overrides in `modules/stylix.nix` can customize further.
 
 ## 📋 Maintenance
 

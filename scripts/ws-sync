@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+WS=$1
+
+MONITORS=$(hyprctl monitors -j | jq -r '.[].name')
+
+if echo "$MONITORS" | grep -q "^DP-4$"; then
+    # Dual monitor: switch workspace on both
+    WS_RIGHT=$((WS + 10))
+    hyprctl dispatch workspace $WS
+    hyprctl dispatch workspace $WS_RIGHT
+else
+    # Laptop only: just switch workspace
+    hyprctl dispatch workspace $WS
+fi
