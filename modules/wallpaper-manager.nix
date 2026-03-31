@@ -6,20 +6,20 @@ let
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
-    WALLPAPER_DIR="${wallpaperDir}"
-    WALLPAPERS=($WALLPAPER_DIR/*.jpg)
+    WALLPAPERS=($wallpaperDir/*.jpg)
+    COUNT=''${#WALLPAPERS[@]}
 
-    COUNT="''${#WALLPAPERS[@]}"
     if [ "$COUNT" -eq 0 ]; then
-      echo "No wallpapers found in $WALLPAPER_DIR"
+      echo "No wallpapers found in $wallpaperDir"
       exit 1
     fi
 
     RANDOM_INDEX=$((RANDOM % "$COUNT"))
-    SELECTED_WALLPAPER="''${WALLPAPERS[$RANDOM_INDEX]}"
+    SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
-    hyprctl hyprpaper wallpaper "" "$SELECTED_WALLPAPER"
-    echo "Wallpaper set to: $SELECTED_WALLPAPER"
+    hyprctl hyprpaper preload "$SELECTED"
+    hyprctl hyprpaper wallpaper "" "$SELECTED"
+    echo "Wallpaper set to: $SELECTED"
   '';
 
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
@@ -87,20 +87,6 @@ in
     };
     Install = {
       WantedBy = ["graphical-session.target"];
-    };
-  };
-
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      preload = [
-        "${wallpaperDir}/space1.jpg"
-        "${wallpaperDir}/space2.jpg"
-        "${wallpaperDir}/space3.jpg"
-        "${wallpaperDir}/space4.jpg"
-        "${wallpaperDir}/space5.jpg"
-      ];
-      wallpaper = "eDP-1,${wallpaperDir}/space1.jpg";
     };
   };
 }
