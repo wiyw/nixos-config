@@ -11,7 +11,7 @@
     wayland = {
       enable = true;
     };
-    theme = "sddm-astronaut-theme";
+    theme = "sddm-astronaut";
     extraPackages = with pkgs; [
       sddm-astronaut
       kdePackages.qtsvg
@@ -24,6 +24,7 @@
   environment.systemPackages = with pkgs; [
     neovim 
     wget
+    sddm-astronaut
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

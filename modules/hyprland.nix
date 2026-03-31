@@ -132,39 +132,9 @@ in
       }
 
       windowrule {
-        match:class = ags
-        title = ^(control-center)$
-        float = 1
-      }
-
-      windowrule {
-        match:class = ags
-        title = ^(control-center)$
-        opacity = 0.96
-      }
-
-      windowrule {
-        match:class = ags
-        title = ^(control-center)$
-        blur = 1
-      }
-
-      windowrule {
-        match:class = ags
-        title = ^(.*-popup)$
-        float = 1
-      }
-
-      windowrule {
-        match:class = ags
-        title = ^(.*-popup)$
-        opacity = 0.96
-      }
-
-      windowrule {
-        match:class = ags
-        title = ^(.*-popup)$
-        blur = 1
+        name = global-transparency
+        match:class = .*
+        opacity = 0.70 0.60 
       }
     '';
   };
