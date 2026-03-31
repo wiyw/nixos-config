@@ -10,7 +10,7 @@ let
 
     WALLPAPER_DIR="/etc/nixos/wallpapers"
 
-    FILES=$(ls "$WALLPAPER_DIR"/space*.jpg "$WALLPAPER_DIR"/movie*.jpg 2>/dev/null)
+    FILES=$(ls "$WALLPAPER_DIR"/space*.jpg 2>/dev/null)
     COUNT=$(echo "$FILES" | wc -l)
 
     if [ "$COUNT" -eq 0 ] || [ -z "$FILES" ]; then
