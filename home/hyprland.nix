@@ -56,7 +56,7 @@ let
         WS_RIGHT=$((WS + 10))
         ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor eDP-1"
     else
-        # Laptop only - use workspaces 1-10 on eDP-1
+        # Laptop only - switch directly on eDP-1 without +10
         ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
     fi
   '';
@@ -89,8 +89,7 @@ in
       "$mod" = "SUPER";
 
       monitor = [
-        "DP-4, preferred, 0x0, 1"
-        "eDP-1, preferred, 1920x0, 1"
+        "eDP-1, preferred, 0x0, 1"
         ", preferred, auto, 1"
       ];
 

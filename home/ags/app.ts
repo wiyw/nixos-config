@@ -1,15 +1,12 @@
 import app from "ags/gtk4/app"
-import ControlCenterWindow from "./ControlCenter.js" // Note the .js extension!
+import ControlCenterWindow from "./ControlCenter.js" 
 
-// 1. Create a global variable so the window is NEVER garbage collected
 let win: any = null;
 
 app.start({
-    css: "./style.css", // Make sure this points to your CSS
+    css: "./style.css",
 
-    // 2. We use this handler to toggle the window safely
     requestHandler(request, res) {
-        // .trim() removes invisible newlines or spaces from terminal commands
         const command = String(request).trim();
         
         if (command === "toggle-center" || command === "control-center") {
@@ -17,15 +14,22 @@ app.start({
                 win.visible = !win.visible;
                 res(win.visible ? "Shown" : "Hidden");
             } else {
-                res("Error: Window not assigned to variable");
+                res("Error: Window is null. Check the terminal for the crash log!");
             }
         } else {
-            res(`I received: "${command}", but I don't know what to do with it.`);
+            res(`Unknown command: "${command}"`);
         }
     },
 
     main() {
-        // 3. Assign the window to our global variable
-        win = ControlCenterWindow();
+        console.log("Starting AGS main()...");
+        
+        try {
+            // Let's catch the exact reason this is failing
+            win = ControlCenterWindow();
+            console.log("✅ Control Center window assigned successfully!");
+        } catch (error) {
+            console.error("❌ FATAL ERROR while building Control Center:", error);
+        }
     }
 })
