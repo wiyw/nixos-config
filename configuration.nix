@@ -6,7 +6,7 @@
   ];
 
   # Display Manager
-  services.sddm = {
+  services.displayManager.sddm = {
     enable = true;
     wayland = true;
     settings = {
