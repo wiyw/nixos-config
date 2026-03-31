@@ -7,11 +7,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Theming framework
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # The community Zen Browser flake
     zen-browser.url = "github:youwen5/zen-browser-flake";
     # AGS (Aylur's GTK Shell)

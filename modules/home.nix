@@ -5,7 +5,6 @@
   home.homeDirectory = "/home/greyson";
 
   imports = [
-    ./stylix.nix
     ./wallpaper-manager.nix
     ./packages.nix
     ./hyprland.nix
