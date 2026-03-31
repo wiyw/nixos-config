@@ -1,9 +1,12 @@
-❄️ greyson@iusenixbtw nixos-config  main +10 -10 [!] ❯   ags run                                                                                                                     󰍛 2GiB/7GiB 󰁹 100% 09:54:30
-✘ [ERROR] Could not resolve "astal"
+❄️ greyson@iusenixbtw nixos-config  main +7 -13 [!] ❯   ags run                                                                                                                   3s 󰍛 2GiB/7GiB 󰁹 100% 10:02:35
+✘ [ERROR] No matching export in "../8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/index.ts" for import "Variable"
 
-    ControlCenter.tsx:3:31:
-      3 │ import { Variable, bind } from "astal"
-        ╵                                ~~~~~~~
+    ControlCenter.tsx:3:9:
+      3 │ import { Variable, bind } from "ags"
+        ╵          ~~~~~~~~
 
-  You can mark the path "astal" as external to exclude it from the bundle, which will remove this
-  error and leave the unresolved path in the bundle.
+✘ [ERROR] No matching export in "../8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/index.ts" for import "bind"
+
+    ControlCenter.tsx:3:19:
+      3 │ import { Variable, bind } from "ags"
+        ╵                    ~~~~
