@@ -6,7 +6,7 @@ let
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
 
-    sleep 3
+    sleep 4
 
     WALLPAPER_DIR="/etc/nixos/wallpapers"
     WALLPAPERS=($WALLPAPER_DIR/*.jpg)
@@ -20,19 +20,21 @@ let
     RANDOM_INDEX=$((RANDOM % "$COUNT"))
     SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
 
+    MONITOR=$(hyprctl monitors -j | jq -r '.[0].name')
+    if [ -z "$MONITOR" ]; then
+      MONITOR="eDP-1"
+    fi
+
     echo "preload = $SELECTED" > /tmp/hyprpaper.conf
-    echo "wallpaper = eDP-1,$SELECTED" >> /tmp/hyprpaper.conf
-    cat /tmp/hyprpaper.conf
+    echo "wallpaper = $MONITOR,$SELECTED" >> /tmp/hyprpaper.conf
 
     pkill hyprpaper 2>/dev/null || true
     sleep 1
 
     hyprpaper -c /tmp/hyprpaper.conf &
-    sleep 2
+    sleep 3
 
-    hyprctl hyprpaper preload "$SELECTED"
-    hyprctl hyprpaper wallpaper eDP-1 "$SELECTED"
-    echo "Wallpaper set to: $SELECTED"
+    echo "Wallpaper set to: $SELECTED on monitor $MONITOR"
   '';
 
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
