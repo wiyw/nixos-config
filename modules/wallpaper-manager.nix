@@ -18,8 +18,7 @@ let
       exit 1
     fi
 
-    RANDOM_INDEX=$((RANDOM % COUNT + 1))
-    SELECTED=$(echo "$FILES" | sed -n "${RANDOM_INDEX}p")
+    SELECTED=$(echo "$FILES" | shuf -n 1)
 
     pkill swww 2>/dev/null || true
     pkill swww-daemon 2>/dev/null || true
