@@ -1,40 +1,101 @@
-/* Tokyo Night Interstellar Blue Palette */
-@define-color bg_base #1a1b26;          /* Deep interstellar blue background */
-@define-color bg_surface #24283b;       /* Lighter blue for cards, grid items, and pills */
-@define-color bg_surface_hover #292e42; /* Hover state for interactive elements */
-
-@define-color fg_text #c0caf5;          /* Main text color */
-@define-color fg_subtext #a9b1d6;       /* Secondary/muted text */
-
-@define-color accent_primary #7aa2f7;   /* Vibrant neon blue for active states/sliders */
-@define-color accent_secondary #bb9af7; /* Interstellar purple for media cards/highlights */
-@define-color accent_cyan #2ac3de;      /* Secondary neon pop for icons */
-@define-color border_color #414868;     /* Subtle borders separating grid elements */
-
-/* Apply to the new layout */
-window {
+/* Base window MUST be fully transparent */
+window#control-center {
     background-color: transparent;
 }
 
-.control-center-container {
-    background-color: alpha(@bg_base, 0.85); /* Transparent deep blue for Hyprland blur */
-    border: 1px solid @border_color;
+/* Main Container: Explicit RGBA for Blur */
+.tn-container {
+    background-color: rgba(26, 27, 38, 0.65); /* #1a1b26 with 65% opacity */
+    border: 1px solid rgba(65, 72, 104, 0.8); /* #414868 border */
+    border-radius: 12px;
+    padding: 16px;
+    min-width: 360px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-.pill, .media-card, .grid-item {
-    background-color: @bg_surface;
-    color: @fg_text;
-    transition: background-color 0.2s ease;
+/* Typography */
+.text-header { font-weight: bold; font-size: 15px; color: #c0caf5; }
+.text-bold { font-weight: bold; font-size: 13px; color: #c0caf5; }
+.text-muted { font-size: 12px; color: #565f89; }
+.text-left { justify-content: left; }
+
+/* Panels & Modules */
+.tn-panel {
+    background-color: rgba(36, 40, 59, 0.8); /* #24283b */
+    border-radius: 10px;
+    padding: 14px;
 }
 
-.pill:hover, .grid-item:hover {
-    background-color: @bg_surface_hover;
+/* 2x2 Grid Toggles */
+.tn-toggle {
+    background-color: rgba(36, 40, 59, 0.8);
+    border: 1px solid rgba(65, 72, 104, 0.3);
+    border-radius: 10px;
+    padding: 14px 10px;
+    transition: all 0.2s;
+}
+.tn-toggle:hover {
+    background-color: rgba(41, 46, 66, 0.9);
+}
+.tn-toggle .toggle-icon {
+    font-size: 22px;
+    color: #565f89;
+    margin-bottom: 4px;
 }
 
-scale trough {
-    background-color: @bg_surface_hover;
+/* Active State (Glowing Blue) */
+.tn-toggle.active {
+    background-color: rgba(122, 162, 247, 0.15); /* Tinted Blue */
+    border: 1px solid #7aa2f7;
+    box-shadow: inset 0px 0px 10px rgba(122, 162, 247, 0.1);
+}
+.tn-toggle.active .toggle-icon {
+    color: #7aa2f7;
+    text-shadow: 0px 0px 5px rgba(122, 162, 247, 0.5);
+}
+.tn-toggle.active .text-bold {
+    color: #7aa2f7;
 }
 
-scale highlight {
-    background-color: @accent_primary;
+/* Icon Buttons & Power */
+.tn-icon-btn {
+    background: transparent;
+    border: none;
+    color: #a9b1d6;
+    font-size: 20px;
+    transition: color 0.2s;
+}
+.tn-icon-btn:hover { color: #c0caf5; }
+.destructive { color: #f7768e; font-size: 22px; }
+.destructive:hover { color: #ff9e64; text-shadow: 0px 0px 5px rgba(247, 118, 142, 0.5); }
+
+/* Art / Profile Placeholders */
+.tn-profile-pic, .tn-media-art {
+    min-width: 50px;
+    min-height: 50px;
+    background-color: #15161e;
+    border-radius: 8px;
+    border: 1px solid #414868;
+}
+.icon-large { font-size: 28px; color: #7aa2f7; }
+
+/* Thin Sliders */
+.slider-icon { font-size: 16px; color: #a9b1d6; min-width: 20px; }
+.tn-slider { min-height: 12px; }
+.tn-slider trough {
+    background-color: #15161e;
+    border-radius: 6px;
+    min-height: 8px;
+}
+.tn-slider highlight {
+    background-color: #7aa2f7;
+    border-radius: 6px;
+    box-shadow: 0px 0px 8px rgba(122, 162, 247, 0.4);
+}
+.tn-slider slider {
+    background: #c0caf5;
+    border: 2px solid #7aa2f7;
+    min-width: 12px;
+    min-height: 12px;
+    border-radius: 99px;
 }

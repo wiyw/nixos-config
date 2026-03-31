@@ -199,12 +199,11 @@ in
         ignore_alpha = 0.2
       }
 
-      layerrule {
-        name = ags-control-center-blur
-        match:namespace = ^(control-center)$
-        blur = true
-        ignore_alpha = 0.2
-      }
+      # Blur the control center background
+      layerrule = blur, control-center
+
+      # Ignore pixels with less than 20% opacity (stops the transparent bounding box from blurring)
+      layerrule = ignorealpha 0.2, control-center
 
       windowrule {
         name = global-transparency
