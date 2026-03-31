@@ -32,7 +32,9 @@ const createWifiPopup = () => {
                 <box cssClasses={["toggle-row"]}>
                     <label label="󰤯 " />
                     <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
-                    <switch onClicked={() => execAsync("nmcli radio wifi off")} />
+                    <button onClicked={() => execAsync("nmcli radio wifi off")}>
+                        <label label="Toggle" />
+                    </button>
                 </box>
                 <box cssClasses={["network-item"]} spacing={12}>
                     <label label="󰤨 " />
@@ -69,7 +71,9 @@ const createBTPopup = () => {
                 <box cssClasses={["toggle-row"]}>
                     <label label="󰂯 " />
                     <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
-                    <switch onClicked={() => execAsync("bluetoothctl power off")} />
+                    <button onClicked={() => execAsync("bluetoothctl power off")}>
+                        <label label="Toggle" />
+                    </button>
                 </box>
                 <box cssClasses={["device-item"]} spacing={12}>
                     <label label="󰂯 " />
@@ -108,7 +112,9 @@ const createNightPopup = () => {
                 <box cssClasses={["toggle-row"]}>
                     <label label="󰟈 " />
                     <label cssClasses={["text-bold"]} label="Night Shift" hexpand />
-                    <switch onClicked={() => execAsync("gammastep -t 4500:3500")} />
+                    <button onClicked={() => execAsync("gammastep -t 4500:3500")}>
+                        <label label="Toggle" />
+                    </button>
                 </box>
             </box>
         </window>
