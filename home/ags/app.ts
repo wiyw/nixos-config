@@ -9,15 +9,19 @@ app.start({
 
     // 2. We use this handler to toggle the window safely
     requestHandler(request, res) {
-        if (request === "toggle-center") {
+        // This will print to the terminal so we can see what command it actually received
+        console.log(`Received request: "${request}"`);
+
+        // If it asks for toggle-center, or just "control-center", toggle it.
+        if (request === "toggle-center" || request === "control-center") {
             if (win) {
                 win.visible = !win.visible;
                 res(win.visible ? "Shown" : "Hidden");
             } else {
-                res("Error: Window exists but is not assigned");
+                res("Error: Window not assigned to variable");
             }
         } else {
-            res("Unknown command");
+            res(`I received: ${request}, but I don't know what to do with it.`);
         }
     },
 
