@@ -1,16 +1,16 @@
-/* Base window MUST be fully transparent */
+/* Base window MUST be transparent */
 window#control-center {
     background-color: transparent;
 }
 
-/* Main Container: Explicit RGBA for Blur */
+/* Main Container */
 .tn-container {
-    background-color: rgba(26, 27, 38, 0.65); /* #1a1b26 with 65% opacity */
-    border: 1px solid rgba(65, 72, 104, 0.8); /* #414868 border */
-    border-radius: 12px;
+    background-color: rgba(26, 27, 38, 0.65); /* Translucent Tokyo Night Background */
+    border: 1px solid rgba(65, 72, 104, 0.8);
+    border-radius: 16px;
     padding: 16px;
-    min-width: 360px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+    min-width: 380px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Typography */
@@ -19,68 +19,64 @@ window#control-center {
 .text-muted { font-size: 12px; color: #565f89; }
 .text-left { justify-content: left; }
 
-/* Panels & Modules */
+/* Panels (Header, Sliders, Media) */
 .tn-panel {
-    background-color: rgba(36, 40, 59, 0.8); /* #24283b */
-    border-radius: 10px;
-    padding: 14px;
+    background-color: rgba(36, 40, 59, 0.85);
+    border-radius: 12px;
+    padding: 15px;
 }
 
-/* 2x2 Grid Toggles */
+/* Grid Toggles */
 .tn-toggle {
-    background-color: rgba(36, 40, 59, 0.8);
-    border: 1px solid rgba(65, 72, 104, 0.3);
-    border-radius: 10px;
-    padding: 14px 10px;
+    background-color: rgba(36, 40, 59, 0.85);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 16px 10px;
     transition: all 0.2s;
 }
 .tn-toggle:hover {
-    background-color: rgba(41, 46, 66, 0.9);
+    background-color: rgba(41, 46, 66, 0.95);
 }
 .tn-toggle .toggle-icon {
-    font-size: 22px;
+    font-size: 24px;
     color: #565f89;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
-/* Active State (Glowing Blue) */
+/* Active Toggles */
 .tn-toggle.active {
-    background-color: rgba(122, 162, 247, 0.15); /* Tinted Blue */
+    background-color: rgba(122, 162, 247, 0.1);
     border: 1px solid #7aa2f7;
-    box-shadow: inset 0px 0px 10px rgba(122, 162, 247, 0.1);
 }
-.tn-toggle.active .toggle-icon {
-    color: #7aa2f7;
-    text-shadow: 0px 0px 5px rgba(122, 162, 247, 0.5);
-}
-.tn-toggle.active .text-bold {
+.tn-toggle.active .toggle-icon, .tn-toggle.active .text-bold {
     color: #7aa2f7;
 }
 
-/* Icon Buttons & Power */
+/* Buttons */
 .tn-icon-btn {
     background: transparent;
     border: none;
     color: #a9b1d6;
-    font-size: 20px;
+    font-size: 22px;
     transition: color 0.2s;
 }
 .tn-icon-btn:hover { color: #c0caf5; }
-.destructive { color: #f7768e; font-size: 22px; }
-.destructive:hover { color: #ff9e64; text-shadow: 0px 0px 5px rgba(247, 118, 142, 0.5); }
+.play-btn { font-size: 28px; color: #c0caf5; }
+.destructive { color: #f7768e; font-size: 24px; }
+.destructive:hover { color: #ff9e64; }
 
-/* Art / Profile Placeholders */
+/* Art & Icons */
 .tn-profile-pic, .tn-media-art {
-    min-width: 50px;
-    min-height: 50px;
+    min-width: 48px;
+    min-height: 48px;
     background-color: #15161e;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #414868;
 }
-.icon-large { font-size: 28px; color: #7aa2f7; }
+.icon-large { font-size: 26px; color: #7aa2f7; }
 
-/* Thin Sliders */
-.slider-icon { font-size: 16px; color: #a9b1d6; min-width: 20px; }
+/* Sliders */
+.slider-icon { font-size: 16px; color: #a9b1d6; min-width: 24px; }
 .tn-slider { min-height: 12px; }
 .tn-slider trough {
     background-color: #15161e;
@@ -90,12 +86,12 @@ window#control-center {
 .tn-slider highlight {
     background-color: #7aa2f7;
     border-radius: 6px;
-    box-shadow: 0px 0px 8px rgba(122, 162, 247, 0.4);
 }
 .tn-slider slider {
     background: #c0caf5;
     border: 2px solid #7aa2f7;
-    min-width: 12px;
-    min-height: 12px;
+    min-width: 14px;
+    min-height: 14px;
     border-radius: 99px;
+    box-shadow: 0px 0px 5px rgba(122, 162, 247, 0.5);
 }
