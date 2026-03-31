@@ -21,12 +21,13 @@
     };
   };
 
+  # Base System Packages
   environment.systemPackages = with pkgs; [
+    neovim 
+    wget
     sddm
     sddm-themes
   ];
-
-  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -64,12 +65,6 @@
   # System-level Programs & Shell
   programs.hyprland.enable = true;
   programs.zsh.enable = true;
-
-  # Base System Packages
-  environment.systemPackages = with pkgs; [
-    neovim 
-    wget
-  ];
 
   # Services
   services.openssh = {
