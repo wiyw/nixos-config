@@ -11,7 +11,7 @@
     wayland = {
       enable = true;
     };
-    theme = "sddm-astronaut";
+    theme = "sddm-astronaut-theme";
     extraPackages = with pkgs; [
       sddm-astronaut
       kdePackages.qtsvg
@@ -19,6 +19,13 @@
       kdePackages.qtvirtualkeyboard
     ];
   };
+
+  # SDDM Config file
+  environment.etc."sddm.conf".text = ''
+    [Theme]
+    ThemeDir=/run/current-system/sw/share/sddm/themes
+    Current=sddm-astronaut-theme
+  '';
 
   # Base System Packages
   environment.systemPackages = with pkgs; [

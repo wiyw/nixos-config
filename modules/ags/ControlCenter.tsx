@@ -137,6 +137,26 @@ export default function ControlCenterWindow() {
     const [ssVisible, setSsVisible] = createState(false)
     const [, setVolume] = createState(50)
     const [, setBrightness] = createState(80)
+    const [playerTitle, setPlayerTitle] = createState("Nothing Playing")
+    const [playerStatus, setPlayerStatus] = createState("Idle")
+
+    const updatePlayerStatus = () => {
+        execAsync("playerctl status").then((status: string) => {
+            setPlayerStatus(status.trim())
+            if (status.trim() === "Playing") {
+                execAsync("playerctl metadata title").then((title: string) => {
+                    setPlayerTitle(title.trim() || "Unknown")
+                }).catch(() => setPlayerTitle("Unknown"))
+            } else {
+                setPlayerTitle("Nothing Playing")
+            }
+        }).catch(() => {
+            setPlayerTitle("Nothing Playing")
+            setPlayerStatus("Idle")
+        })
+    }
+
+    setInterval(updatePlayerStatus, 2000)
 
     const handleVolume = (self: Gtk.Scale) => {
         const val = Math.round(self.get_value())
@@ -253,8 +273,8 @@ export default function ControlCenterWindow() {
                         <box spacing={15} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER} hexpand>
                             <label cssClasses={["icon-large"]} label="󰎆 " valign={Gtk.Align.CENTER} />
                             <box orientation={Gtk.Orientation.VERTICAL} hexpand>
-                                <label cssClasses={["text-header"]} label="Nothing Playing" xalign={0} />
-                                <label cssClasses={["text-muted"]} label="Idle" xalign={0} />
+                                <label cssClasses={["text-header"]} label={playerTitle.as((v: string) => v)} xalign={0} />
+                                <label cssClasses={["text-muted"]} label={playerStatus.as((v: string) => v)} xalign={0} />
                             </box>
                         </box>
                         <box spacing={24} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
