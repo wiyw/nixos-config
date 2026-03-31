@@ -48,10 +48,6 @@
   environment.systemPackages = with pkgs; [
     neovim 
     wget
-    grim
-    slurp
-    brightnessctl
-    wl-clipboard
   ];
 
   # Services

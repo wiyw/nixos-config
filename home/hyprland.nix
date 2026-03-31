@@ -85,34 +85,34 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      monitor = ''
-        DP-4, preferred, 0x0, 1
-        eDP-1, preferred, 1920x0, 1
-        , preferred, auto, 1
-      '';
+      monitor = [
+        "DP-4, preferred, 0x0, 1"
+        "eDP-1, preferred, 1920x0, 1"
+        ", preferred, auto, 1"
+      ];
 
-      workspace = ''
-        1, monitor:DP-4, default:true
-        2, monitor:DP-4
-        3, monitor:DP-4
-        4, monitor:DP-4
-        5, monitor:DP-4
-        6, monitor:DP-4
-        7, monitor:DP-4
-        8, monitor:DP-4
-        9, monitor:DP-4
-        10, monitor:DP-4
-        11, monitor:eDP-1, default:true
-        12, monitor:eDP-1
-        13, monitor:eDP-1
-        14, monitor:eDP-1
-        15, monitor:eDP-1
-        16, monitor:eDP-1
-        17, monitor:eDP-1
-        18, monitor:eDP-1
-        19, monitor:eDP-1
-        20, monitor:eDP-1
-      '';
+      workspace = [
+        "1, monitor:DP-4, default:true"
+        "2, monitor:DP-4"
+        "3, monitor:DP-4"
+        "4, monitor:DP-4"
+        "5, monitor:DP-4"
+        "6, monitor:DP-4"
+        "7, monitor:DP-4"
+        "8, monitor:DP-4"
+        "9, monitor:DP-4"
+        "10, monitor:DP-4"
+        "11, monitor:eDP-1, default:true"
+        "12, monitor:eDP-1"
+        "13, monitor:eDP-1"
+        "14, monitor:eDP-1"
+        "15, monitor:eDP-1"
+        "16, monitor:eDP-1"
+        "17, monitor:eDP-1"
+        "18, monitor:eDP-1"
+        "19, monitor:eDP-1"
+        "20, monitor:eDP-1"
+      ];
 
       exec-once = [
         "waybar"
@@ -192,17 +192,19 @@ in
     };
 
     extraConfig = ''
-      layerrule = {
-        namespace = "waybar";
-        blur = true;
-        ignorealpha = true;
-      };
+      layerrule {
+        name = waybar-blur
+        match:namespace = waybar
+        blur = on
+        ignore_alpha = 0.2
+      }
 
-      layerrule = {
-        namespace = "control-center";
-        blur = true;
-        ignorealpha = true;
-      };
+      layerrule {
+        name = control-center-blur
+        match:namespace = ^(control-center)$
+        blur = on
+        ignore_alpha = 0.2
+      }
 
       windowrule {
         name = global-transparency
