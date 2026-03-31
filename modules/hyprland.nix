@@ -132,39 +132,39 @@ in
       }
 
       windowrule {
-        float = true
         match:class = ags
-        match:title = ^(control-center)$
+        title = ^(control-center)$
+        float = 1
       }
 
       windowrule {
-        opacity = 0.96 0.96
         match:class = ags
-        match:title = ^(control-center)$
+        title = ^(control-center)$
+        opacity = 0.96
       }
 
       windowrule {
-        blur = true
         match:class = ags
-        match:title = ^(control-center)$
+        title = ^(control-center)$
+        blur = 1
       }
 
       windowrule {
-        float = true
         match:class = ags
-        match:title = ^(.*-popup)$
+        title = ^(.*-popup)$
+        float = 1
       }
 
       windowrule {
-        opacity = 0.96 0.96
         match:class = ags
-        match:title = ^(.*-popup)$
+        title = ^(.*-popup)$
+        opacity = 0.96
       }
 
       windowrule {
-        blur = true
         match:class = ags
-        match:title = ^(.*-popup)$
+        title = ^(.*-popup)$
+        blur = 1
       }
     '';
   };
