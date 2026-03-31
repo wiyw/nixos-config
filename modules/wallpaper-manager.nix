@@ -2,7 +2,6 @@
 
 let
   wallpaperDir = "/etc/nixos/wallpapers";
-  localWallpapers = "${wallpaperDir}/*.jpg";
 
   fetchSpaceWallpaper = pkgs.writeShellScriptBin "fetch-space-wallpaper" ''
     #!/usr/bin/env bash
@@ -101,7 +100,7 @@ in
         "${wallpaperDir}/space4.jpg"
         "${wallpaperDir}/space5.jpg"
       ];
-      wallpaper = ", ${wallpaperDir}/space1.jpg";
+      wallpaper = "eDP-1,${wallpaperDir}/space1.jpg";
     };
   };
 }
