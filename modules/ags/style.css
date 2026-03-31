@@ -1,8 +1,12 @@
-/* 1. Base window - must be transparent to show Hyprland blur */
-window#control-center {
+/* 1. Base window - transparent for blur */
+window {
     background-color: transparent;
     background-image: none;
     box-shadow: none;
+}
+
+.popup-window {
+    background-color: transparent;
 }
 
 /* 2. Main Container */
@@ -11,12 +15,20 @@ window#control-center {
     border: 1px solid rgba(122, 162, 247, 0.15);
     border-radius: 20px;
     padding: 18px;
-    min-width: 380px;
+    min-width: 320px;
 }
 
-/* 3. Nuke Adwaita Default Buttons */
-/* Using window#control-center ensures our CSS is higher priority than GTK defaults */
-window#control-center button {
+/* 3. Popup Container */
+.popup-container {
+    background-color: rgba(26, 27, 38, 0.95);
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 280px;
+}
+
+/* 4. Buttons */
+button {
     background-image: none;
     box-shadow: none;
     text-shadow: none;
@@ -28,20 +40,13 @@ window#control-center button {
     color: #c0caf5;
 }
 
-window#control-center button:hover {
+button:hover {
     background-color: rgba(69, 77, 102, 0.9);
 }
 
-/* Active / Expanded Toggles */
-window#control-center button.active, 
-window#control-center button.expanded {
-    background-color: rgba(122, 162, 247, 0.25);
-    border: 1px solid rgba(122, 162, 247, 0.5);
-}
-
-/* Icon Buttons (Transparent background) */
-window#control-center button.tn-icon-btn,
-window#control-center button.tn-close-btn {
+/* Icon Buttons */
+button.tn-icon-btn,
+button.tn-close-btn {
     background-color: transparent;
     border: none;
     padding: 8px;
@@ -49,24 +54,25 @@ window#control-center button.tn-close-btn {
     border-radius: 8px;
 }
 
-window#control-center button.tn-icon-btn:hover,
-window#control-center button.tn-close-btn:hover {
+button.tn-icon-btn:hover,
+button.tn-close-btn:hover {
     background-color: rgba(122, 162, 247, 0.15);
     color: #c0caf5;
 }
 
-/* Destructive Button Override */
-window#control-center button.destructive {
+/* Destructive */
+button.destructive {
     color: #f7768e;
 }
 
-/* 4. Panels & Sliders */
+/* 5. Panels */
 .tn-panel {
     background-color: rgba(36, 40, 59, 0.7);
     border-radius: 14px;
     padding: 14px;
 }
 
+/* 6. Sliders */
 scale trough { 
     background-color: rgba(48, 54, 75, 0.8); 
     border-radius: 3px; 
@@ -78,15 +84,16 @@ scale highlight {
     border-radius: 3px; 
 }
 
-/* 5. Typography & Icons */
+/* 7. Typography */
 .text-header { font-weight: bold; font-size: 16px; color: #a9b1d6; }
 .text-bold { font-weight: bold; font-size: 14px; color: #c0caf5; }
 .text-muted { font-size: 13px; color: #565f89; }
 .toggle-icon { color: #7aa2f7; font-size: 22px; }
 .icon-large { color: #7dcfff; font-size: 22px; }
 .play-btn { color: #7aa2f7; font-size: 24px; }
+.slider-icon { color: #7aa2f7; font-size: 16px; }
 
-/* 6. Art & Popups */
+/* 8. Profile & Media */
 .tn-profile-pic, .tn-media-art {
     background-color: rgba(48, 54, 75, 0.9);
     border-radius: 10px;
@@ -94,14 +101,15 @@ scale highlight {
     min-height: 48px;
 }
 
-.tn-popup {
-    background-color: rgba(26, 27, 38, 0.98);
-    border: 1px solid rgba(122, 162, 247, 0.2);
-    border-radius: 14px;
-    padding: 14px;
+/* 9. Toggle Rows */
+.toggle-row {
+    background-color: rgba(48, 54, 75, 0.6);
+    border-radius: 10px;
+    padding: 12px;
 }
 
-.tn-network-item, .tn-device-item {
+/* 10. Network/Device Items */
+.network-item, .device-item {
     background-color: rgba(48, 54, 75, 0.6);
     border-radius: 8px;
     padding: 10px;

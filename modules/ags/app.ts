@@ -25,7 +25,6 @@ app.start({
         console.log("Starting AGS main()...");
         
         try {
-            // Let's catch the exact reason this is failing
             win = ControlCenterWindow();
             console.log("✅ Control Center window assigned successfully!");
         } catch (error) {
