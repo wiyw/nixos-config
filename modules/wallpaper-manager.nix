@@ -42,54 +42,51 @@ let
     mkdir -p "$WALLPAPER_DIR"
     mkdir -p "$TEMP_DIR"
 
-    declare -A MOVIE_WALLPAPERS=(
-        ["hail-mary"]=""
-        ["interstellar"]=""
-        ["the-martian"]=""
-        ["gravity"]=""
-        ["arrival"]=""
-    )
-
     echo "Fetching space-themed movie wallpapers..."
 
     fetch_wallpaper() {
-        local name="$1"
-        local output_file="$WALLPAPER_DIR/movie-${name}.jpg"
+        local name="''${1}"
+        local output_file="$WALLPAPER_DIR/movie-''${name}.jpg"
         
         if [ -f "$output_file" ]; then
-            echo "  [SKIP] $name wallpaper already exists"
+            echo "  [SKIP] ''${name} wallpaper already exists"
             return 0
         fi
         
-        echo "  [FETCH] Downloading $name wallpaper..."
+        echo "  [FETCH] Downloading ''${name} wallpaper..."
         
-        case "$name" in
+        local url=""
+        case "''${name}" in
             hail-mary)
-                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1614730341194-75c607400070?w=3840x2160" 2>/dev/null || true
+                url="https://images.unsplash.com/photo-1614730341194-75c607400070?w=3840x2160"
                 ;;
             interstellar)
-                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=3840x2160" 2>/dev/null || true
+                url="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=3840x2160"
                 ;;
             the-martian)
-                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=3840x2160" 2>/dev/null || true
+                url="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=3840x2160"
                 ;;
             gravity)
-                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=3840x2160" 2>/dev/null || true
+                url="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=3840x2160"
                 ;;
             arrival)
-                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=3840x2160" 2>/dev/null || true
+                url="https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=3840x2160"
                 ;;
         esac
         
-        if [ -f "$TEMP_DIR/${name}.jpg" ] && [ -s "$TEMP_DIR/${name}.jpg" ]; then
-            mv "$TEMP_DIR/${name}.jpg" "$output_file"
+        if [ -n "$url" ]; then
+            curl -L -o "$TEMP_DIR/''${name}.jpg" "$url" 2>/dev/null || true
+        fi
+        
+        if [ -f "$TEMP_DIR/''${name}.jpg" ] && [ -s "$TEMP_DIR/''${name}.jpg" ]; then
+            mv "$TEMP_DIR/''${name}.jpg" "$output_file"
             echo "  [OK] Saved to $output_file"
         else
-            echo "  [FAIL] Could not download $name wallpaper"
+            echo "  [FAIL] Could not download ''${name} wallpaper"
         fi
     }
 
-    for movie in "$${!MOVIE_WALLPAPERS[@]}"; do
+    for movie in hail-mary interstellar the-martian gravity arrival; do
         fetch_wallpaper "$movie"
     done
 
