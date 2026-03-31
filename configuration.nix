@@ -8,6 +8,7 @@
   # Display Manager
   services.displayManager.sddm = {
     enable = true;
+    wayland = true;
     settings = {
       General = {
         theme = "masa";
