@@ -125,15 +125,19 @@ in
         ignore_alpha = 0.2
       }
 
-      # Window rules for AGS Control Center
-      windowrulev2 = float, class:^(ags)$, title:^(control-center)$
-      windowrulev2 = opacity 0.96 0.96, class:^(ags)$, title:^(control-center)$
-      windowrulev2 = blur, class:^(ags)$, title:^(control-center)$
+      # Layer rules for AGS Control Center
+      layerrule {
+        blur = on
+        ignore_alpha = 0.3
+        match:namespace = ^(control-center)$
+      }
 
       # Popup windows
-      windowrulev2 = float, class:^(ags)$, title:^(.*-popup)$
-      windowrulev2 = opacity 0.96 0.96, class:^(ags)$, title:^(.*-popup)$
-      windowrulev2 = blur, class:^(ags)$, title:^(.*-popup)$
+      layerrule {
+        blur = on
+        ignore_alpha = 0.3
+        match:title = ^(.*-popup)$
+      }
     '';
   };
 }
