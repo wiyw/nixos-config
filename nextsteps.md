@@ -25,8 +25,12 @@
 
 **Wallpaper System**
 - [x] Replace mpvpaper with hyprpaper for static wallpaper support
-- [x] Add Stylix for automated theming (colors, fonts, cursor)
+- [x] Add Stylix for automated theming (colors, fonts, cursor) (removed - had issues)
 - [x] Create wallpaper toggle between hyprpaper and mpvpaper
+- [x] Install swww and waypaper for better wallpaper support
+- [x] Add 5 space-themed wallpapers to wallpapers folder
+- [x] Create fetch-space-wallpaper script with random selection
+- [x] Fix wallpaper script to work properly at runtime
 
 ## 🚧 In Progress
 
@@ -42,14 +46,13 @@
 
 **Visuals & Theming**
 - [ ] bold current window showing more
-- [ ] configure Stylix to use custom color palette
-- [ ] add fallback wallpapers for offline mode
-- [ ] test wallpaper toggle keybinding (SUPER + W)
+- [x] add fallback wallpapers for offline mode (5 space wallpapers added)
+- [x] test wallpaper toggle keybinding (SUPER + W) (works)
 
 **Wallpaper System**
 - [ ] Configure automatic wallpaper refresh (hourly/daily)
-- [ ] Add more wallpaper sources beyond Unsplash
-- [ ] Create local wallpaper collection for rotation
+- [ ] Add more wallpaper sources beyond current 5
+- [x] Create local wallpaper collection for rotation (5 space wallpapers)
 
 **Documentation**
 - [ ] Add troubleshooting section to README

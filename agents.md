@@ -18,12 +18,11 @@
 ├── configuration.nix         # System-level config (boot, users, services)
 ├── hardware-configuration.nix # Auto-generated hardware config
 ├── scripts/                  # Standalone scripts (for easy editing)
-├── wallpapers/               # Wallpaper assets (interstellar.mp4)
+├── wallpapers/               # Wallpaper assets (space*.jpg, interstellar.mp4)
 ├── modules/                  # Home Manager configuration modules
 │   ├── home.nix             # Home Manager entry (imports all modules)
 │   ├── packages.nix         # All installed packages
-│   ├── stylix.nix           # Stylix theming config
-│   ├── wallpaper-manager.nix # Hyprpaper/mpvpaper toggle
+│   ├── wallpaper-manager.nix # Wallpaper manager (swww/mpvpaper)
 │   ├── hyprland.nix         # Window manager config, keybinds
 │   ├── hyprlock.nix         # Lock screen config
 │   ├── hypridle.nix         # Idle/lock/suspend service (battery-aware)
@@ -94,49 +93,40 @@ Key packages:
 - `zen-browser` - Browser
 - `kitty` - Terminal
 - `waybar` - Status bar
+- `swww` - Static wallpaper with transitions
+- `waypaper` - GUI wallpaper setter
+- `mpvpaper` - Animated wallpaper (for toggle)
 - `hyprlock` / `hypridle` - Lock/idle
-- `mpvpaper` - Animated wallpaper (keep for toggle)
-- `hyprpaper` - Static wallpaper
 - Starship, fzf, eza, bat, etc.
 
 ---
 
 ## Planned Changes
 
-### Stylix Integration (COMPLETED)
-Stylix has been added to flake.nix and configured in `modules/stylix.nix`
+### Stylix Integration (REMOVED)
+Stylix was added but removed due to configuration issues. The manual Tokyo Night colors in hyprland.nix are still in use.
 
-**In flake.nix:**
-```nix
-stylix.url = "github:nix-community/stylix";
-# In outputs, pass inputs to home-manager
-```
-
-**In modules/stylix.nix:**
-- Tokyo Night base16 theme
-- JetBrains Mono font
-- Bibata cursor
-
-### Hyprpaper + mpvpaper Toggle (COMPLETED)
+### swww + mpvpaper Toggle (COMPLETED)
 
 **In modules/packages.nix:**
-- Both `mpvpaper` and `hyprpaper` installed
+- `swww` - Static wallpaper with smooth transitions
+- `waypaper` - GUI wallpaper setter
+- `mpvpaper` - Animated wallpaper (for toggle)
 
 **In modules/wallpaper-manager.nix:**
-- `fetch-space-wallpaper` script (Wallhaven)
-- `wallpaper-toggle` script
+- `fetch-space-wallpaper` script - picks random wallpaper from `/etc/nixos/wallpapers/`
+- `wallpaper-toggle` script - toggle between swww and mpvpaper
 - Keybind `SUPER + W` to cycle modes
+- Starts swww-daemon on first run
 
 ---
 
 ## File Reference
 
-### 3. Update modules/home.nix (DONE)
-Import new modules in correct order
+### modules/home.nix (DONE)
 Import new modules:
 ```nix
 imports = [
-  ./stylix.nix
   ./wallpaper-manager.nix
   # ... existing imports
 ];
@@ -154,7 +144,7 @@ imports = [
 | `SUPER + Q` | Close window |
 | `SUPER + F` | Toggle floating |
 | `SUPER + L` | Lock screen |
-| `SUPER + W` | Cycle wallpaper mode (TO BE ADDED) |
+| `SUPER + W` | Cycle wallpaper mode |
 | `SUPER + 1-0` | Workspace 1-10 |
 | `SUPER + SHIFT + 1-0` | Move to workspace |
 | `SUPER + Click` | Drag window |

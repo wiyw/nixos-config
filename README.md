@@ -8,8 +8,8 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 
 * **OS:** [NixOS](https://nixos.org/) (Unstable/Flake)
 * **WM:** [Hyprland](https://hyprland.org/)
-* **Theming:** [Stylix](https://github.com/nix-community/stylix) (colors, fonts, cursor)
-* **Wallpaper:** [Hyprpaper](https://github.com/hyprwm/hyprpaper) (static) / [mpvpaper](https://github.com/ghost8398/mpvpaper) (animated) - Toggleable
+* **Wallpaper:** [swww](https://github.com/LGFae/swww) (static) / [mpvpaper](https://github.com/ghost8398/mpvpaper) (animated) - Toggleable
+* **Wallpaper Manager:** waypaper (GUI for swww)
 * **Bar:** [Waybar](https://github.com/Alexays/Waybar)
 * **Shell:** Zsh (with Starship prompt)
 * **Terminal:** [Kitty](https://sw.kovidgoyal.net/kitty/)
@@ -26,11 +26,10 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 │   ├── ws-sync             # Switch workspaces on both monitors
 │   ├── ws-move             # Move windows to correct monitor workspace
 │   └── monitor-setup       # Auto-configure monitors on startup
-├── wallpapers/             # Wallpaper assets (interstellar.mp4)
+├── wallpapers/             # Wallpaper assets (space*.jpg, interstellar.mp4)
 ├── modules/
 │   ├── home.nix            # Home Manager entry point
-│   ├── stylix.nix          # Stylix theming configuration
-│   ├── wallpaper-manager.nix  # Hyprpaper/mpvpaper toggle + fetch
+│   ├── wallpaper-manager.nix  # swww/mpvpaper toggle + fetch
 │   ├── waybar.nix          # macOS style top bar
 │   ├── hyprland.nix        # Window manager logic & keybinds
 │   ├── hyprlock.nix        # Lock screen (Tokyo Night theme)
@@ -45,9 +44,10 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 
 ## 🎨 Wallpaper System
 
-### Hyprpaper (Default - Static)
-- Fetches random minimalistic space/astronaut wallpapers from Unsplash
-- Falls back to local wallpapers when offline
+### swww (Default - Static)
+- Uses `swww` (sWayland Wallpaper) with smooth transitions
+- Random space-themed wallpapers from local collection
+- Wallpapers stored in `/etc/nixos/wallpapers/`
 - Configured via `modules/wallpaper-manager.nix`
 
 ### mpvpaper (Optional - Animated)
@@ -57,8 +57,13 @@ A highly customized, Flake-based NixOS configuration focused on a macOS-inspired
 
 ### Toggle Command
 ```bash
-wallpaper-toggle hyprpaper   # Use static wallpapers
-wallpaper-toggle mpvpaper   # Use animated wallpaper
+wallpaper-toggle swww    # Use static wallpapers (swww)
+wallpaper-toggle mpvpaper # Use animated wallpaper
+```
+
+### Manual Commands
+```bash
+fetch-space-wallpaper    # Fetch new random wallpaper
 ```
 
 ## 🎛️ Keybindings
