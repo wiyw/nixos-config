@@ -1,15 +1,15 @@
-❄️ greyson@iusenixbtw nixos-config  main ❯   ags run                                                                                                                           [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:48:25
-ags-Message: 09:48:28.436: Starting AGS main()...
 
-(gjs:112362): ags-CRITICAL **: 09:48:28.441: ❌ FATAL ERROR while building Control Center: Error: Wrong type Function; string expected
-_init/Gtk.Widget.prototype._init@resource:///org/gnome/gjs/modules/core/overrides/Gtk.js:39:56
-jsx@file:///run/user/1001/ags.js:1204:55
-ControlCenterWindow@file:///run/user/1001/ags.js:1952:33
-main@file:///run/user/1001/ags.js:2056:13
-vfunc_command_line/<@file:///run/user/1001/ags.js:1437:66
+❄️ greyson@iusenixbtw nixos-config  main ❯   ags run                                                                                                                           [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:54:08
+ags-Message: 09:54:10.623: Starting AGS main()...
+
+(gjs:130168): ags-CRITICAL **: 09:54:10.627: ❌ FATAL ERROR while building Control Center: TypeError: can't access property replace, str is undefined
+kebabify@file:///run/user/1001/ags.js:129:3
+createBinding@file:///run/user/1001/ags.js:1093:26
+ControlCenterWindow@file:///run/user/1001/ags.js:1974:27
+main@file:///run/user/1001/ags.js:2098:13
+vfunc_command_line/<@file:///run/user/1001/ags.js:1469:66
 createRoot/<@file:///run/user/1001/ags.js:869:28
 run@file:///run/user/1001/ags.js:846:14
 createRoot@file:///run/user/1001/ags.js:869:16
-vfunc_command_line@file:///run/user/1001/ags.js:1434:17
+vfunc_command_line@file:///run/user/1001/ags.js:1466:17
 _init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
-  
