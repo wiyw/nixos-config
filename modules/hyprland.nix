@@ -131,13 +131,41 @@ in
         ignore_alpha = 0.2
       }
 
-      windowrule = float, class:^(ags)$, title:^(control-center)$
-      windowrule = opacity 0.96 0.96, class:^(ags)$, title:^(control-center)$
-      windowrule = blur, class:^(ags)$, title:^(control-center)$
+      windowrule {
+        float = true
+        class = ags
+        title = ^(control-center)$
+      }
 
-      windowrule = float, class:^(ags)$, title:^(.*-popup)$
-      windowrule = opacity 0.96 0.96, class:^(ags)$, title:^(.*-popup)$
-      windowrule = blur, class:^(ags)$, title:^(.*-popup)$
+      windowrule {
+        opacity = 0.96 0.96
+        class = ags
+        title = ^(control-center)$
+      }
+
+      windowrule {
+        blur = true
+        class = ags
+        title = ^(control-center)$
+      }
+
+      windowrule {
+        float = true
+        class = ags
+        title = ^(.*-popup)$
+      }
+
+      windowrule {
+        opacity = 0.96 0.96
+        class = ags
+        title = ^(.*-popup)$
+      }
+
+      windowrule {
+        blur = true
+        class = ags
+        title = ^(.*-popup)$
+      }
     '';
   };
 }

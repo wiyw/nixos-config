@@ -21,9 +21,6 @@ const createWifiPopup = () => {
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
-            onKeyPressed={(self: any, event: any) => {
-                if (event.get_keyval()[1] === 65307) self.visible = false
-            }}
         >
             <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                 <box>
@@ -61,9 +58,6 @@ const createBTPopup = () => {
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
-            onKeyPressed={(self: any, event: any) => {
-                if (event.get_keyval()[1] === 65307) self.visible = false
-            }}
         >
             <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                 <box>
@@ -103,9 +97,6 @@ const createNightPopup = () => {
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
-            onKeyPressed={(self: any, event: any) => {
-                if (event.get_keyval()[1] === 65307) self.visible = false
-            }}
         >
             <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                 <box>
@@ -138,9 +129,6 @@ const createSSPopup = () => {
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
-            onKeyPressed={(self: any, event: any) => {
-                if (event.get_keyval()[1] === 65307) self.visible = false
-            }}
         >
             <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                 <box>
@@ -226,9 +214,6 @@ export default function ControlCenterWindow() {
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
-            onKeyPressed={(self: any, event: any) => {
-                if (event.get_keyval()[1] === 65307) self.visible = false
-            }}
         >
             <box cssClasses={["tn-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={16}>
                 <box spacing={15} valign={Gtk.Align.CENTER}>
