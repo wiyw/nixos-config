@@ -118,22 +118,26 @@ in
 
     extraConfig = ''
       layerrule {
-        name=waybar-blur
-        blur=true
-        ignore_alpha=0.2
+        name = waybar-blur
+        match:namespace = waybar
+        blur = on
+        ignore_alpha = 0.2
       }
 
       layerrule {
-        blur=true
-        ignore_alpha=0.3
-        namespace=control-center
+        name = control-center-blur
+        match:namespace = ^(control-center)$
+        blur = on
+        ignore_alpha = 0.2
       }
 
-      layerrule {
-        blur=true
-        ignore_alpha=0.3
-        title=.*-popup
-      }
+      windowrule = float, class:^(ags)$, title:^(control-center)$
+      windowrule = opacity 0.96 0.96, class:^(ags)$, title:^(control-center)$
+      windowrule = blur, class:^(ags)$, title:^(control-center)$
+
+      windowrule = float, class:^(ags)$, title:^(.*-popup)$
+      windowrule = opacity 0.96 0.96, class:^(ags)$, title:^(.*-popup)$
+      windowrule = blur, class:^(ags)$, title:^(.*-popup)$
     '';
   };
 }
