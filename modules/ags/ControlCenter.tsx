@@ -24,7 +24,7 @@ const WifiPopup = ({ visible }: { visible: boolean }) => (
             <box cssClasses={["toggle-row"]}>
                 <label label="󰤯 " />
                 <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
-                <button onClicked={() => execAsync("nmcli radio wifi off")}>
+                <button onClicked={() => execAsync("nmcli radio wifi toggle")}>
                     <label label="Toggle" />
                 </button>
             </box>
@@ -58,7 +58,7 @@ const BTPopup = ({ visible }: { visible: boolean }) => (
             <box cssClasses={["toggle-row"]}>
                 <label label="󰂯 " />
                 <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
-                <button onClicked={() => execAsync("bluetoothctl power off")}>
+                <button onClicked={() => execAsync("bluetoothctl power toggle")}>
                     <label label="Toggle" />
                 </button>
             </box>
