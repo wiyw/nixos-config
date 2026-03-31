@@ -1,16 +1,17 @@
-/* Base window MUST be transparent for Hyprland blur to show */
+/* 1. Base window MUST be transparent */
 window.ControlCenterWindow {
-    background-color: transparent;
+    background: transparent;
 }
 
-/* Make sure all default labels are readable just in case */
+/* 2. Make sure all default labels are readable */
 .tn-container label {
     color: #c0caf5;
 }
 
-/* Main Container */
+/* 3. Main Container */
 .tn-container {
-    background-color: rgba(26, 27, 38, 0.65); /* Translucent Tokyo Night Background */
+    /* Using 'background' destroys any default GTK gradients */
+    background: rgba(26, 27, 38, 0.65); 
     border: 1px solid rgba(65, 72, 104, 0.8);
     border-radius: 16px;
     padding: 16px;
@@ -26,46 +27,53 @@ window.ControlCenterWindow {
 
 /* Panels (Header, Sliders, Media) */
 .tn-panel {
-    background-color: rgba(36, 40, 59, 0.85);
+    background: rgba(36, 40, 59, 0.85);
     border-radius: 12px;
     padding: 15px;
 }
 
-/* Grid Toggles */
-.tn-toggle {
-    background-color: rgba(36, 40, 59, 0.85);
+/* 4. OVERRIDE ADWAITA BUTTONS */
+/* Explicitly targeting 'button' forces GTK to prioritize our CSS */
+button.tn-toggle {
+    background: rgba(36, 40, 59, 0.85);
     border: 1px solid transparent;
     border-radius: 12px;
     padding: 16px 10px;
+    box-shadow: none; /* Kill default GTK shadow */
     transition: all 0.2s;
 }
-.tn-toggle:hover {
-    background-color: rgba(41, 46, 66, 0.95);
+button.tn-toggle:hover {
+    background: rgba(41, 46, 66, 0.95);
 }
-.tn-toggle .toggle-icon {
+button.tn-toggle .toggle-icon {
     font-size: 24px;
     color: #565f89;
     margin-bottom: 6px;
 }
 
 /* Active Toggles */
-.tn-toggle.active {
-    background-color: rgba(122, 162, 247, 0.1);
+button.tn-toggle.active {
+    background: rgba(122, 162, 247, 0.1);
     border: 1px solid #7aa2f7;
 }
-.tn-toggle.active .toggle-icon, .tn-toggle.active .text-bold {
+button.tn-toggle.active .toggle-icon, 
+button.tn-toggle.active .text-bold {
     color: #7aa2f7;
 }
 
-/* Buttons */
-.tn-icon-btn {
+/* Icon Buttons */
+button.tn-icon-btn {
     background: transparent;
     border: none;
+    box-shadow: none;
     color: #a9b1d6;
     font-size: 22px;
     transition: color 0.2s;
 }
-.tn-icon-btn:hover { color: #c0caf5; }
+button.tn-icon-btn:hover { 
+    background: transparent;
+    color: #c0caf5; 
+}
 .play-btn { font-size: 28px; color: #c0caf5; }
 .destructive { color: #f7768e; font-size: 24px; }
 .destructive:hover { color: #ff9e64; }
@@ -74,7 +82,7 @@ window.ControlCenterWindow {
 .tn-profile-pic, .tn-media-art {
     min-width: 48px;
     min-height: 48px;
-    background-color: #15161e;
+    background: #15161e;
     border-radius: 10px;
     border: 1px solid #414868;
 }
@@ -84,12 +92,12 @@ window.ControlCenterWindow {
 .slider-icon { font-size: 16px; color: #a9b1d6; min-width: 24px; }
 .tn-slider { min-height: 12px; }
 .tn-slider trough {
-    background-color: #15161e;
+    background: #15161e;
     border-radius: 6px;
     min-height: 8px;
 }
 .tn-slider highlight {
-    background-color: #7aa2f7;
+    background: #7aa2f7;
     border-radius: 6px;
 }
 .tn-slider slider {
@@ -98,5 +106,5 @@ window.ControlCenterWindow {
     min-width: 14px;
     min-height: 14px;
     border-radius: 99px;
-    box-shadow: 0px 0px 5px rgba(122, 162, 247, 0.5);
+    box-shadow: none; /* Kill default Adwaita slider shadow */
 }
