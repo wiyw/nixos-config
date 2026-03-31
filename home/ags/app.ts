@@ -44,6 +44,7 @@ app.start({
         }
     },
     main() {
-        ControlCenter()
+        const win = ControlCenter()
+        app.add_window(win)
     }
 })

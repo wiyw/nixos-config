@@ -9,7 +9,7 @@ export default function ControlCenter() {
             class="ControlCenterWindow"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} 
             margin={15} 
-            visible={true}
+            visible={false}
             application={app}
         >
             <box class="tn-container" orientation={Gtk.Orientation.VERTICAL} spacing={15}>
