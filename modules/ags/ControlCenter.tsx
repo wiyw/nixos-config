@@ -1,19 +1,14 @@
-import { Gtk, Astal, Gdk } from "ags/gtk4"
-import { exec } from "ags/process"
-import { createState } from "ags"
+import { Gtk, Astal } from "ags/gtk4"
+import { exec, execAsync } from "ags/process"
+import { createState, createEffect } from "ags"
 import app from "ags/gtk4/app"
 
 const WifiWindow = () => {
-    const [networks] = createState([
-        { name: "Home Network", icon: "󰤨", connected: true },
-        { name: "Office WiFi", icon: "󰤨", connected: false },
-    ])
-    
     return (
         <window 
             name="wifi-popup"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={120}
+            marginTop={110}
             marginRight={15}
             cssClasses={["popup-window"]}
             visible
@@ -33,13 +28,11 @@ const WifiWindow = () => {
                     <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
                     <switch active />
                 </box>
-                {networks.as((nets: any) => nets.map((net: any) => (
-                    <box cssClasses={["network-item"]} spacing={12}>
-                        <label label={net.icon} />
-                        <label cssClasses={["text-bold"]} label={net.name} hexpand />
-                        {net.connected && <label cssClasses={["text-muted"]} label="Connected" />}
-                    </box>
-                )))}
+                <box cssClasses={["network-item"]} spacing={12}>
+                    <label label="󰤨 " />
+                    <label cssClasses={["text-bold"]} label="Home Network" hexpand />
+                    <label cssClasses={["text-muted"]} label="Connected" />
+                </box>
             </box>
         </window>
     )
@@ -50,7 +43,7 @@ const BluetoothWindow = () => {
         <window 
             name="bluetooth-popup"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={120}
+            marginTop={110}
             marginRight={180}
             cssClasses={["popup-window"]}
             visible
@@ -87,7 +80,7 @@ const NightLightWindow = () => {
         <window 
             name="nightlight-popup"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={120}
+            marginTop={110}
             marginRight={180}
             cssClasses={["popup-window"]}
             visible
@@ -109,7 +102,7 @@ const NightLightWindow = () => {
                 </box>
                 <box spacing={8}>
                     <label cssClasses={["text-muted"]} label="Warmth" />
-                    <Gtk.Scale hexpand onValueChanged={(self) => console.log(self.get_value())} />
+                    <Gtk.Scale hexpand />
                 </box>
             </box>
         </window>
@@ -117,11 +110,16 @@ const NightLightWindow = () => {
 }
 
 const ScreenshotWindow = () => {
+    const closeAndRun = (cmd: string) => {
+        exec(cmd)
+        app.get_window("screenshot-popup")?.close()
+    }
+    
     return (
         <window 
             name="screenshot-popup"
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={120}
+            marginTop={110}
             marginRight={180}
             cssClasses={["popup-window"]}
             visible
@@ -136,14 +134,11 @@ const ScreenshotWindow = () => {
                         <label label="✕" />
                     </button>
                 </box>
-                <button cssClasses={["tn-btn"]} onClicked={() => exec('grim -g "$(slurp)" -')}>
-                    <label label="󰑮  Selection" />
+                <button cssClasses={["tn-btn"]} onClicked={() => closeAndRun('grim -g "$(slurp)" -')}>
+                    <label label="Selection" />
                 </button>
-                <button cssClasses={["tn-btn"]} onClicked={() => exec('grim -')}>
-                    <label label="󰑯  Full Screen" />
-                </button>
-                <button cssClasses={["tn-btn"]} onClicked={() => exec('grim -g "$(slurp)" - | wl-copy')}>
-                    <label label="󰑰  Copy to Clipboard" />
+                <button cssClasses={["tn-btn"]} onClicked={() => closeAndRun('grim -')}>
+                    <label label="Full Screen" />
                 </button>
             </box>
         </window>
@@ -153,6 +148,29 @@ const ScreenshotWindow = () => {
 export default function ControlCenterWindow() {
     const [volume, setVolume] = createState(50)
     const [brightness, setBrightness] = createState(80)
+
+    createEffect(() => {
+        execAsync("wpctl get-volume @DEFAULT_AUDIO_SINK").then((out: string) => {
+            const match = out.match(/(\d+)%/)
+            if (match) setVolume(parseInt(match[1]))
+        })
+        execAsync("brightnessctl get").then((out: string) => {
+            const match = out.match(/(\d+)%/)
+            if (match) setBrightness(parseInt(match[1]))
+        })
+    })
+
+    const handleVolume = (self: Gtk.Scale) => {
+        const val = Math.round(self.get_value())
+        setVolume(val)
+        execAsync(`wpctl set-volume @DEFAULT_AUDIO_SINK ${val}%`)
+    }
+    
+    const handleBrightness = (self: Gtk.Scale) => {
+        const val = Math.round(self.get_value())
+        setBrightness(val)
+        execAsync(`brightnessctl set ${val}%`)
+    }
 
     return (
         <window
@@ -183,8 +201,9 @@ export default function ControlCenterWindow() {
 
                 <box spacing={12} homogeneous>
                     <button onClicked={() => {
-                        if (app.get_window("wifi-popup")) {
-                            app.get_window("wifi-popup")?.close()
+                        const w = app.get_window("wifi-popup")
+                        if (w) {
+                            w.close()
                         } else {
                             WifiWindow()
                         }
@@ -196,8 +215,9 @@ export default function ControlCenterWindow() {
                     </button>
                     
                     <button onClicked={() => {
-                        if (app.get_window("bluetooth-popup")) {
-                            app.get_window("bluetooth-popup")?.close()
+                        const w = app.get_window("bluetooth-popup")
+                        if (w) {
+                            w.close()
                         } else {
                             BluetoothWindow()
                         }
@@ -211,8 +231,9 @@ export default function ControlCenterWindow() {
 
                 <box spacing={12} homogeneous>
                     <button onClicked={() => {
-                        if (app.get_window("nightlight-popup")) {
-                            app.get_window("nightlight-popup")?.close()
+                        const w = app.get_window("nightlight-popup")
+                        if (w) {
+                            w.close()
                         } else {
                             NightLightWindow()
                         }
@@ -223,8 +244,9 @@ export default function ControlCenterWindow() {
                         </box>
                     </button>
                     <button onClicked={() => {
-                        if (app.get_window("screenshot-popup")) {
-                            app.get_window("screenshot-popup")?.close()
+                        const w = app.get_window("screenshot-popup")
+                        if (w) {
+                            w.close()
                         } else {
                             ScreenshotWindow()
                         }
@@ -239,17 +261,11 @@ export default function ControlCenterWindow() {
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰝀 " />
-                        <Gtk.Scale hexpand onValueChanged={(self) => {
-                            setVolume(self.get_value())
-                            exec(`wpctl set-volume @DEFAULT_AUDIO_SINK ${self.get_value()}%`)
-                        }} />
+                        <Gtk.Scale hexpand onValueChanged={(self) => handleVolume(self)} />
                     </box>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰛨 " />
-                        <Gtk.Scale hexpand onValueChanged={(self) => {
-                            setBrightness(self.get_value())
-                            exec(`brightnessctl set ${self.get_value()}%`)
-                        }} />
+                        <Gtk.Scale hexpand onValueChanged={(self) => handleBrightness(self)} />
                     </box>
                 </box>
 
