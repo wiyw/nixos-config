@@ -46,16 +46,17 @@ let
   workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
     #!/usr/bin/env bash
     WS=$1
-    ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
-
-    # If DP-4 is connected, trigger dual-workspace logic
-    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+    
+    # Get list of connected monitors
+    MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
+    
+    # Determine which workspace to switch to
+    if echo "$MONITORS" | grep -q "^DP-4$"; then
+        # External monitor connected - use dual workspace logic
         WS_RIGHT=$((WS + 10))
-        
-        # Batching executes this in a single frame, preventing flicker and focus-breaking!
-        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor $ACTIVE_MON"
+        ${pkgs.hyprland}/bin/hyprctl --batch "dispatch workspace $WS ; dispatch workspace $WS_RIGHT ; dispatch focusmonitor eDP-1"
     else
-        # Fallback: Laptop-only mode
+        # Laptop only - use workspaces 1-10 on eDP-1
         ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
     fi
   '';
@@ -64,9 +65,11 @@ let
   windowMoveScript = pkgs.writeShellScriptBin "ws-move" ''
     #!/usr/bin/env bash
     WS=$1
+    
+    MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
     ACTIVE_MON=$(${pkgs.hyprland}/bin/hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.monitor')
 
-    if ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e '.[] | select(.name == "DP-4")' > /dev/null; then
+    if echo "$MONITORS" | grep -q "^DP-4$"; then
         if [ "$ACTIVE_MON" = "DP-4" ]; then
             ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
         else
@@ -74,7 +77,7 @@ let
             ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $TARGET
         fi
     else
-        # Fallback: Laptop-only mode
+        # Laptop only mode
         ${pkgs.hyprland}/bin/hyprctl dispatch movetoworkspace $WS
     fi
   '';
