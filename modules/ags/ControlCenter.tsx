@@ -274,11 +274,11 @@ export default function ControlCenterWindow() {
                     <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰝀 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand value={volume.as((v: number) => v / 100)} onChangeValue={handleVolume} />
+                            <Gtk.Scale hexpand onChangeValue={handleVolume} />
                         </box>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰛨 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand value={brightness.as((v: number) => v / 100)} onChangeValue={handleBrightness} />
+                            <Gtk.Scale hexpand onChangeValue={handleBrightness} />
                         </box>
                     </box>
 

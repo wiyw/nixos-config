@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import ControlCenterWindow from "./ControlCenter.tsx" 
 
-let win: any = null;
+let controlWin: any = null;
 
 app.start({
     css: "./style.css",
@@ -10,9 +10,9 @@ app.start({
         const command = String(request).trim();
         
         if (command === "toggle-center" || command === "control-center") {
-            if (win) {
-                win.visible = !win.visible
-                res(win.visible ? "Shown" : "Hidden")
+            if (controlWin) {
+                controlWin.visible = !controlWin.visible
+                res(controlWin.visible ? "Shown" : "Hidden")
             } else {
                 res("Error: Window is null")
             }
@@ -25,10 +25,10 @@ app.start({
         console.log("Starting AGS main()...")
         
         try {
-            win = ControlCenterWindow()
+            const windows = ControlCenterWindow()
+            controlWin = app.get_window("control-center")
             
             setTimeout(() => {
-                const controlWin = app.get_window("control-center")
                 if (controlWin) {
                     controlWin.on_focus_out_event = () => {
                         controlWin.visible = false
