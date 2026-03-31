@@ -39,7 +39,7 @@ let
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
     #!/usr/bin/env bash
 
-    CONFIG_DIR="${HOME}/.config/nixos"
+    CONFIG_DIR="$HOME/.config/nixos"
     mkdir -p "$CONFIG_DIR"
     CONFIG_FILE="$CONFIG_DIR/wallpaper-mode"
 
