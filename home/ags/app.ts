@@ -2,7 +2,7 @@ import app from "ags/gtk4/app"
 import ControlCenterWindow from "./ControlCenter.js"
 
 app.start({
-    css: "./style.css"
+    css: "./style.css",
     requestHandler(request, res) {
         try {
             const win = app.get_window("control-center")
