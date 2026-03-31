@@ -8,16 +8,18 @@ let
 
     sleep 2
 
-    WALLPAPERS=($wallpaperDir/*.jpg)
-    COUNT=''${#WALLPAPERS[@]}
+    WALLPAPER_DIR="/etc/nixos/wallpapers"
 
-    if [ "$COUNT" -eq 0 ]; then
-      echo "No wallpapers found in $wallpaperDir"
+    FILES=$(ls "$WALLPAPER_DIR"/space*.jpg 2>/dev/null)
+    COUNT=$(echo "$FILES" | wc -l)
+
+    if [ "$COUNT" -eq 0 ] || [ -z "$FILES" ]; then
+      echo "No wallpapers found in $WALLPAPER_DIR"
       exit 1
     fi
 
-    RANDOM_INDEX=$((RANDOM % "$COUNT"))
-    SELECTED="''${WALLPAPERS[$RANDOM_INDEX]}"
+    RANDOM_INDEX=$((RANDOM % COUNT + 1))
+    SELECTED=$(echo "$FILES" | sed -n "${RANDOM_INDEX}p")
 
     pkill swww 2>/dev/null || true
     pkill swww-daemon 2>/dev/null || true
