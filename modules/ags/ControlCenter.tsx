@@ -8,7 +8,7 @@ const WifiPopup = ({ visible }: { visible: boolean }) => (
         name="wifi-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={160}
+        marginTop={200}
         marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
@@ -42,7 +42,7 @@ const BTPopup = ({ visible }: { visible: boolean }) => (
         name="bluetooth-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={160}
+        marginTop={200}
         marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
@@ -78,7 +78,7 @@ const NightPopup = ({ visible }: { visible: boolean }) => (
         name="nightlight-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={160}
+        marginTop={200}
         marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
@@ -107,7 +107,7 @@ const SSPopup = ({ visible }: { visible: boolean }) => (
         name="screenshot-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={160}
+        marginTop={200}
         marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
@@ -135,10 +135,23 @@ export default function ControlCenterWindow() {
     const [btVisible, setBtVisible] = createState(false)
     const [nightVisible, setNightVisible] = createState(false)
     const [ssVisible, setSsVisible] = createState(false)
-    const [, setVolume] = createState(50)
-    const [, setBrightness] = createState(80)
+    const [volume, setVolume] = createState(50)
+    const [brightness, setBrightness] = createState(80)
     const [playerTitle, setPlayerTitle] = createState("Nothing Playing")
     const [playerStatus, setPlayerStatus] = createState("Idle")
+
+    execAsync("wpctl get-volume @DEFAULT_AUDIO_SINK").then((out: string) => {
+        const match = out.match(/(\d+)%/)
+        if (match) setSsVisible(parseInt(match[1]))
+    }).catch(() => {})
+
+    execAsync("brightnessctl get").then((out: string) => {
+        execAsync("brightnessctl max").then((max: string) => {
+            const current = parseInt(out.trim())
+            const maxVal = parseInt(max.trim())
+            if (maxVal > 0) setBrightness(Math.round((current / maxVal) * 100))
+        }).catch(() => {})
+    }).catch(() => {})
 
     const updatePlayerStatus = () => {
         execAsync("playerctl status").then((status: string) => {
@@ -261,11 +274,11 @@ export default function ControlCenterWindow() {
                     <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰝀 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand onChangeValue={handleVolume} />
+                            <Gtk.Scale hexpand value={volume.as((v: number) => v / 100)} onChangeValue={handleVolume} />
                         </box>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰛨 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand onChangeValue={handleBrightness} />
+                            <Gtk.Scale hexpand value={brightness.as((v: number) => v / 100)} onChangeValue={handleBrightness} />
                         </box>
                     </box>
 
