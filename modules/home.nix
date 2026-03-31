@@ -15,6 +15,7 @@
     ./hyprlock.nix
     ./hypridle.nix
     ./ags.nix
+    ./sddm.nix
   ];
 
   home.pointerCursor = {

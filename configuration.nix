@@ -5,6 +5,27 @@
     ./hardware-configuration.nix 
   ];
 
+  # Display Manager
+  services.sddm = {
+    enable = true;
+    wayland = true;
+    settings = {
+      General = {
+        theme = "masa";
+        cursorTheme = "Bibata-Modern-Classic";
+        cursorSize = 24;
+      };
+      Theme = {
+        BackgroundDir = "/etc/nixos/wallpapers";
+      };
+    };
+  };
+
+  environment.systemPackages = with pkgs; [
+    sddm
+    sddm-themes
+  ];
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

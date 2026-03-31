@@ -11,24 +11,33 @@ app.start({
         
         if (command === "toggle-center" || command === "control-center") {
             if (win) {
-                win.visible = !win.visible;
-                res(win.visible ? "Shown" : "Hidden");
+                win.visible = !win.visible
+                res(win.visible ? "Shown" : "Hidden")
             } else {
-                res("Error: Window is null. Check the terminal for the crash log!");
+                res("Error: Window is null")
             }
         } else {
-            res(`Unknown command: "${command}"`);
+            res(`Unknown command: "${command}"`)
         }
     },
 
     main() {
-        console.log("Starting AGS main()...");
+        console.log("Starting AGS main()...")
         
         try {
-            win = ControlCenterWindow();
-            console.log("✅ Control Center window assigned successfully!");
+            win = ControlCenterWindow()
+            
+            app.on_window_created((window: any) => {
+                window.on_focus_out_event = () => {
+                    if (window.name === "control-center" && window.visible) {
+                        window.visible = false
+                    }
+                }
+            })
+            
+            console.log("Control Center ready!")
         } catch (error) {
-            console.error("❌ FATAL ERROR while building Control Center:", error);
+            console.error("FATAL ERROR:", error)
         }
     }
 })

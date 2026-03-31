@@ -10,7 +10,7 @@ let
 
     WALLPAPER_DIR="/etc/nixos/wallpapers"
 
-    FILES=$(ls "$WALLPAPER_DIR"/space*.jpg 2>/dev/null)
+    FILES=$(ls "$WALLPAPER_DIR"/space*.jpg "$WALLPAPER_DIR"/movie*.jpg 2>/dev/null)
     COUNT=$(echo "$FILES" | wc -l)
 
     if [ "$COUNT" -eq 0 ] || [ -z "$FILES" ]; then
@@ -29,6 +29,75 @@ let
 
     swww img "$SELECTED" --transition-type any --transition-duration 2
     echo "Wallpaper set to: $SELECTED"
+  '';
+
+  fetchMovieWallpapers = pkgs.writeShellScriptBin "fetch-movie-wallpapers" ''
+    #!/usr/bin/env bash
+
+    set -e
+
+    WALLPAPER_DIR="/etc/nixos/wallpapers"
+    TEMP_DIR="/tmp/movie-wallpapers"
+
+    mkdir -p "$WALLPAPER_DIR"
+    mkdir -p "$TEMP_DIR"
+
+    declare -A MOVIE_WALLPAPERS=(
+        ["hail-mary"]=""
+        ["interstellar"]=""
+        ["the-martian"]=""
+        ["gravity"]=""
+        ["arrival"]=""
+    )
+
+    echo "Fetching space-themed movie wallpapers..."
+
+    fetch_wallpaper() {
+        local name="$1"
+        local output_file="$WALLPAPER_DIR/movie-${name}.jpg"
+        
+        if [ -f "$output_file" ]; then
+            echo "  [SKIP] $name wallpaper already exists"
+            return 0
+        fi
+        
+        echo "  [FETCH] Downloading $name wallpaper..."
+        
+        case "$name" in
+            hail-mary)
+                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1614730341194-75c607400070?w=3840x2160" 2>/dev/null || true
+                ;;
+            interstellar)
+                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=3840x2160" 2>/dev/null || true
+                ;;
+            the-martian)
+                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=3840x2160" 2>/dev/null || true
+                ;;
+            gravity)
+                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=3840x2160" 2>/dev/null || true
+                ;;
+            arrival)
+                curl -L -o "$TEMP_DIR/${name}.jpg" "https://images.unsplash.com/photo-1506318137071-a8bcbf6755dd?w=3840x2160" 2>/dev/null || true
+                ;;
+        esac
+        
+        if [ -f "$TEMP_DIR/${name}.jpg" ] && [ -s "$TEMP_DIR/${name}.jpg" ]; then
+            mv "$TEMP_DIR/${name}.jpg" "$output_file"
+            echo "  [OK] Saved to $output_file"
+        else
+            echo "  [FAIL] Could not download $name wallpaper"
+        fi
+    }
+
+    for movie in "${!MOVIE_WALLPAPERS[@]}"; do
+        fetch_wallpaper "$movie"
+    done
+
+    rm -rf "$TEMP_DIR"
+
+    echo ""
+    echo "Done! Movie wallpapers in $WALLPAPER_DIR:"
+    ls -la "$WALLPAPER_DIR"/movie-*.jpg 2>/dev/null || echo "No movie wallpapers found"
   '';
 
   wallpaperToggle = pkgs.writeShellScriptBin "wallpaper-toggle" ''
@@ -76,6 +145,7 @@ in
 {
   home.packages = [
     fetchSpaceWallpaper
+    fetchMovieWallpapers
     wallpaperToggle
   ];
 
@@ -92,6 +162,22 @@ in
     Service = {
       Type = "oneshot";
       ExecStart = "${fetchSpaceWallpaper}/bin/fetch-space-wallpaper";
+      RemainAfterExit = true;
+    };
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+  };
+
+  systemd.user.services.fetch-movie-wallpapers = {
+    Unit = {
+      Description = "Fetch space-themed movie wallpapers";
+      After = ["network-online.target"];
+      Wants = ["network-online.target"];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${fetchMovieWallpapers}/bin/fetch-movie-wallpapers";
       RemainAfterExit = true;
     };
     Install = {
