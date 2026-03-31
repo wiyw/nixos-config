@@ -117,26 +117,22 @@ in
     };
 
     extraConfig = ''
-      # Layer rules for waybar (existing)
       layerrule {
-        name = waybar-blur
-        match:namespace = waybar
-        blur = on
-        ignore_alpha = 0.2
+        name=waybar-blur
+        blur=true
+        ignore_alpha=0.2
       }
 
-      # Layer rules for AGS Control Center
       layerrule {
-        blur = on
-        ignore_alpha = 0.3
-        match:namespace = ^(control-center)$
+        blur=true
+        ignore_alpha=0.3
+        namespace=control-center
       }
 
-      # Popup windows
       layerrule {
-        blur = on
-        ignore_alpha = 0.3
-        match:title = ^(.*-popup)$
+        blur=true
+        ignore_alpha=0.3
+        title=.*-popup
       }
     '';
   };

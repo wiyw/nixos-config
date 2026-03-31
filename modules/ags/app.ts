@@ -1,5 +1,5 @@
 import app from "ags/gtk4/app"
-import ControlCenterWindow from "./ControlCenter.js" 
+import ControlCenterWindow from "./ControlCenter.tsx" 
 
 let win: any = null;
 
