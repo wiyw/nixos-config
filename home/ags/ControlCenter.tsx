@@ -1,6 +1,6 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
-import { Variable, bind } from "astal"
+import { Variable, bind } from "ags"
 import app from "ags/gtk4/app"
 
 type PopupType = 'wifi' | 'bluetooth' | 'nightlight' | 'screenshot' | null

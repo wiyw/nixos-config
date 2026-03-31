@@ -1,15 +1,9 @@
+❄️ greyson@iusenixbtw nixos-config  main +10 -10 [!] ❯   ags run                                                                                                                     󰍛 2GiB/7GiB 󰁹 100% 09:54:30
+✘ [ERROR] Could not resolve "astal"
 
-❄️ greyson@iusenixbtw nixos-config  main ❯   ags run                                                                                                                           [✘ 1] 󰍛 2GiB/7GiB 󰁹 100% 09:54:08
-ags-Message: 09:54:10.623: Starting AGS main()...
+    ControlCenter.tsx:3:31:
+      3 │ import { Variable, bind } from "astal"
+        ╵                                ~~~~~~~
 
-(gjs:130168): ags-CRITICAL **: 09:54:10.627: ❌ FATAL ERROR while building Control Center: TypeError: can't access property replace, str is undefined
-kebabify@file:///run/user/1001/ags.js:129:3
-createBinding@file:///run/user/1001/ags.js:1093:26
-ControlCenterWindow@file:///run/user/1001/ags.js:1974:27
-main@file:///run/user/1001/ags.js:2098:13
-vfunc_command_line/<@file:///run/user/1001/ags.js:1469:66
-createRoot/<@file:///run/user/1001/ags.js:869:28
-run@file:///run/user/1001/ags.js:846:14
-createRoot@file:///run/user/1001/ags.js:869:16
-vfunc_command_line@file:///run/user/1001/ags.js:1466:17
-_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
+  You can mark the path "astal" as external to exclude it from the bundle, which will remove this
+  error and leave the unresolved path in the bundle.

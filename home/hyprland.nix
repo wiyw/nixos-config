@@ -46,7 +46,18 @@ let
   workspaceSyncScript = pkgs.writeShellScriptBin "ws-sync" ''
     #!/usr/bin/env bash
     WS=$1
-    ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+    
+    MONITORS=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r '.[].name')
+    
+    if echo "$MONITORS" | grep -q "^DP-4$"; then
+        # Dual monitor: switch workspace on both
+        WS_RIGHT=$((WS + 10))
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS_RIGHT
+    else
+        # Laptop only: just switch workspace
+        ${pkgs.hyprland}/bin/hyprctl dispatch workspace $WS
+    fi
   '';
 
   # Moves windows to the correct monitor's paired workspace
