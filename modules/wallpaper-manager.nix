@@ -89,7 +89,7 @@ let
         fi
     }
 
-    for movie in "${!MOVIE_WALLPAPERS[@]}"; do
+    for movie in "$${!MOVIE_WALLPAPERS[@]}"; do
         fetch_wallpaper "$movie"
     done
 
