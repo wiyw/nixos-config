@@ -1,6 +1,11 @@
-/* Base window MUST be transparent */
-window#control-center {
+/* Base window MUST be transparent for Hyprland blur to show */
+window.ControlCenterWindow {
     background-color: transparent;
+}
+
+/* Make sure all default labels are readable just in case */
+.tn-container label {
+    color: #c0caf5;
 }
 
 /* Main Container */

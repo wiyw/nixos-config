@@ -23,7 +23,14 @@ export default function ControlCenter() {
     const bat = Battery.get_default()
 
     return (
-        <window name="control-center" anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} margin={15} visible={false} application={App}>
+        <window 
+            name="control-center" 
+            className="ControlCenterWindow" /* <-- THIS IS THE FIX */
+            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} 
+            margin={15} 
+            visible={false} 
+            application={App}
+        >
             {/* Main Transparent Container */}
             <box className="tn-container" vertical={true} spacing={15}>
                 
