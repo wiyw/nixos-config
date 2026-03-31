@@ -8,8 +8,8 @@ const WifiPopup = ({ visible }: { visible: boolean }) => (
         name="wifi-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={50}
-        marginRight={315}
+        marginTop={160}
+        marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
@@ -42,8 +42,8 @@ const BTPopup = ({ visible }: { visible: boolean }) => (
         name="bluetooth-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={50}
-        marginRight={315}
+        marginTop={160}
+        marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
@@ -78,8 +78,8 @@ const NightPopup = ({ visible }: { visible: boolean }) => (
         name="nightlight-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={50}
-        marginRight={315}
+        marginTop={160}
+        marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
@@ -107,8 +107,8 @@ const SSPopup = ({ visible }: { visible: boolean }) => (
         name="screenshot-popup"
         visible={visible}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-        marginTop={50}
-        marginRight={315}
+        marginTop={160}
+        marginRight={15}
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
@@ -158,14 +158,14 @@ export default function ControlCenterWindow() {
 
     setInterval(updatePlayerStatus, 2000)
 
-    const handleVolume = (self: Gtk.Scale) => {
-        const val = Math.round(self.get_value())
+    const handleVolume = (self: any, scrollType: any, value: number) => {
+        const val = Math.round(value * 100)
         setVolume(val)
         execAsync(`wpctl set-volume @DEFAULT_AUDIO_SINK ${val}%`)
     }
     
-    const handleBrightness = (self: Gtk.Scale) => {
-        const val = Math.round(self.get_value())
+    const handleBrightness = (self: any, scrollType: any, value: number) => {
+        const val = Math.round(value * 100)
         setBrightness(val)
         execAsync(`brightnessctl set ${val}%`)
     }
@@ -261,11 +261,11 @@ export default function ControlCenterWindow() {
                     <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰝀 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand onValueChanged={handleVolume} />
+                            <Gtk.Scale hexpand onChangeValue={handleVolume} />
                         </box>
                         <box spacing={10} valign={Gtk.Align.CENTER}>
                             <label cssClasses={["slider-icon"]} label="󰛨 " valign={Gtk.Align.CENTER} />
-                            <Gtk.Scale hexpand onValueChanged={handleBrightness} />
+                            <Gtk.Scale hexpand onChangeValue={handleBrightness} />
                         </box>
                     </box>
 

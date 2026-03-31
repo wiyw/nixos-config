@@ -14,6 +14,7 @@ window {
     border-radius: 20px;
     padding: 18px;
     min-width: 320px;
+    transition: all 0.2s ease-out;
 }
 
 /* Popup Container */
@@ -23,6 +24,23 @@ window {
     border-radius: 16px;
     padding: 16px;
     min-width: 280px;
+    animation: popIn 0.2s ease-out;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Buttons */
@@ -36,10 +54,17 @@ button {
     border-radius: 14px;
     padding: 14px 12px;
     color: #c0caf5;
+    transition: all 0.15s ease;
 }
 
 button:hover {
     background-color: rgba(69, 77, 102, 0.9);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+    background-color: rgba(122, 162, 247, 0.3);
 }
 
 /* Icon Buttons */
@@ -50,6 +75,7 @@ button.tn-close-btn {
     padding: 8px;
     color: #9aa5ce;
     border-radius: 8px;
+    transition: all 0.15s ease;
 }
 
 button.tn-icon-btn:hover,
@@ -60,6 +86,11 @@ button.tn-close-btn:hover {
 
 button.destructive {
     color: #f7768e;
+    transition: all 0.15s ease;
+}
+
+button.destructive:hover {
+    background-color: rgba(247, 118, 142, 0.2);
 }
 
 /* Panels */
@@ -67,18 +98,40 @@ button.destructive {
     background-color: rgba(36, 40, 59, 0.7);
     border-radius: 14px;
     padding: 14px;
+    animation: fadeIn 0.3s ease-out;
+    animation-fill-mode: backwards;
 }
 
 /* Sliders */
+scale {
+    transition: all 0.1s ease;
+}
+
 scale trough { 
     background-color: rgba(48, 54, 75, 0.8); 
-    border-radius: 3px; 
-    min-height: 6px; 
+    border-radius: 4px; 
+    min-height: 8px; 
+    padding: 2px;
 }
 
 scale highlight { 
-    background-color: #7aa2f7; 
-    border-radius: 3px; 
+    background: linear-gradient(90deg, #7aa2f7, #bb9af7); 
+    border-radius: 4px; 
+}
+
+scale:hover trough {
+    background-color: rgba(69, 77, 102, 0.9);
+}
+
+scale slider {
+    background-color: #c0caf5;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease;
+}
+
+scale slider:hover {
+    transform: scale(1.1);
 }
 
 /* Typography */
@@ -95,6 +148,11 @@ scale highlight {
     background-color: rgba(48, 54, 75, 0.6);
     border-radius: 10px;
     padding: 12px;
+    transition: background-color 0.15s ease;
+}
+
+.toggle-row:hover {
+    background-color: rgba(48, 54, 75, 0.8);
 }
 
 /* Network/Device Items */
@@ -102,4 +160,9 @@ scale highlight {
     background-color: rgba(48, 54, 75, 0.6);
     border-radius: 8px;
     padding: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.network-item:hover, .device-item:hover {
+    background-color: rgba(48, 54, 75, 0.8);
 }
