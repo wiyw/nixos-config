@@ -214,76 +214,71 @@ export default function ControlCenterWindow() {
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
         >
-            <box cssClasses={["tn-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={16}>
-                <box spacing={15} valign={Gtk.Align.CENTER}>
-                    <label cssClasses={["icon-large"]} label="󰒓 " valign={Gtk.Align.CENTER} />
-                    <box orientation={Gtk.Orientation.VERTICAL} hexpand>
-                        <label cssClasses={["text-header"]} label="Greyson" xalign={0} />
-                        <label cssClasses={["text-muted"]} label="NixOS" xalign={0} />
-                    </box>
-                    <button cssClasses={["tn-icon-btn", "destructive"]} onClicked={() => exec("systemctl poweroff")}>
-                        <label label="󰐥 " />
-                    </button>
-                </box>
-
-                <box spacing={12} homogeneous>
+            <box cssClasses={["tn-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
+                <box cssClasses={["module-grid"]} spacing={8} homogeneous>
                     <button onClicked={toggleWifi}>
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label="󰤯 " />
-                            <label cssClasses={["text-bold"]} label="WiFi" />
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6} halign={Gtk.Align.CENTER}>
+                            <label cssClasses={["toggle-icon"]} label="󰤯" />
+                            <label cssClasses={["text-bold"]} label="Wi-Fi" />
                         </box>
                     </button>
                     <button onClicked={toggleBT}>
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label="󰂯 " />
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6} halign={Gtk.Align.CENTER}>
+                            <label cssClasses={["toggle-icon"]} label="󰂯" />
                             <label cssClasses={["text-bold"]} label="Bluetooth" />
                         </box>
                     </button>
-                </box>
-
-                <box spacing={12} homogeneous>
                     <button onClicked={toggleNight}>
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label="󰟈 " />
-                            <label cssClasses={["text-bold"]} label="Night Light" />
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6} halign={Gtk.Align.CENTER}>
+                            <label cssClasses={["toggle-icon"]} label="󰟈" />
+                            <label cssClasses={["text-bold"]} label="Display" />
                         </box>
                     </button>
                     <button onClicked={toggleSS}>
-                        <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                            <label cssClasses={["toggle-icon"]} label="󰑮 " />
-                            <label cssClasses={["text-bold"]} label="Screenshot" />
+                        <box orientation={Gtk.Orientation.VERTICAL} spacing={6} halign={Gtk.Align.CENTER}>
+                            <label cssClasses={["toggle-icon"]} label="󰑮" />
+                            <label cssClasses={["text-bold"]} label="Screen" />
                         </box>
                     </button>
                 </box>
 
-                <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
+                <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={8}>
                     <box spacing={10} valign={Gtk.Align.CENTER}>
-                        <label cssClasses={["slider-icon"]} label="󰝀 " valign={Gtk.Align.CENTER} />
-                        <Gtk.Scale hexpand onChanged={handleVolume} />
+                        <label cssClasses={["slider-icon"]} label="󰝀" valign={Gtk.Align.CENTER} />
+                        <Gtk.Scale hexpand />
                     </box>
                     <box spacing={10} valign={Gtk.Align.CENTER}>
-                        <label cssClasses={["slider-icon"]} label="󰛨 " valign={Gtk.Align.CENTER} />
-                        <Gtk.Scale hexpand onChanged={handleBrightness} />
+                        <label cssClasses={["slider-icon"]} label="󰛨" valign={Gtk.Align.CENTER} />
+                        <Gtk.Scale hexpand />
                     </box>
                 </box>
 
-                <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
-                    <box spacing={15} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER} hexpand>
-                        <label cssClasses={["icon-large"]} label="󰎆 " valign={Gtk.Align.CENTER} />
+                <box cssClasses={["player-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={8}>
+                    <box spacing={12} halign={Gtk.Align.CENTER} hexpand>
+                        <label cssClasses={["icon-large"]} label="󰎆" valign={Gtk.Align.CENTER} />
                         <box orientation={Gtk.Orientation.VERTICAL} hexpand>
-                            <label cssClasses={["text-header"]} label="Nothing Playing" xalign={0} />
-                            <label cssClasses={["text-muted"]} label="Idle" xalign={0} />
+                            <label cssClasses={["player-title"]} label="Nothing Playing" xalign={0} />
+                            <label cssClasses={["player-status"]} label="No media playing" xalign={0} />
                         </box>
                     </box>
-                    <box spacing={24} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                    <box spacing={20} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
                         <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("playerctl previous")}>
-                            <label label="󰒮 " />
+                            <label label="󰒮" />
                         </button>
-                        <label cssClasses={["play-btn"]} label="󰐊 " />
+                        <label cssClasses={["play-btn"]} label="󰐊" />
                         <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("playerctl next")}>
-                            <label label="󰒭 " />
+                            <label label="󰒭" />
                         </button>
                     </box>
+                </box>
+
+                <box spacing={15} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+                    <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("systemctl suspend")}>
+                        <label label="󰌾" />
+                    </button>
+                    <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("sysact")}>
+                        <label label="⏻" />
+                    </button>
                 </box>
             </box>
         </window>
