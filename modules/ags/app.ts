@@ -27,13 +27,14 @@ app.start({
         try {
             win = ControlCenterWindow()
             
-            app.on_window_created((window: any) => {
-                window.on_focus_out_event = () => {
-                    if (window.name === "control-center" && window.visible) {
-                        window.visible = false
+            setTimeout(() => {
+                const controlWin = app.get_window("control-center")
+                if (controlWin) {
+                    controlWin.on_focus_out_event = () => {
+                        controlWin.visible = false
                     }
                 }
-            })
+            }, 100)
             
             console.log("Control Center ready!")
         } catch (error) {

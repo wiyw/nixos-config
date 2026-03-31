@@ -73,6 +73,8 @@ in
         ", XF86AudioPrev, exec, playerctl previous"
         ", XF86AudioNext, exec, playerctl next"
 
+        "$mod, C, exec, ags toggle control-center"
+
         "$mod, T, exec, kitty"
         "$mod, B, exec, zen"
         "$mod, Q, killactive,"
@@ -115,6 +117,7 @@ in
     };
 
     extraConfig = ''
+      # Layer rules for waybar (existing)
       layerrule {
         name = waybar-blur
         match:namespace = waybar
@@ -122,18 +125,15 @@ in
         ignore_alpha = 0.2
       }
 
-      layerrule {
-        name = control-center-blur
-        match:namespace = ^(control-center)$
-        blur = on
-        ignore_alpha = 0.2
-      }
+      # Window rules for AGS Control Center
+      windowrulev2 = float, class:^(ags)$, title:^(control-center)$
+      windowrulev2 = opacity 0.96 0.96, class:^(ags)$, title:^(control-center)$
+      windowrulev2 = blur, class:^(ags)$, title:^(control-center)$
 
-      windowrule {
-        name = global-transparency
-        match:class = .*
-        opacity = 0.70 0.60 
-      }
+      # Popup windows
+      windowrulev2 = float, class:^(ags)$, title:^(.*-popup)$
+      windowrulev2 = opacity 0.96 0.96, class:^(ags)$, title:^(.*-popup)$
+      windowrulev2 = blur, class:^(ags)$, title:^(.*-popup)$
     '';
   };
 }

@@ -11,22 +11,17 @@
     wayland = {
       enable = true;
     };
-    settings = {
-      General = {
-        theme = "masa";
-        cursorTheme = "Bibata-Modern-Classic";
-        cursorSize = 24;
-      };
-      Theme = {
-        BackgroundDir = "/etc/nixos/wallpapers";
-      };
-    };
+    theme = "masa";
+    extraPackages = with pkgs; [
+      sddm-themes
+    ];
   };
 
   # Base System Packages
   environment.systemPackages = with pkgs; [
     neovim 
     wget
+    sddm-themes
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

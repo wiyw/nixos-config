@@ -5,10 +5,9 @@ import app from "ags/gtk4/app"
 
 let controlCenterWin: any = null
 
-const closeControlCenter = () => {
-    if (controlCenterWin) {
-        controlCenterWin.visible = false
-    }
+const closePopup = (name: string) => {
+    const w = app.get_window(name)
+    if (w) w.close()
 }
 
 const WifiWindow = () => (
@@ -16,17 +15,20 @@ const WifiWindow = () => (
         name="wifi-popup"
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
         marginTop={50}
-        marginRight={350}
+        marginRight={315}
         cssClasses={["popup-window"]}
         visible
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
+        onKeyPressed={(self, event) => {
+            if (event.get_keyval()[1] === 65307) self.close()
+        }}
     >
         <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box>
                 <label cssClasses={["text-bold"]} label="WiFi" hexpand />
-                <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("wifi-popup")?.close()}>
+                <button cssClasses={["tn-close-btn"]} onClicked={() => closePopup("wifi-popup")}>
                     <label label="✕" />
                 </button>
             </box>
@@ -49,17 +51,20 @@ const BluetoothWindow = () => (
         name="bluetooth-popup"
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
         marginTop={50}
-        marginRight={350}
+        marginRight={315}
         cssClasses={["popup-window"]}
         visible
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
+        onKeyPressed={(self, event) => {
+            if (event.get_keyval()[1] === 65307) self.close()
+        }}
     >
         <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box>
                 <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
-                <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("bluetooth-popup")?.close()}>
+                <button cssClasses={["tn-close-btn"]} onClicked={() => closePopup("bluetooth-popup")}>
                     <label label="✕" />
                 </button>
             </box>
@@ -84,17 +89,20 @@ const NightLightWindow = () => (
         name="nightlight-popup"
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
         marginTop={50}
-        marginRight={350}
+        marginRight={315}
         cssClasses={["popup-window"]}
         visible
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
+        onKeyPressed={(self, event) => {
+            if (event.get_keyval()[1] === 65307) self.close()
+        }}
     >
         <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box>
                 <label cssClasses={["text-bold"]} label="Night Light" hexpand />
-                <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("nightlight-popup")?.close()}>
+                <button cssClasses={["tn-close-btn"]} onClicked={() => closePopup("nightlight-popup")}>
                     <label label="✕" />
                 </button>
             </box>
@@ -112,24 +120,27 @@ const ScreenshotWindow = () => (
         name="screenshot-popup"
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
         marginTop={50}
-        marginRight={350}
+        marginRight={315}
         cssClasses={["popup-window"]}
         visible
         application={app}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}
+        onKeyPressed={(self, event) => {
+            if (event.get_keyval()[1] === 65307) self.close()
+        }}
     >
         <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box>
                 <label cssClasses={["text-bold"]} label="Screenshot" hexpand />
-                <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("screenshot-popup")?.close()}>
+                <button cssClasses={["tn-close-btn"]} onClicked={() => closePopup("screenshot-popup")}>
                     <label label="✕" />
                 </button>
             </box>
-            <button cssClasses={["tn-btn"]} onClicked={() => execAsync('grim -g "$(slurp)" -')}>
+            <button cssClasses={["tn-btn"]} onClicked={() => { closePopup("screenshot-popup"); execAsync('grim -g "$(slurp)" -') }}>
                 <label label="Selection" />
             </button>
-            <button cssClasses={["tn-btn"]} onClicked={() => execAsync('grim -')}>
+            <button cssClasses={["tn-btn"]} onClicked={() => { closePopup("screenshot-popup"); execAsync('grim -') }}>
                 <label label="Full Screen" />
             </button>
         </box>
@@ -152,6 +163,14 @@ export default function ControlCenterWindow() {
         execAsync(`brightnessctl set ${val}%`)
     }
 
+    const openPopup = (popup: () => any) => {
+        closePopup("wifi-popup")
+        closePopup("bluetooth-popup")
+        closePopup("nightlight-popup")
+        closePopup("screenshot-popup")
+        popup()
+    }
+
     controlCenterWin = (
         <window
             name="control-center"
@@ -165,17 +184,13 @@ export default function ControlCenterWindow() {
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
             onKeyPressed={(self, event) => {
-                if (event.get_keyval()[1] === 65307) {
-                    self.visible = false
-                }
+                if (event.get_keyval()[1] === 65307) self.visible = false
             }}
         >
             <box cssClasses={["tn-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={16}>
-                <box spacing={15}>
-                    <box cssClasses={["tn-profile-pic"]} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
-                        <label cssClasses={["icon-large"]} label="󰒓 " />
-                    </box>
-                    <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER} hexpand>
+                <box spacing={15} valign={Gtk.Align.CENTER}>
+                    <label cssClasses={["icon-large"]} label="󰒓 " valign={Gtk.Align.CENTER} />
+                    <box orientation={Gtk.Orientation.VERTICAL} hexpand>
                         <label cssClasses={["text-header"]} label="Greyson" xalign={0} />
                         <label cssClasses={["text-muted"]} label="NixOS" xalign={0} />
                     </box>
@@ -185,13 +200,13 @@ export default function ControlCenterWindow() {
                 </box>
 
                 <box spacing={12} homogeneous>
-                    <button onClicked={() => WifiWindow()}>
+                    <button onClicked={() => openPopup(WifiWindow)}>
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
                             <label cssClasses={["toggle-icon"]} label="󰤯 " />
                             <label cssClasses={["text-bold"]} label="WiFi" />
                         </box>
                     </button>
-                    <button onClicked={() => BluetoothWindow()}>
+                    <button onClicked={() => openPopup(BluetoothWindow)}>
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
                             <label cssClasses={["toggle-icon"]} label="󰂯 " />
                             <label cssClasses={["text-bold"]} label="Bluetooth" />
@@ -200,13 +215,13 @@ export default function ControlCenterWindow() {
                 </box>
 
                 <box spacing={12} homogeneous>
-                    <button onClicked={() => NightLightWindow()}>
+                    <button onClicked={() => openPopup(NightLightWindow)}>
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
                             <label cssClasses={["toggle-icon"]} label="󰟈 " />
                             <label cssClasses={["text-bold"]} label="Night Light" />
                         </box>
                     </button>
-                    <button onClicked={() => ScreenshotWindow()}>
+                    <button onClicked={() => openPopup(ScreenshotWindow)}>
                         <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
                             <label cssClasses={["toggle-icon"]} label="󰑮 " />
                             <label cssClasses={["text-bold"]} label="Screenshot" />
@@ -215,22 +230,20 @@ export default function ControlCenterWindow() {
                 </box>
 
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
-                    <box spacing={10}>
-                        <label cssClasses={["slider-icon"]} label="󰝀 " />
+                    <box spacing={10} valign={Gtk.Align.CENTER}>
+                        <label cssClasses={["slider-icon"]} label="󰝀 " valign={Gtk.Align.CENTER} />
                         <Gtk.Scale hexpand onValueChanged={(self) => handleVolume(self)} />
                     </box>
-                    <box spacing={10}>
-                        <label cssClasses={["slider-icon"]} label="󰛨 " />
+                    <box spacing={10} valign={Gtk.Align.CENTER}>
+                        <label cssClasses={["slider-icon"]} label="󰛨 " valign={Gtk.Align.CENTER} />
                         <Gtk.Scale hexpand onValueChanged={(self) => handleBrightness(self)} />
                     </box>
                 </box>
 
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                     <box spacing={15} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER} hexpand>
-                        <box cssClasses={["tn-media-art"]} halign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
-                            <label cssClasses={["icon-large"]} label="󰎆 " />
-                        </box>
-                        <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.CENTER} hexpand>
+                        <label cssClasses={["icon-large"]} label="󰎆 " valign={Gtk.Align.CENTER} />
+                        <box orientation={Gtk.Orientation.VERTICAL} hexpand>
                             <label cssClasses={["text-header"]} label="Nothing Playing" xalign={0} />
                             <label cssClasses={["text-muted"]} label="Idle" xalign={0} />
                         </box>
@@ -250,10 +263,4 @@ export default function ControlCenterWindow() {
     )
     
     return controlCenterWin
-}
-
-export function toggleControlCenter() {
-    if (controlCenterWin) {
-        controlCenterWin.visible = !controlCenterWin.visible
-    }
 }

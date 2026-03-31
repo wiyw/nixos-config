@@ -1,15 +1,13 @@
-/* 1. Base window - transparent for blur */
+/* Base windows */
 window {
     background-color: transparent;
-    background-image: none;
-    box-shadow: none;
 }
 
 .popup-window {
     background-color: transparent;
 }
 
-/* 2. Main Container */
+/* Main Container */
 .tn-container {
     background-color: rgba(26, 27, 38, 0.92);
     border: 1px solid rgba(122, 162, 247, 0.15);
@@ -18,7 +16,7 @@ window {
     min-width: 320px;
 }
 
-/* 3. Popup Container */
+/* Popup Container */
 .popup-container {
     background-color: rgba(26, 27, 38, 0.95);
     border: 1px solid rgba(122, 162, 247, 0.2);
@@ -27,7 +25,7 @@ window {
     min-width: 280px;
 }
 
-/* 4. Buttons */
+/* Buttons */
 button {
     background-image: none;
     box-shadow: none;
@@ -60,19 +58,18 @@ button.tn-close-btn:hover {
     color: #c0caf5;
 }
 
-/* Destructive */
 button.destructive {
     color: #f7768e;
 }
 
-/* 5. Panels */
+/* Panels */
 .tn-panel {
     background-color: rgba(36, 40, 59, 0.7);
     border-radius: 14px;
     padding: 14px;
 }
 
-/* 6. Sliders */
+/* Sliders */
 scale trough { 
     background-color: rgba(48, 54, 75, 0.8); 
     border-radius: 3px; 
@@ -84,31 +81,23 @@ scale highlight {
     border-radius: 3px; 
 }
 
-/* 7. Typography */
+/* Typography */
 .text-header { font-weight: bold; font-size: 16px; color: #a9b1d6; }
 .text-bold { font-weight: bold; font-size: 14px; color: #c0caf5; }
 .text-muted { font-size: 13px; color: #565f89; }
 .toggle-icon { color: #7aa2f7; font-size: 22px; }
-.icon-large { color: #7dcfff; font-size: 22px; }
+.icon-large { color: #7dcfff; font-size: 28px; }
 .play-btn { color: #7aa2f7; font-size: 24px; }
-.slider-icon { color: #7aa2f7; font-size: 16px; }
+.slider-icon { color: #7aa2f7; font-size: 18px; }
 
-/* 8. Profile & Media */
-.tn-profile-pic, .tn-media-art {
-    background-color: rgba(48, 54, 75, 0.9);
-    border-radius: 10px;
-    min-width: 48px; 
-    min-height: 48px;
-}
-
-/* 9. Toggle Rows */
+/* Toggle Rows */
 .toggle-row {
     background-color: rgba(48, 54, 75, 0.6);
     border-radius: 10px;
     padding: 12px;
 }
 
-/* 10. Network/Device Items */
+/* Network/Device Items */
 .network-item, .device-item {
     background-color: rgba(48, 54, 75, 0.6);
     border-radius: 8px;
