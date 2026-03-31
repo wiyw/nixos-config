@@ -6,9 +6,7 @@
   stylix = {
     enable = true;
 
-    image = "${pkgs.stylix.images.tokyo-night}/share/stylix/images/tokyo-night.png";
-
-    base16Scheme = "${pkgs.stylix.base16Scheme}/share/themes/tokyo-night.yaml";
+    polarity = "dark";
 
     fonts = {
       sansSerif = {
@@ -30,7 +28,5 @@
       name = "Bibata-Modern-Classic";
       size = 24;
     };
-
-    polarity = "dark";
   };
 }
