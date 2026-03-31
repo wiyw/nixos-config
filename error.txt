@@ -1,6 +1,10 @@
-❄️ greyson@iusenixbtw nixos-config  main +14 -11 [!] ❯   ags run                                                                                                                  2s 󰍛 2GiB/7GiB 󰁹 100% 10:21:26
-✘ [ERROR] No matching export in "../8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/index.ts" for import "bind"
+✘ [ERROR] Could not resolve "/nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/astal-io" (originally "ags/astal-io")
 
-    ControlCenter.tsx:3:22:
-      3 │ import { createState, bind } from "ags"
-        ╵                       ~~~~
+    ControlCenter.tsx:3:25:
+      3 │ import { Variable } from "ags/astal-io"
+        ╵                          ~~~~~~~~~~~~~~
+
+  The path "ags/astal-io" was remapped to
+  "/nix/store/8irw6anf7bvrqf6nig45s270bvx2cinm-ags-js-lib/lib/astal-io" using the alias feature,
+  which then couldn't be resolved. Keep in mind that import path aliases are resolved in the current
+  working directory.

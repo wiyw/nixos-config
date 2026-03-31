@@ -1,6 +1,6 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
-import { Variable } from "ags/astal-io"
+import { createState } from "ags"
 import app from "ags/gtk4/app"
 
 type PopupType = 'wifi' | 'bluetooth' | 'nightlight' | 'screenshot' | null
@@ -39,7 +39,7 @@ const BluetoothPopup = ({ onClose }: { onClose: () => void }) => (
 )
 
 const NightLightPopup = ({ onClose }: { onClose: () => void }) => {
-    const temp = Variable(4000)
+    const [temp, setTemp] = createState(4000)
     return (
         <box cssClasses={["tn-popup"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
             <box spacing={8}>
@@ -52,7 +52,7 @@ const NightLightPopup = ({ onClose }: { onClose: () => void }) => {
                 min={1000} 
                 max={10000} 
                 value={temp} 
-                onValueChanged={(self) => temp.set_value(self.get_value())} 
+                onValueChanged={(self) => setTemp(self.get_value())} 
                 hexpand 
             />
         </box>
@@ -77,14 +77,14 @@ const ScreenshotPopup = ({ onClose }: { onClose: () => void }) => (
 )
 
 export default function ControlCenterWindow() {
-    const wifiOn = Variable(true)
-    const bluetoothOn = Variable(false)
-    const volume = Variable(50)
-    const brightness = Variable(80)
-    const activePopup = Variable<PopupType>(null)
+    const [wifiOn, setWifiOn] = createState(true)
+    const [bluetoothOn, setBluetoothOn] = createState(false)
+    const [volume, setVolume] = createState(50)
+    const [brightness, setBrightness] = createState(80)
+    const [activePopup, setActivePopup] = createState<PopupType>(null)
 
     const togglePopup = (popup: PopupType) => {
-        activePopup.set_value(activePopup.get_value() === popup ? null : popup)
+        setActivePopup(activePopup() === popup ? null : popup)
     }
 
     return (
@@ -116,11 +116,11 @@ export default function ControlCenterWindow() {
 
                 <box spacing={12} homogeneous>
                     <button 
-                        cssClasses={Variable.derive([wifiOn, activePopup], (on, popup) => 
+                        cssClasses={wifiOn.as(on => activePopup.as(popup => 
                             ["tn-toggle", on ? "active" : "", popup === 'wifi' ? "expanded" : ""].filter(Boolean)
-                        )} 
+                        ))} 
                         onClicked={() => {
-                            wifiOn.set_value(!wifiOn.get_value())
+                            setWifiOn(!wifiOn())
                             togglePopup('wifi')
                         }}
                     >
@@ -131,11 +131,11 @@ export default function ControlCenterWindow() {
                     </button>
                     
                     <button 
-                        cssClasses={Variable.derive([bluetoothOn, activePopup], (on, popup) => 
+                        cssClasses={bluetoothOn.as(on => activePopup.as(popup => 
                             ["tn-toggle", on ? "active" : "", popup === 'bluetooth' ? "expanded" : ""].filter(Boolean)
-                        )} 
+                        ))} 
                         onClicked={() => {
-                            bluetoothOn.set_value(!bluetoothOn.get_value())
+                            setBluetoothOn(!bluetoothOn())
                             togglePopup('bluetooth')
                         }}
                     >
@@ -168,20 +168,20 @@ export default function ControlCenterWindow() {
                 </box>
 
                 <box cssClasses={["tn-popup-container"]}>
-                    <box visible={activePopup.as(p => p === 'wifi')}><WifiPopup onClose={() => activePopup.set_value(null)} /></box>
-                    <box visible={activePopup.as(p => p === 'bluetooth')}><BluetoothPopup onClose={() => activePopup.set_value(null)} /></box>
-                    <box visible={activePopup.as(p => p === 'nightlight')}><NightLightPopup onClose={() => activePopup.set_value(null)} /></box>
-                    <box visible={activePopup.as(p => p === 'screenshot')}><ScreenshotPopup onClose={() => activePopup.set_value(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'wifi')}><WifiPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'bluetooth')}><BluetoothPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'nightlight')}><NightLightPopup onClose={() => setActivePopup(null)} /></box>
+                    <box visible={activePopup.as(p => p === 'screenshot')}><ScreenshotPopup onClose={() => setActivePopup(null)} /></box>
                 </box>
 
                 <box cssClasses={["tn-panel"]} orientation={Gtk.Orientation.VERTICAL} spacing={10}>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰝀 " />
-                        <scale hexpand min={0} max={100} value={volume} onValueChanged={(self) => volume.set_value(self.get_value())} />
+                        <scale hexpand min={0} max={100} value={volume} onValueChanged={(self) => setVolume(self.get_value())} />
                     </box>
                     <box spacing={10}>
                         <label cssClasses={["slider-icon"]} label="󰛨 " />
-                        <scale hexpand min={0} max={100} value={brightness} onValueChanged={(self) => brightness.set_value(self.get_value())} />
+                        <scale hexpand min={0} max={100} value={brightness} onValueChanged={(self) => setBrightness(self.get_value())} />
                     </box>
                 </box>
 
