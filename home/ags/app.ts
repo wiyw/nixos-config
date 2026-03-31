@@ -15,7 +15,6 @@ app.start({
         .text-header { font-weight: bold; font-size: 15px; color: #c0caf5; }
         .text-bold { font-weight: bold; font-size: 13px; color: #c0caf5; }
         .text-muted { font-size: 12px; color: #565f89; }
-        .text-left { justify-content: left; }
         .tn-panel {
             background: rgba(36, 40, 59, 0.85);
             border-radius: 12px;

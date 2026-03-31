@@ -1,5 +1,6 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { exec } from "ags/process"
+import app from "ags/gtk4/app"
 
 export default function ControlCenter() {
     return (
@@ -9,6 +10,7 @@ export default function ControlCenter() {
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT} 
             margin={15} 
             visible={true}
+            application={app}
         >
             <box class="tn-container" orientation={Gtk.Orientation.VERTICAL} spacing={15}>
                 <box class="tn-panel" spacing={15}>
