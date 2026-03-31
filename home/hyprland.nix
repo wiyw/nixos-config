@@ -192,19 +192,17 @@ in
     };
 
     extraConfig = ''
-      layerrule {
-        name = waybar-blur
-        match:namespace = waybar
-        blur = on
-        ignore_alpha = 0.2
-      }
+      layerrule = {
+        namespace = "waybar";
+        blur = true;
+        ignorealpha = true;
+      };
 
-      layerrule {
-        name = control-center-blur
-        match:namespace = ^(control-center)$
-        blur = on
-        ignore_alpha = 0.2
-      }
+      layerrule = {
+        namespace = "control-center";
+        blur = true;
+        ignorealpha = true;
+      };
 
       windowrule {
         name = global-transparency

@@ -48,6 +48,10 @@
   environment.systemPackages = with pkgs; [
     neovim 
     wget
+    grim
+    slurp
+    brightnessctl
+    wl-clipboard
   ];
 
   # Services
@@ -62,6 +66,11 @@
 
   # Please dont blow up
   services.thermald.enable = true;
+
+  # Bluetooth
+  services.blueman.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   # DO NOT CHANGE THIS
   system.stateVersion = "25.11"; 
