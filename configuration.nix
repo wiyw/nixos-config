@@ -65,7 +65,7 @@
   users.users.greyson = {
     isNormalUser = true;
     description = "Greyson";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" ];
     shell = pkgs.zsh;
   };
 
@@ -82,6 +82,14 @@
       AllowTcpForwarding = true;
     };
   };
+
+  services.udev.extraRules = ''
+  # Arduino UNO Q in EDL mode (Qualcomm USB)
+  SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", ATTR{idProduct}=="9008", MODE="0666", TAG+="uaccess"
+ 
+  # Arduino UNO Q standard ADB/Serial mode
+  SUBSYSTEM=="usb", ATTR{idVendor}=="2341", ATTR{idProduct}=="0078", MODE="0660", GROUP="dialout", TAG+="uaccess"
+  '';
 
   # Please dont blow up
   services.thermald.enable = true;
