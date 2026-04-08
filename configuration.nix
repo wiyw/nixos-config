@@ -86,6 +86,9 @@
   # Please dont blow up
   services.thermald.enable = true;
 
+  # Touchpad Fix
+  services.libinput.enable = true;
+
   # Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
