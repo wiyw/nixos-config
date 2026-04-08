@@ -20,6 +20,8 @@
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   # SDDM Config file
   environment.etc."sddm.conf".text = ''
     [Theme]

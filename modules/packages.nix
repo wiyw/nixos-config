@@ -60,4 +60,9 @@
       echo "✅ All done!"
     '')
   ];
+
+  # VsCode
+  programs.vscode = {
+    enable = true;
+  };
 }
