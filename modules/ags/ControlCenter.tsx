@@ -9,196 +9,140 @@ let nightWin: any = null
 let ssWin: any = null
 let controlWin: any = null
 
-const createWifiPopup = () => {
-    if (wifiWin) return wifiWin
-    wifiWin = (
+const createPopupWindow = (name: string, content: any) => {
+    const existing = app.get_window(name)
+    if (existing) {
+        existing.visible = !existing.visible
+        return existing
+    }
+    
+    return (
         <window 
-            name="wifi-popup"
-            visible={false}
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={50}
-            marginRight={365}
+            name={name}
+            visible={true}
+            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
         >
-            <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
-                <box>
-                    <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
-                    <button cssClasses={["tn-close-btn"]} onClicked={() => { if (wifiWin) wifiWin.visible = false }}>
-                        <label label="✕" />
-                    </button>
-                </box>
-                <box cssClasses={["toggle-row"]}>
-                    <label label="󰤯 " />
-                    <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
-                    <button onClicked={() => execAsync("nmcli radio wifi toggle").catch(() => {})}>
-                        <label label="Toggle" />
-                    </button>
-                </box>
-                <box cssClasses={["network-item"]} spacing={12}>
-                    <label label="󰤨 " />
-                    <label cssClasses={["text-bold"]} label="Home Network" hexpand />
-                    <label cssClasses={["text-muted"]} label="Connected" />
-                </box>
-            </box>
+            {content}
         </window>
     )
-    return wifiWin
-}
-
-const createBTPopup = () => {
-    if (btWin) return btWin
-    btWin = (
-        <window 
-            name="bluetooth-popup"
-            visible={false}
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={50}
-            marginRight={365}
-            application={app}
-            exclusivity={Astal.Exclusivity.IGNORE}
-            layer={Astal.Layer.TOP}
-        >
-            <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
-                <box>
-                    <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
-                    <button cssClasses={["tn-close-btn"]} onClicked={() => { if (btWin) btWin.visible = false }}>
-                        <label label="✕" />
-                    </button>
-                </box>
-                <box cssClasses={["toggle-row"]}>
-                    <label label="󰂯 " />
-                    <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
-                    <button onClicked={() => execAsync("bluetoothctl power toggle").catch(() => {})}>
-                        <label label="Toggle" />
-                    </button>
-                </box>
-                <box cssClasses={["device-item"]} spacing={12}>
-                    <label label="󰂯 " />
-                    <label cssClasses={["text-bold"]} label="No devices" hexpand />
-                </box>
-                <button cssClasses={["tn-btn"]} onClicked={() => execAsync("bluetoothctl pairable on").catch(() => {})}>
-                    <label label="Enable Pairing" />
-                </button>
-            </box>
-        </window>
-    )
-    return btWin
-}
-
-const createNightPopup = () => {
-    if (nightWin) return nightWin
-    nightWin = (
-        <window 
-            name="nightlight-popup"
-            visible={false}
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={50}
-            marginRight={365}
-            application={app}
-            exclusivity={Astal.Exclusivity.IGNORE}
-            layer={Astal.Layer.TOP}
-        >
-            <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
-                <box>
-                    <label cssClasses={["text-bold"]} label="Night Light" hexpand />
-                    <button cssClasses={["tn-close-btn"]} onClicked={() => { if (nightWin) nightWin.visible = false }}>
-                        <label label="✕" />
-                    </button>
-                </box>
-                <box cssClasses={["toggle-row"]}>
-                    <label label="󰟈 " />
-                    <label cssClasses={["text-bold"]} label="Night Shift" hexpand />
-                    <button onClicked={() => execAsync("redshift -P -O 4500").catch(() => {})}>
-                        <label label="Toggle" />
-                    </button>
-                </box>
-            </box>
-        </window>
-    )
-    return nightWin
-}
-
-const createSSPopup = () => {
-    if (ssWin) return ssWin
-    ssWin = (
-        <window 
-            name="screenshot-popup"
-            visible={false}
-            anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={50}
-            marginRight={365}
-            application={app}
-            exclusivity={Astal.Exclusivity.IGNORE}
-            layer={Astal.Layer.TOP}
-        >
-            <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
-                <box>
-                    <label cssClasses={["text-bold"]} label="Screenshot" hexpand />
-                    <button cssClasses={["tn-close-btn"]} onClicked={() => { if (ssWin) ssWin.visible = false }}>
-                        <label label="✕" />
-                    </button>
-                </box>
-                <button cssClasses={["tn-btn"]} onClicked={() => { if (ssWin) ssWin.visible = false; execAsync('grim -g "$(slurp)" -').catch(() => {}) }}>
-                    <label label="Selection" />
-                </button>
-                <button cssClasses={["tn-btn"]} onClicked={() => { if (ssWin) ssWin.visible = false; execAsync('grim -').catch(() => {}) }}>
-                    <label label="Full Screen" />
-                </button>
-            </box>
-        </window>
-    )
-    return ssWin
-}
-
-const closeAllPopups = () => {
-    if (wifiWin) wifiWin.visible = false
-    if (btWin) btWin.visible = false  
-    if (nightWin) nightWin.visible = false
-    if (ssWin) ssWin.visible = false
 }
 
 export default function ControlCenterWindow() {
     const [volume, setVolume] = createState(50)
     const [brightness, setBrightness] = createState(80)
-    const [playerTitle, setPlayerTitle] = createState("Nothing Playing")
-    const [playerStatus, setPlayerStatus] = createState("Idle")
 
-    const handleVolume = (self: any) => {
-        const val = Math.round(self.get_value() * 100)
-        setVolume(val)
-        execAsync(`wpctl set-volume @DEFAULT_AUDIO_SINK ${val}%`).catch(() => {})
+    const handleVolume = (val: number) => {
+        const v = Math.round(val * 100)
+        setVolume(v)
+        execAsync(`wpctl set-volume @DEFAULT_AUDIO_SINK ${v}%`).catch(() => {})
     }
     
-    const handleBrightness = (self: any) => {
-        const val = Math.round(self.get_value() * 100)
-        setBrightness(val)
-        execAsync(`brightnessctl set ${val}%`).catch(() => {})
+    const handleBrightness = (val: number) => {
+        const v = Math.round(val * 100)
+        setBrightness(v)
+        execAsync(`brightnessctl set ${v}%`).catch(() => {})
     }
 
     const toggleWifi = () => {
-        closeAllPopups()
-        const win = createWifiPopup()
-        win.visible = !win.visible
+        const win = app.get_window("wifi-popup")
+        if (win) {
+            win.visible = !win.visible
+        } else {
+            wifiWin = createPopupWindow("wifi-popup", 
+                <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
+                    <box>
+                        <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
+                        <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("wifi-popup")?.close()}>
+                            <label label="✕" />
+                        </button>
+                    </box>
+                    <box cssClasses={["toggle-row"]}>
+                        <label label="󰤯" />
+                        <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
+                        <button onClicked={() => execAsync("nmcli radio wifi toggle").catch(() => {})}>
+                            <label label="Toggle" />
+                        </button>
+                    </box>
+                </box>
+            )
+        }
     }
 
     const toggleBT = () => {
-        closeAllPopups()
-        const win = createBTPopup()
-        win.visible = !win.visible
+        const win = app.get_window("bluetooth-popup")
+        if (win) {
+            win.visible = !win.visible
+        } else {
+            btWin = createPopupWindow("bluetooth-popup",
+                <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
+                    <box>
+                        <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
+                        <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("bluetooth-popup")?.close()}>
+                            <label label="✕" />
+                        </button>
+                    </box>
+                    <box cssClasses={["toggle-row"]}>
+                        <label label="󰂯" />
+                        <label cssClasses={["text-bold"]} label="Bluetooth" hexpand />
+                        <button onClicked={() => execAsync("bluetoothctl power toggle").catch(() => {})}>
+                            <label label="Toggle" />
+                        </button>
+                    </box>
+                </box>
+            )
+        }
     }
 
     const toggleNight = () => {
-        closeAllPopups()
-        const win = createNightPopup()
-        win.visible = !win.visible
+        const win = app.get_window("display-popup")
+        if (win) {
+            win.visible = !win.visible
+        } else {
+            nightWin = createPopupWindow("display-popup",
+                <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
+                    <box>
+                        <label cssClasses={["text-bold"]} label="Display" hexpand />
+                        <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("display-popup")?.close()}>
+                            <label label="✕" />
+                        </button>
+                    </box>
+                    <box cssClasses={["toggle-row"]}>
+                        <label label="󰟈" />
+                        <label cssClasses={["text-bold"]} label="Night Light" hexpand />
+                        <button onClicked={() => execAsync("redshift -P -O 4500").catch(() => {})}>
+                            <label label="Toggle" />
+                        </button>
+                    </box>
+                </box>
+            )
+        }
     }
 
     const toggleSS = () => {
-        closeAllPopups()
-        const win = createSSPopup()
-        win.visible = !win.visible
+        const win = app.get_window("screenshot-popup")
+        if (win) {
+            win.visible = !win.visible
+        } else {
+            ssWin = createPopupWindow("screenshot-popup",
+                <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
+                    <box>
+                        <label cssClasses={["text-bold"]} label="Screenshot" hexpand />
+                        <button cssClasses={["tn-close-btn"]} onClicked={() => app.get_window("screenshot-popup")?.close()}>
+                            <label label="✕" />
+                        </button>
+                    </box>
+                    <button cssClasses={["tn-btn"]} onClicked={() => { app.get_window("screenshot-popup")?.close(); execAsync('grim -g "$(slurp)" -').catch(() => {}) }}>
+                        <label label="Selection" />
+                    </button>
+                    <button cssClasses={["tn-btn"]} onClicked={() => { app.get_window("screenshot-popup")?.close(); execAsync('grim -').catch(() => {}) }}>
+                        <label label="Full Screen" />
+                    </button>
+                </box>
+            )
+        }
     }
 
     controlWin = (
@@ -208,7 +152,7 @@ export default function ControlCenterWindow() {
             cssClasses={["ControlCenterWindow"]}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={365}
+            marginRight={15}
             visible={false}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
@@ -276,7 +220,7 @@ export default function ControlCenterWindow() {
                     <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("systemctl suspend")}>
                         <label label="󰌾" />
                     </button>
-                    <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("sysact")}>
+                    <button cssClasses={["tn-icon-btn"]} onClicked={() => exec("systemctl poweroff")}>
                         <label label="⏻" />
                     </button>
                 </box>
