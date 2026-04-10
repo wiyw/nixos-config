@@ -7,10 +7,10 @@ window {
     background-color: transparent;
 }
 
-/* Main Container - macOS style */
+/* Main Container - Tokyo Night style */
 .tn-container {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
+    background-color: rgba(26, 27, 38, 0.92);
+    border: 1px solid rgba(122, 162, 247, 0.15);
     border-radius: 24px;
     padding: 16px;
     min-width: 340px;
@@ -18,8 +18,8 @@ window {
 
 /* Popup Container */
 .popup-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
+    background-color: rgba(26, 27, 38, 0.95);
+    border: 1px solid rgba(122, 162, 247, 0.2);
     border-radius: 18px;
     padding: 16px;
     min-width: 300px;
@@ -36,32 +36,37 @@ window {
     to { opacity: 1; }
 }
 
-/* Buttons - macOS style */
+/* Buttons - Tokyo Night style */
 button {
-    background-color: rgba(120, 120, 128, 0.2);
-    border: none;
-    border-radius: 12px;
-    padding: 12px;
-    color: #1c1c1e;
+    background-color: rgba(48, 54, 75, 0.8);
+    border: 1px solid rgba(122, 162, 247, 0.15);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: #c0caf5;
     transition: all 0.15s ease;
 }
 
 button:hover {
-    background-color: rgba(120, 120, 128, 0.3);
+    background-color: rgba(69, 77, 102, 0.9);
 }
 
 button:active {
-    background-color: rgba(120, 120, 128, 0.4);
+    background-color: rgba(122, 162, 247, 0.3);
     transform: scale(0.97);
 }
 
-/* Module buttons */
-.module-btn {
-    background-color: rgba(120, 120, 128, 0.15);
+/* Module grid buttons */
+.module-grid button {
+    background-color: rgba(48, 54, 75, 0.7);
     border-radius: 16px;
-    padding: 14px 16px;
-    min-width: 90px;
-    min-height: 80px;
+    padding: 14px;
+    min-width: 72px;
+    min-height: 70px;
+}
+
+.module-grid button:hover {
+    background-color: rgba(69, 77, 102, 0.85);
+    transform: translateY(-2px);
 }
 
 /* Icon Buttons */
@@ -69,117 +74,105 @@ button.tn-icon-btn,
 button.tn-close-btn {
     background-color: transparent;
     border: none;
-    padding: 8px;
-    color: #636366;
-    border-radius: 10px;
+    padding: 10px;
+    color: #9aa5ce;
+    border-radius: 12px;
 }
 
 button.tn-icon-btn:hover,
 button.tn-close-btn:hover {
-    background-color: rgba(120, 120, 128, 0.2);
-    color: #1c1c1e;
+    background-color: rgba(122, 162, 247, 0.15);
+    color: #c0caf5;
 }
 
 button.destructive {
-    color: #ff3b30;
+    color: #f7768e;
 }
 
 button.destructive:hover {
-    background-color: rgba(255, 59, 48, 0.15);
+    background-color: rgba(247, 118, 142, 0.2);
 }
 
-/* Panels - macOS Control Center style */
+/* Panels */
 .tn-panel {
-    background-color: rgba(120, 120, 128, 0.12);
+    background-color: rgba(36, 40, 59, 0.7);
+    border-radius: 16px;
+    padding: 16px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.player-panel {
+    background-color: rgba(36, 40, 59, 0.7);
     border-radius: 16px;
     padding: 14px;
     animation: fadeIn 0.3s ease-out;
 }
 
-/* Sliders - macOS big style */
+/* Sliders - big macOS style */
 scale {
-    min-height: 28px;
+    min-height: 32px;
 }
 
 scale trough { 
-    background-color: rgba(120, 120, 128, 0.2);
-    border-radius: 14px;
-    min-height: 28px;
+    background-color: rgba(48, 54, 75, 0.8); 
+    border-radius: 16px;
+    min-height: 32px;
     padding: 4px;
 }
 
 scale highlight { 
-    background: linear-gradient(90deg, #0a84ff, #5e5ce6);
-    border-radius: 14px;
+    background: linear-gradient(90deg, #7aa2f7, #bb9af7);
+    border-radius: 16px;
 }
 
 scale slider {
-    background-color: white;
+    background-color: #c0caf5;
     border-radius: 50%;
-    min-width: 28px;
-    min-height: 28px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    min-width: 32px;
+    min-height: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Typography - macOS style */
-.text-header { font-weight: 600; font-size: 14px; color: #1c1c1e; }
-.text-bold { font-weight: 600; font-size: 13px; color: #1c1c1e; }
-.text-muted { font-size: 12px; color: #8e8e93; }
-.toggle-icon { color: #0a84ff; font-size: 24px; }
-.icon-large { color: #0a84ff; font-size: 26px; }
-.play-btn { color: #0a84ff; font-size: 22px; }
-.slider-icon { color: #636366; font-size: 20px; }
+scale slider:hover {
+    transform: scale(1.05);
+}
+
+/* Typography - Tokyo Night */
+.text-header { font-weight: 600; font-size: 15px; color: #a9b1d6; }
+.text-bold { font-weight: 600; font-size: 13px; color: #c0caf5; }
+.text-muted { font-size: 12px; color: #565f89; }
+.toggle-icon { color: #7aa2f7; font-size: 24px; }
+.icon-large { color: #7dcfff; font-size: 26px; }
+.play-btn { color: #7aa2f7; font-size: 24px; }
+.slider-icon { color: #7aa2f7; font-size: 20px; }
+.player-title { font-weight: 600; font-size: 14px; color: #a9b1d6; }
+.player-status { font-size: 12px; color: #565f89; }
 
 /* Toggle Rows */
 .toggle-row {
-    background-color: rgba(120, 120, 128, 0.12);
-    border-radius: 10px;
+    background-color: rgba(48, 54, 75, 0.6);
+    border-radius: 12px;
     padding: 12px;
 }
 
 .toggle-row:hover {
-    background-color: rgba(120, 120, 128, 0.2);
+    background-color: rgba(48, 54, 75, 0.8);
 }
 
 /* Network/Device Items */
 .network-item, .device-item {
-    background-color: rgba(120, 120, 128, 0.12);
+    background-color: rgba(48, 54, 75, 0.6);
     border-radius: 10px;
     padding: 10px;
 }
 
 .network-item:hover, .device-item:hover {
-    background-color: rgba(120, 120, 128, 0.2);
-}
-
-/* Player controls */
-.player-panel {
-    background-color: rgba(120, 120, 128, 0.12);
-    border-radius: 16px;
-    padding: 12px;
-}
-
-.player-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1c1c1e;
-}
-
-.player-status {
-    font-size: 12px;
-    color: #8e8e93;
+    background-color: rgba(48, 54, 75, 0.8);
 }
 
 /* Module grid */
 .module-grid {
-    background-color: rgba(120, 120, 128, 0.12);
-    border-radius: 16px;
-    padding: 8px;
-}
-
-.module-grid button {
-    background-color: rgba(120, 120, 128, 0.15);
-    border-radius: 12px;
+    background-color: rgba(36, 40, 59, 0.5);
+    border-radius: 18px;
     padding: 10px;
-    min-width: 70px;
 }

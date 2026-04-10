@@ -133,6 +133,13 @@ in
         ignore_alpha = 0.2
       }
 
+      layerrule {
+        name = popup-blur
+        match:title = ^(.*-popup)$
+        blur = on
+        ignore_alpha = 0.2
+      }
+
       windowrule {
         name = global-transparency
         match:class = .*

@@ -16,7 +16,7 @@ const createWifiPopup = () => {
             name="wifi-popup"
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={200}
+            marginTop={50}
             marginRight={15}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
@@ -24,7 +24,7 @@ const createWifiPopup = () => {
         >
             <box cssClasses={["popup-container"]} orientation={Gtk.Orientation.VERTICAL} spacing={12}>
                 <box>
-                    <label cssClasses={["text-bold"]} label="WiFi" hexpand />
+                    <label cssClasses={["text-bold"]} label="Wi-Fi" hexpand />
                     <button cssClasses={["tn-close-btn"]} onClicked={() => { if (wifiWin) wifiWin.visible = false }}>
                         <label label="✕" />
                     </button>
@@ -54,7 +54,7 @@ const createBTPopup = () => {
             name="bluetooth-popup"
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={200}
+            marginTop={50}
             marginRight={15}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
@@ -94,7 +94,7 @@ const createNightPopup = () => {
             name="nightlight-popup"
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={200}
+            marginTop={50}
             marginRight={15}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
@@ -127,7 +127,7 @@ const createSSPopup = () => {
             name="screenshot-popup"
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
-            marginTop={200}
+            marginTop={50}
             marginRight={15}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
