@@ -17,7 +17,7 @@ const createWifiPopup = () => {
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={15}
+            marginRight={365}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
@@ -55,7 +55,7 @@ const createBTPopup = () => {
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={15}
+            marginRight={365}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
@@ -95,7 +95,7 @@ const createNightPopup = () => {
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={15}
+            marginRight={365}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
@@ -128,7 +128,7 @@ const createSSPopup = () => {
             visible={false}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={15}
+            marginRight={365}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
             layer={Astal.Layer.TOP}
@@ -208,7 +208,7 @@ export default function ControlCenterWindow() {
             cssClasses={["ControlCenterWindow"]}
             anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT}
             marginTop={50}
-            marginRight={15}
+            marginRight={365}
             visible={false}
             application={app}
             exclusivity={Astal.Exclusivity.IGNORE}
