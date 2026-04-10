@@ -91,9 +91,6 @@
   SUBSYSTEM=="usb", ATTR{idVendor}=="2341", ATTR{idProduct}=="0078", MODE="0660", GROUP="dialout", TAG+="uaccess"
   '';
 
-  # Add adb to ensure proper permission access
-  programs.adb.enable = true;
-
   # Please dont blow up
   services.thermald.enable = true;
 
