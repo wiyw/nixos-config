@@ -1,6 +1,18 @@
 { config, pkgs, lib, ... }:
 
 {
+
+  programs.gh = {
+    enable = true;
+    settings = {
+      # Use SSH protocol for better security and to avoid prompts entirely
+      git_protocol = "ssh"; 
+    };
+    gitCredentialHelper = {
+      enable = true; # This creates the necessary Git config entries automatically
+    };
+  };
+  
   programs.git = {
     enable = true;
     
