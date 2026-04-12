@@ -5,6 +5,10 @@
     ./hardware-configuration.nix 
   ];
 
+  # QEMU ALWAYS W VIRT MACHINE
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   # Display Manager
   services.displayManager.sddm = {
     enable = true;
@@ -34,6 +38,9 @@
     neovim 
     wget
     sddm-astronaut
+    qemu
+    virt-manager
+    virt-viewer
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -65,7 +72,7 @@
   users.users.greyson = {
     isNormalUser = true;
     description = "Greyson";
-    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" ];
+    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" "libvrtd" "kvm" ];
     shell = pkgs.zsh;
   };
 
