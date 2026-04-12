@@ -59,6 +59,8 @@ in
           enabled = true;
           size = 8;
           passes = 3;
+          ignore_opacity = true;
+          new_optimizations = true;
         };
       };
 

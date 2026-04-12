@@ -6,9 +6,15 @@
   ];
 
   # QEMU ALWAYS W VIRT MACHINE
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    allowedBridges = [ "virbr0" ];
+    qemu = {
+      package = pkgs.qemu_kvm;
+      vhostUserPackages = [ pkgs.virtiofsd ];
+    };
+  };
   programs.virt-manager.enable = true;
-  virtualisation.libvirtd.allowedBridges = [ "virbr0" ];
 
   # Display Manager
   services.displayManager.sddm = {
