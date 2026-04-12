@@ -8,6 +8,7 @@
   # QEMU ALWAYS W VIRT MACHINE
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+  virtualisation.libvirtd.allowedBridges = [ "virbr0" ];
 
   # Display Manager
   services.displayManager.sddm = {
@@ -72,7 +73,7 @@
   users.users.greyson = {
     isNormalUser = true;
     description = "Greyson";
-    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" "libvrtd" "kvm" ];
+    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" "libvirtd" "kvm" ];
     shell = pkgs.zsh;
   };
 
