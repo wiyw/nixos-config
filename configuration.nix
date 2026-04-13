@@ -16,6 +16,14 @@
   };
   programs.virt-manager.enable = true;
 
+  # Js lemme play MCBE
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+  hardware.graphics.enable = true;
+
   # Display Manager
   services.displayManager.sddm = {
     enable = true;
@@ -48,6 +56,16 @@
     qemu
     virt-manager
     virt-viewer
+    vulkan-loader
+    vulkan-tools
+    mesa
+    freetype
+    fontconfig
+    libGL
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXrandr
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
