@@ -17,12 +17,11 @@
   programs.virt-manager.enable = true;
 
   # Js lemme play MCBE
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
   };
-  hardware.graphics.enable = true;
 
   # Display Manager
   services.displayManager.sddm = {
