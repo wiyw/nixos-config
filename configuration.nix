@@ -117,7 +117,7 @@
   # Java
   programs.java = {
     enable = true;
-    package = pkgs.jdk;
+    package = pkgs.jdk26;
   };
 
   services.udev.extraRules = ''
