@@ -65,6 +65,7 @@
     libXi
     libXrandr
     steam-run
+    wineWowPackages.waylandFull
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
