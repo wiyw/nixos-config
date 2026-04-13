@@ -16,8 +16,8 @@
   outputs = inputs@{ nixpkgs, home-manager, ... }: {
       nixosConfigurations = {
         iusenixbtw = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           modules = [
+            { nixpkgs.hostPlatform = "x86_64-linux"; } 
             ./hardware-configuration.nix
             ./configuration.nix
             home-manager.nixosModules.home-manager

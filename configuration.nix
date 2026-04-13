@@ -60,10 +60,11 @@
     freetype
     fontconfig
     libGL
-    xorg.libX11
-    xorg.libXcursor
-    xorg.libXi
-    xorg.libXrandr
+    libX11
+    libXcursor
+    libXi
+    libXrandr
+    steam-run
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
