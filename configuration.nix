@@ -114,6 +114,12 @@
     };
   };
 
+  # Java
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk;
+  };
+
   services.udev.extraRules = ''
   # Arduino UNO Q in EDL mode (Qualcomm USB)
   SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", ATTR{idProduct}=="9008", MODE="0666", TAG+="uaccess"
