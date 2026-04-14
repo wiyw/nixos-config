@@ -65,7 +65,6 @@
     libXi
     libXrandr
     steam-run
-    lutris # I give up im not manually patching ts
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
