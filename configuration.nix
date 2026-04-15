@@ -65,6 +65,9 @@
     libXi
     libXrandr
     steam-run
+    winetricks
+    zenity
+    cabextract
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
