@@ -45,9 +45,6 @@
     slurp
     brightnessctl
 
-    # MCBE PLEASE
-    lutris # I give up im not manually patching ts
-
     # Custom Rebuild & Backup Command
     (writeShellScriptBin "sysbuild" ''
       echo "🛠️ Starting system rebuild..."
