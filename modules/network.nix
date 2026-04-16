@@ -1,6 +1,23 @@
-{ inputs, config, pkgs, ... }: {
+{ inputs, config, pkgs, ... }:
 
-  imports = [ inputs.sops-nix.homeManagerModules.sops ];
+  
+let
+  sops-nix = builtins.fetchTarball {
+    url = "https://github.com";
+  };
+in
+
+{
+  imports = [
+    # Point to the specific home-manager module within the downloaded tarball
+    "${sops-nix}/modules/home-manager/sops.nix"
+  ];
+
+  sops = {
+    age.keyFile = "/home/greyson/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets/secrets.yaml;
+    secrets.warp_private_key = {};
+  };
 
   sops = {
     age.keyFile = "/home/greyson/.config/sops/age/keys.txt";
