@@ -16,13 +16,6 @@ in
   sops = {
     age.keyFile = "/home/greyson/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
-    secrets.warp_private_key = {};
-  };
-
-  sops = {
-    age.keyFile = "/home/greyson/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets/secrets.yaml;
-    secrets.warp_private_key = {};
   };
 
   # 1. We define the file ONCE and use the path from SOPS
