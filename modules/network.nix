@@ -1,21 +1,12 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, config, pkgs, ... }: {
 
-  
-let
-  sops-nix = builtins.fetchTarball {
-    url = "https://github.com";
-  };
-in
-
-{
-  imports = [
-    # Point to the specific home-manager module within the downloaded tarball
-    "${sops-nix}/modules/home-manager/sops.nix"
-  ];
+  # Use the flake input directly
+  imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
     age.keyFile = "/home/greyson/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets/secrets.yaml;
+    secrets.warp_private_key = {};
   };
 
   # 1. We define the file ONCE and use the path from SOPS

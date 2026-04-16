@@ -7,9 +7,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # The community Zen Browser flake
+
+    sops-nix.url = "github:Mic92/sops-nix";
+
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    # AGS (Aylur's GTK Shell)
+
     ags.url = "github:aylur/ags";
   };
 
