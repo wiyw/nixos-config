@@ -16,6 +16,17 @@
   };
   programs.virt-manager.enable = true;
 
+  # Sudo for startup programs
+  security.sudo.extraRules = [{
+    users = [ "greyson" ];
+    commands = [
+      { 
+        command = "/run/current-system/sw/bin/wg-quick"; 
+        options = [ "NOPASSWD" ]; 
+      }
+    ];
+  }];
+
   # Js lemme play MCBE
   hardware.graphics = {
     enable = true;

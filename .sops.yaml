@@ -1,0 +1,7 @@
+keys:
+  - &greyson age1rv0any72tntl83zysqd9j8hs7qthwunakaacxzp5xqhqqrt2yy2ql6rdfa
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *greyson
