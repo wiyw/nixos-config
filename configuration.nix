@@ -106,6 +106,14 @@
 
   # Enable nix-ld so pre-compiled binaries can run
   programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    openssl
+    curl
+    glib
+  # Add other common libraries if error logs mention missing .so files
+  ];
+
 
   # User Configuration
   users.users.greyson = {
