@@ -79,6 +79,7 @@
     winetricks
     zenity
     cabextract
+    pmisc
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
