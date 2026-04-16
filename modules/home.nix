@@ -16,7 +16,6 @@
     ./hypridle.nix
     ./ags.nix
     ./sddm.nix
-    ./network.nix
   ];
 
   home.pointerCursor = {
