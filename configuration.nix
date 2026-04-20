@@ -142,12 +142,11 @@
     description = "Cloudflare WARP WireGuard VPN";
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up warp";
-      ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down warp";
+      ExecStart = "/run/current-system/sw/bin/wg-quick up warp";
+      ExecStop = "/run/current-system/sw/bin/wg-quick down warp";
     };
   };
 
