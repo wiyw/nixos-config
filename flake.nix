@@ -21,6 +21,7 @@
           modules = [
             { nixpkgs.hostPlatform = "x86_64-linux"; } 
             ./hardware-configuration.nix
+            inputs.sops-nix.nixosModules.sops
             ./configuration.nix
             home-manager.nixosModules.home-manager
             {

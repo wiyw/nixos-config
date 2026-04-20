@@ -1,9 +1,8 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [ 
     ./hardware-configuration.nix 
-    inputs.sops-nix.nixosModules.sops
   ];
 
   # QEMU ALWAYS W VIRT MACHINE
@@ -88,21 +87,6 @@
   # Networking
   networking.hostName = "iusenixbtw"; 
   networking.networkmanager.enable = true;
-
-  # WireGuard for WARP (system-level)
-  networking.wireguard.interfaces = {
-    warp = {
-      privateKeyFile =config.sops.secrets.warp_private_key.path;
-      address = [ "172.16.0.2/32" "2606:4700:110:853b:f00d:78f0:f0ba:cb06/128" ];
-      dns = [ "1.1.1.1" ];
-      mtu = 1280;
-      peers = [{
-        publicKey = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-        endpoint = "162.247.74.27:443"; # cloudflare warp endpoint
-        allowedIPs = [ "0.0.0.0/0" "::/0" ];
-      }];
-    };
-  };
 
   # Time & Locale
   time.timeZone = "America/Los_Angeles";

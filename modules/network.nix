@@ -21,5 +21,20 @@
     AllowedIPs = 0.0.0.0/0, ::/0
   '';
 
-  home.packages = [ pkgs.wgcf ];
+  home.packages = [ pkgs.wireguard-tools pkgs.wgcf ];
+
+  systemd.user.services.warp-vpn = {
+    Unit = {
+      Description = "Cloudflare WARP WireGuard Tunnel";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up %h/.config/wireguard/warp.conf";
+      ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down %h/.config/wireguard/warp.conf";
+    };
+    Install = { WantedBy = [ "default.target" ]; };
+  };
 }
