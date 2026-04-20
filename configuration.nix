@@ -145,8 +145,8 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.bash}/bin/bash -c 'ip link del warp 2>/dev/null; wg-quick up warp'";
-      ExecStop = "${pkgs.bash}/bin/bash -c 'wg-quick down warp'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'ip link del warp 2>/dev/null; ${pkgs.wireguard-tools}/bin/wg-quick up warp'";
+      ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.wireguard-tools}/bin/wg-quick down warp'";
     };
   };
 
