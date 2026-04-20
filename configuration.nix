@@ -143,12 +143,12 @@
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    service = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up warp";
-      ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down warp";
-    };
+    script = ''
+      ${pkgs.wireguard-tools}/bin/wg-quick up warp
+    '';
+    stopScript = ''
+      ${pkgs.wireguard-tools}/bin/wg-quick down warp
+    '';
   };
 
   # Java
