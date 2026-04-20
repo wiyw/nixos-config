@@ -137,7 +137,7 @@
     };
   };
 
-  # WireGuard WARP VPN (using wg directly, bypassing resolvconf)
+  # WireGuard WARP VPN - manual setup bypassing resolvconf
   systemd.services.warp-vpn = {
     description = "Cloudflare WARP WireGuard VPN";
     wantedBy = [ "multi-user.target" ];
@@ -145,8 +145,8 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.bash}/bin/bash -c 'ip link del warp 2>/dev/null; wg setconf warp /etc/wireguard/warp.conf; ip link set warp up'";
-      ExecStop = "${pkgs.bash}/bin/bash -c 'ip link set warp down; ip link del warp'";
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip link del warp 2>/dev/null; ${pkgs.iproute2}/bin/ip link add warp type wireguard; ${pkgs.wireguard-tools}/bin/wg setconf warp /etc/wireguard/warp.conf; ${pkgs.iproute2}/bin/ip link set warp up; ${pkgs.iproute2}/bin/ip -4 route add 0.0.0.0/0 dev warp; ${pkgs.iproute2}/bin/ip -6 route add ::/0 dev warp'";
+      ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip link set warp down; ${pkgs.iproute2}/bin/ip link del warp'";
     };
   };
 
