@@ -23,7 +23,7 @@
     AllowedIPs = 0.0.0.0/0, ::/0
   '';
 
-  home.packages = [ pkgs.wireguard-tools ];
+  home.packages = [ pkgs.wireguard-tools pkgs.wgcf ];
 
   systemd.user.services.warp-vpn = {
     Unit = {
