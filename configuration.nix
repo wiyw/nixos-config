@@ -145,8 +145,8 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "/run/current-system/sw/bin/wg-quick up warp";
-      ExecStop = "/run/current-system/sw/bin/wg-quick down warp";
+      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up warp";
+      ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down warp";
     };
   };
 
