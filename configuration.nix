@@ -145,7 +145,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up warp";
+      ExecStart = "${pkgs.iproute2}/bin/ip link delete warp 2>/dev/null; ${pkgs.wireguard-tools}/bin/wg-quick up warp";
       ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down warp";
     };
   };
