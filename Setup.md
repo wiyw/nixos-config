@@ -86,6 +86,58 @@ After initial installation:
 - Run `systemctl --user status waybar`
 - Run `systemctl --user status hypridle`
 
+## Cloudflare WARP VPN Setup
+
+### First-Time Setup (One-Time)
+
+1. Register with Cloudflare WARP:
+   ```bash
+   wgcf register --accept-tos
+   ```
+
+2. Generate the WireGuard config:
+   ```bash
+   wgcf generate
+   ```
+
+3. Move config to system location:
+   ```bash
+   sudo mkdir -p /etc/wireguard
+   sudo cp wgcf-profile.conf /etc/wireguard/warp.conf
+   chmod 600 /etc/wireguard/warp.conf
+   ```
+
+4. Change DNS
+   ```
+   Remove all ipv6 addresses from DNS line
+   ```
+
+### Starting WARP
+
+- Start on boot (automatic after rebuild):
+  ```bash
+  sudo systemctl enable warp-vpn
+  sudo systemctl start warp-vpn
+  ```
+
+- Manual start/stop:
+  ```bash
+  sudo wg-quick up warp
+  sudo wg-quick down warp
+  ```
+
+- Check status:
+  ```bash
+  sudo systemctl status warp-vpn
+  ```
+
+### Verify Connection
+```bash
+curl ifconfig.me
+```
+
+**Note:** The config file contains your private key - do not commit it to the repo.
+
 ## Customization
 
 ### Adding Custom Wallpapers

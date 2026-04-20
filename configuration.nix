@@ -137,6 +137,20 @@
     };
   };
 
+  # WireGuard WARP VPN
+  systemd.services.warp-vpn = {
+    description = "Cloudflare WARP WireGuard VPN";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    service = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.wireguard-tools}/bin/wg-quick up warp";
+      ExecStop = "${pkgs.wireguard-tools}/bin/wg-quick down warp";
+    };
+  };
+
   # Java
   programs.java = {
     enable = true;
