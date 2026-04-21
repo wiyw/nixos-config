@@ -57,6 +57,8 @@
     Current=sddm-astronaut-theme
   '';
 
+  programs.steam.enable = true;
+
   # Base System Packages
   environment.systemPackages = with pkgs; [
     bash
