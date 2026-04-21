@@ -59,6 +59,7 @@
 
   # Base System Packages
   environment.systemPackages = with pkgs; [
+    bash
     neovim 
     wget
     sddm-astronaut
