@@ -124,7 +124,8 @@
     openssl
     curl
     glib
-  # Add other common libraries if error logs mention missing .so files
+    xorg.libXxf86vm
+    gtk3
   ];
 
 
