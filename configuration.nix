@@ -33,6 +33,9 @@
     enable32Bit = true;
   };
 
+  # Sharing Files
+  programs.kdeconnect.enable = true;
+
   # Display Manager
   services.displayManager.sddm = {
     enable = true;
