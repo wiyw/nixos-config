@@ -35,6 +35,10 @@
 
   # Sharing Files
   programs.kdeconnect.enable = true;
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable=true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns4 = true;
 
   # Display Manager
   services.displayManager.sddm = {
@@ -87,6 +91,8 @@
     cabextract
     psmisc
     umu-launcher
+    kdePackages.powerdevil
+    kdePackages.libplasma
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
