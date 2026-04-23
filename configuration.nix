@@ -39,6 +39,7 @@
   services.power-profiles-daemon.enable=true;
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
+  services.tailscale.enable = true;
 
   # Display Manager
   services.displayManager.sddm = {
@@ -148,19 +149,6 @@
       PasswordAuthentication = true;
       PermitRootLogin = "no";
       AllowTcpForwarding = true;
-    };
-  };
-
-  # WireGuard WARP VPN - manual setup bypassing resolvconf
-  systemd.services.warp-vpn = {
-    description = "Cloudflare WARP WireGuard VPN";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip link del warp 2>/dev/null; ${pkgs.iproute2}/bin/ip link add warp type wireguard; ${pkgs.wireguard-tools}/bin/wg setconf warp /etc/wireguard/warp.conf; ${pkgs.iproute2}/bin/ip link set warp up; ${pkgs.iproute2}/bin/ip -4 route add 0.0.0.0/0 dev warp; ${pkgs.iproute2}/bin/ip -6 route add ::/0 dev warp'";
-      ExecStop = "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip link set warp down; ${pkgs.iproute2}/bin/ip link del warp'";
     };
   };
 

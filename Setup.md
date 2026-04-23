@@ -107,28 +107,16 @@ After initial installation:
    chmod 600 /etc/wireguard/warp.conf
    ```
 
-4. Change DNS
-   ```
-   Remove all ipv6 addresses from DNS line
-   ```
-
 ### Starting WARP
 
-- Start on boot (automatic after rebuild):
-  ```bash
-  sudo systemctl enable warp-vpn
-  sudo systemctl start warp-vpn
-  ```
-
-- Manual start/stop:
+- Manual start:
   ```bash
   sudo wg-quick up warp
-  sudo wg-quick down warp
   ```
 
-- Check status:
+- Manual stop:
   ```bash
-  sudo systemctl status warp-vpn
+  sudo wg-quick down warp
   ```
 
 ### Verify Connection
