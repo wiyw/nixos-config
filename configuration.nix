@@ -95,9 +95,25 @@
     kdePackages.powerdevil
     kdePackages.libplasma
     python3
+
+    # AppImage Support
+    appimage-run
+    (makeDesktopItem {
+      name = "armbian-imager";
+      desktopName = "Armbian Imager";
+      exec = "appimage-run /home/greyson/bin/ArmbianImager.AppImage";
+      icon = "drive-removable-media"; # Standard icon name
+      categories = [ "Utility" ];
+    })
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # AppImage tools install
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
 
   # Networking
   networking.hostName = "iusenixbtw"; 
