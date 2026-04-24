@@ -94,6 +94,7 @@
     umu-launcher
     kdePackages.powerdevil
     kdePackages.libplasma
+    python3
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
