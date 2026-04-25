@@ -23,7 +23,7 @@
         email = "quantumdragon8@gmail.com";
       };
       init.defaultBranch = "main";
-      safe.directory = "/etc/nixos";
+      safe.directory = "*";
       
       # The Tokyo Night Delta Config
       core.pager = "delta";
