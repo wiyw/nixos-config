@@ -15,6 +15,7 @@
     };
   };
   programs.virt-manager.enable = true;
+  virtualisation.docker.enable = true;
 
   # Sudo for startup programs
   security.sudo.extraRules = [{
@@ -141,7 +142,7 @@
   users.users.greyson = {
     isNormalUser = true;
     description = "Greyson";
-    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" "libvirtd" "kvm" ];
+    extraGroups = [ "wheel" "networkmanager" "adbusers" "dialout" "libvirtd" "kvm" "docker" ];
     shell = pkgs.zsh;
   };
 
