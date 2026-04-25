@@ -17,6 +17,11 @@
   programs.virt-manager.enable = true;
   virtualisation.docker.enable = true;
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = false;
+  };
+
   # Sudo for startup programs
   security.sudo.extraRules = [{
     users = [ "greyson" ];
@@ -96,6 +101,7 @@
     kdePackages.powerdevil
     kdePackages.libplasma
     python3
+    distrobox
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
