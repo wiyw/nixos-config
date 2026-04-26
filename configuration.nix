@@ -5,6 +5,19 @@
     ./hardware-configuration.nix 
   ];
 
+  # The Overlay fixes the "missing" etcher package on newer Nix versions
+  nixpkgs.overlays = [
+    (final: prev: {
+      etcher = (import (builtins.fetchTarball {
+        url = "https://github.com";
+      }) {
+        system = prev.system;
+        config.allowUnfree = true;
+        config.permittedInsecurePackages = [ "electron-12.2.3" ];
+      }).etcher;
+    })
+  ];
+
   # QEMU ALWAYS W VIRT MACHINE
   virtualisation.libvirtd = {
     enable = true;
@@ -102,6 +115,7 @@
     kdePackages.libplasma
     python3
     distrobox
+    raspberry-pi-imager
     etcher
   ];
   boot.loader.systemd-boot.enable = true;
@@ -128,7 +142,7 @@
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true; # Saves massive disk space
+      auto-optimise-store = true; 
     };
     gc = {
       automatic = true;
