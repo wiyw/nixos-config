@@ -102,7 +102,7 @@
     kdePackages.libplasma
     python3
     distrobox
-    balena-etcher
+    etcher
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -112,6 +112,10 @@
     enable = true;
     binfmt = true;
   };
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+  ];
+
 
   # Networking
   networking.hostName = "iusenixbtw"; 
