@@ -5,20 +5,6 @@
     ./hardware-configuration.nix 
   ];
 
-  # Added the sha256 here so fetchTarball works in pure/flake mode
-  nixpkgs.overlays = [
-    (final: prev: {
-      etcher = (import (builtins.fetchTarball {
-        url = "https://github.com";
-        sha256 = "179v67699s5rgy8p7m7sh96v90n3p9iizf665m990f1h89y96d4s"; 
-      }) {
-        system = prev.system;
-        config.allowUnfree = true;
-        config.permittedInsecurePackages = [ "electron-12.2.3" ];
-      }).etcher;
-    })
-  ];
-
   # QEMU ALWAYS W VIRT MACHINE
   virtualisation.libvirtd = {
     enable = true;
@@ -117,9 +103,8 @@
     python3
     distrobox
     
-    # Flashing Tools
+    # Flashing Tool
     rpi-imager
-    etcher
   ];
   
   boot.loader.systemd-boot.enable = true;
@@ -131,6 +116,8 @@
     binfmt = true;
   };
 
+  # Kept this in case you use other older Electron apps, 
+  # but etcher no longer needs it since we removed it.
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
   ];
