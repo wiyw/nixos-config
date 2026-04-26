@@ -5,11 +5,12 @@
     ./hardware-configuration.nix 
   ];
 
-  # The Overlay fixes the "missing" etcher package on newer Nix versions
+  # Added the sha256 here so fetchTarball works in pure/flake mode
   nixpkgs.overlays = [
     (final: prev: {
       etcher = (import (builtins.fetchTarball {
         url = "https://github.com";
+        sha256 = "179v67699s5rgy8p7m7sh96v90n3p9iizf665m990f1h89y96d4s"; 
       }) {
         system = prev.system;
         config.allowUnfree = true;
@@ -116,9 +117,9 @@
     python3
     distrobox
     
-    # Corrected Flashing Tools
-    rpi-imager  # This is the correct package name for Nix
-    etcher      # Works via the overlay
+    # Flashing Tools
+    rpi-imager
+    etcher
   ];
   
   boot.loader.systemd-boot.enable = true;
