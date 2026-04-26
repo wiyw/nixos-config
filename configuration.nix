@@ -102,6 +102,7 @@
     kdePackages.libplasma
     python3
     distrobox
+    qbittorrent
     
     # Flashing Tool
     rpi-imager
