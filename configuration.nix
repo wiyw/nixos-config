@@ -115,9 +115,12 @@
     kdePackages.libplasma
     python3
     distrobox
-    raspberry-pi-imager
-    etcher
+    
+    # Corrected Flashing Tools
+    rpi-imager  # This is the correct package name for Nix
+    etcher      # Works via the overlay
   ];
+  
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -126,10 +129,10 @@
     enable = true;
     binfmt = true;
   };
+
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
   ];
-
 
   # Networking
   networking.hostName = "iusenixbtw"; 
@@ -161,7 +164,6 @@
     xorg.libXxf86vm
     gtk3
   ];
-
 
   # User Configuration
   users.users.greyson = {
