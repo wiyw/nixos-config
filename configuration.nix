@@ -102,6 +102,7 @@
     kdePackages.libplasma
     python3
     distrobox
+    balena-etcher
   ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
