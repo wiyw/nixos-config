@@ -106,6 +106,7 @@
     
     # Flashing Tool
     rpi-imager
+    ventoy
   ];
   
   boot.loader.systemd-boot.enable = true;
