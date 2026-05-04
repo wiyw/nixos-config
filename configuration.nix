@@ -108,10 +108,6 @@
     rpi-imager
     ventoy
   ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "ventoy-1.1.10"
-  ];
   
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -126,6 +122,7 @@
   # but etcher no longer needs it since we removed it.
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "ventoy-1.1.10"
   ];
 
   # Networking
